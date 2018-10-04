@@ -1,19 +1,68 @@
 global HyperSettings := {"Keymap":{}, "TabHotString":{}, "UserWindow":{}}
 
-#Include basickey.ahk
-#Include basicfunc.ahk
-#Include windowutil.ahk
-#Include apps.ahk
-#Include tab.ahk
+#Include lib/basicfunc.ahk
+
 
 
 ; main 
 InitSettings()
 SetTimer, WatchSettings, 1000
+SetTimer, AutoReloader, 1000
+script_dirs := ["lib", "script"]
+includer_path := "lib/includer.ahk"
+FileIncluder(script_dirs, includer_path)
+#Include lib/includer.ahk
+
 
 ; end
+AutoReloader()
+{
+    dirs := ["lib", "script"]
+    static timestamps := {}
+    lst := []
+    for index, dir in dirs
+    {
+        lst.Push(FileList(dir)*)
+    }
+    lst.Push(A_ScriptName)
+    ;msgbox %A_ScriptName%
+    
 
+    for index, filename in lst
+    {
+        FileGetTime, temp, %filename%
+        if not timestamps.haskey(filename)
+        {
+            ;msgbox %filename% record timestamp %temp%
+            timestamps[filename] := temp
+        }
+        else if timestamps[filename] != temp
+        {
+            ;old := timestamps[filename]
+            ;msgbox %old% -> %temp%
+            Msgbox %filename% changed, now reload
+            Reload
+        }
+    }
+}
 
+FileIncluder(dirs, dst_file)
+{
+    lst := []
+    for index, dir in dirs
+    {
+        lst.Push(FileList(dir)*)
+    }
+
+    f := FileOpen(dst_file, "w")
+    for index, filename in lst
+    {
+        line := Format("#Include {1}`n", filename)
+        f.Write(line)
+    }
+    ; msgbox write to %dst_file%
+    f.Close()
+}
 
 WatchSettings()
 {
@@ -210,7 +259,7 @@ DefaultKeySettings()
     HyperSettings.Keymap.hyper_u := "PageUp"
     HyperSettings.Keymap.hyper_p := "PageDown"
 
-    HyperSettings.Keymap.hyper_esc := "SuspendScript"
+    ;HyperSettings.Keymap.hyper_esc := "SuspendScript" ;changed to alt+esc
     HyperSettings.Keymap.hyper_backquote := "ToggleCapsLock"
 
     HyperSettings.Keymap.hyper_space := "WindowToggleOnTop"

@@ -1,4 +1,4 @@
-#Include basicfunc.ahk
+#Include lib/basicfunc.ahk
 HyperTab()
 {
     TabHotString := HyperSettings.TabHotString

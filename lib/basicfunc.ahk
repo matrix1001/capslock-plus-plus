@@ -54,20 +54,19 @@ RunFunc(str){
         parmasLen:=params.MaxIndex()
         
         func.(params*)
-        ;if(parmasLen==1)
-        ;{
-        ;    func.(params[1])
-        ;    return
-        ;}
-        ;if(parmasLen==2)
-        ;{
-        ;    func.(params[1],params[2])
-        ;    return
-        ;}
-        ;if(parmasLen==3)
-        ;{
-        ;    func.(params[1],params[2],params[3])
-        ;    return
-        ;}
     }
+}
+FileList(dir)
+{
+    
+    fulldir := Format("{1}\*", dir)
+    ; msgbox %fulldir%
+    lst := []
+    Loop, Files, %fulldir%, F ; file only, ignore subdir
+    {
+        ; msgbox %A_LoopFileName%
+        path := Format("{1}\{2}", dir, A_LoopFileName)
+        lst.Push(path)
+    }
+    return lst
 }

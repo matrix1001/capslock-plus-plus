@@ -13,11 +13,8 @@ IfExist, hyper.ico
 menu, Tray, Icon, hyper.ico
 }
 
-#Include lib
-#Include settings.ahk
-#Include basicfunc.ahk
-#Include ../
-#Include script/mouse.ahk
+#Include lib/settings.ahk
+
 SetCapsLockState, AlwaysOff 
 Process Priority,,High
 
@@ -27,6 +24,8 @@ Process Priority,,High
 ; 
 global Hyper, Flag, HyperAlt，HyperWin, FuncRunning
 ;-----------CapsLock key setting----------
+Alt & ESC::Suspend 
+
 Capslock::
 
 Hyper := 1
@@ -142,16 +141,18 @@ wheeldown::
 
 if (FuncRunning = 1)
 {
+    ; msgbox FuncRunning
     return  ; avoid multi hotkey conflict
 }
 
 key :=  A_ThisHotkey
 
-SPEC_KEYS := "``-=[]\;',./"
+; SPEC_KEYS := "``-=[]\;',./"
 SPEC_KEY_TO_NAME := {"``":"backquote","-":"minus","=":"equal","[":"lbracket","]":"rbracket"
   ,"\":"backslash",";":"semicolon","'":"quote",",":"comma",".":"dot","/":"slash"}
 
-if (InStr(SPEC_KEYS, key) != 0)
+;if (InStr(SPEC_KEYS, key) != 0)
+if SPEC_KEY_TO_NAME.haskey(key)
 {
     keyname := SPEC_KEY_TO_NAME[key]
     ; msgbox % keyname
@@ -198,12 +199,7 @@ Return
 ;---------test
 !t:: ;for test
 msgbox test
-a := "`"
-set := "``-=[]\;',./"
-if (InStr(set, a) != 0)
-{
-    msgbox in
-}
+test()
 
 return
 
