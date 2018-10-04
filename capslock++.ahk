@@ -199,7 +199,7 @@ Return
 ;---------test
 !t:: ;for test
 msgbox test
-test()
+;test1()
 
 return
 

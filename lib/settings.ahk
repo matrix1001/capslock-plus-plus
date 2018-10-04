@@ -1,4 +1,4 @@
-global HyperSettings := {"Keymap":{}, "TabHotString":{}, "UserWindow":{}}
+global HyperSettings := {"Keymap":{}, "TabHotString":{}, "UserWindow":{}, "ScriptDir":["lib", "script"], "Includer":"lib/includer.ahk"}
 
 #Include lib/basicfunc.ahk
 
@@ -8,39 +8,50 @@ global HyperSettings := {"Keymap":{}, "TabHotString":{}, "UserWindow":{}}
 InitSettings()
 SetTimer, WatchSettings, 1000
 SetTimer, AutoReloader, 1000
-script_dirs := ["lib", "script"]
-includer_path := "lib/includer.ahk"
-FileIncluder(script_dirs, includer_path)
+FileIncluder(HyperSettings.ScriptDir, HyperSettings.Includer)
 #Include lib/includer.ahk
 
 
 ; end
 AutoReloader()
 {
-    dirs := ["lib", "script"]
     static timestamps := {}
+    static firsttime := 1
+
     lst := []
-    for index, dir in dirs
+    for index, dir in HyperSettings.ScriptDir
     {
         lst.Push(FileList(dir)*)
     }
     lst.Push(A_ScriptName)
     ;msgbox %A_ScriptName%
     
+    if firsttime
+    {
+        for index, filename in lst
+        {
+            ;Msgbox %filename% record timestamp %temp%
+            FileGetTime, temp, %filename%
+            timestamps[filename] := temp
+        }
+        firsttime := 0
+    }
 
     for index, filename in lst
     {
         FileGetTime, temp, %filename%
         if not timestamps.haskey(filename)
         {
-            ;msgbox %filename% record timestamp %temp%
-            timestamps[filename] := temp
+            Msgbox New file %filename% detected, now reload 
+            FileIncluder(HyperSettings.ScriptDir, HyperSettings.Includer) ; gen new includer.ahk
+            Reload
         }
         else if timestamps[filename] != temp
         {
             ;old := timestamps[filename]
             ;msgbox %old% -> %temp%
             Msgbox %filename% changed, now reload
+            FileIncluder(HyperSettings.ScriptDir, HyperSettings.Includer)
             Reload
         }
     }

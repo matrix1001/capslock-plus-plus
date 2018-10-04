@@ -1,4 +1,4 @@
-test()
+test3()
 {
     msgbox test
 }

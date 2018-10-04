@@ -7,4 +7,5 @@
 #Include lib\tab.ahk
 #Include lib\windowutil.ahk
 #Include script\mouse.ahk
-#Include script\test.ahk
+#Include script\test1.ahk
+#Include script\test2.ahk
