@@ -23,7 +23,7 @@ hyper_4=WindowC(4)
 hyper_5=WindowC(5)
 ; heres virtual desktop swift. you need to create in your windows before you use
 ; pay attention to ALT, press CapsLock before ALT
-; example : Press CapsLock then Alt then 1
+; example : Press CapsLock then Alt then !release Alt! then 1
 hyper_alt_1=switchDesktopByNumber(1)
 hyper_alt_2=switchDesktopByNumber(2)
 hyper_alt_3=switchDesktopByNumber(3)
