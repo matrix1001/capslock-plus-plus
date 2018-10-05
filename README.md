@@ -103,12 +103,12 @@ Any modification of `ahk` script (scripts in `lib` and `script`, and `capslock++
 TODO
 
 # Devlog
-2018/10/5 version 0.1.1
+## 2018/10/5 version 0.1.1
 - add desktoputil
 - better autoloader and settingwatcher
 - add startup support
 - add some usage
-2018/10/4 version 0.1.0
+## 2018/10/4 version 0.1.0
 - init commit
 - add auto includer (all ahk file will be auto include, so you don't need to write a `#Include`)
 - add hot change support (autoload scripts and .ini)
