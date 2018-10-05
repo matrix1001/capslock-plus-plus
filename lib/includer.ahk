@@ -8,3 +8,4 @@
 #Include lib\tab.ahk
 #Include lib\windowutil.ahk
 #Include script\mouse.ahk
+#Include script\personal.ahk
