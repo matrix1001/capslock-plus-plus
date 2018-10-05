@@ -1,4 +1,10 @@
-global HyperSettings := {"Keymap":{}, "TabHotString":{}, "UserWindow":{}, "ScriptDir":["lib", "script"], "Includer":"lib/includer.ahk"}
+global HyperSettings := {"Keymap":{}
+    , "TabHotString":{}
+    , "UserWindow":{}
+    , "ScriptDir":["lib", "script"]
+    , "Includer":"lib/includer.ahk"
+    , "SettingIni":["HyperSettings.ini", "HyperWinSettings.ini"]
+    , "Basic":{}}
 
 #Include lib/basicfunc.ahk
 
@@ -13,6 +19,77 @@ FileIncluder(HyperSettings.ScriptDir, HyperSettings.Includer)
 
 
 ; end
+; functions for init settings
+InitSettings()
+{
+    ; main settings
+
+    if FileExist("HyperSettings.ini")
+    {
+        ReadSettings()
+    }
+    else
+    {
+        Debug("HyperSettings.ini not found, using default")
+        DefaultKeySettings()
+        DefaultBasicSettings()
+        DefaultHotStringSettings()
+        SaveSettings()
+    }
+
+    ; for window
+    if FileExist("HyperWinSettings.ini")
+    {
+        ReadWinSettings()
+        ;for key, value in HyperSettings.UserWindow
+        ;{
+        ;    msgbox %key%
+        ;}`
+    }
+    else
+    {
+        Debug("HyperWinSettings.ini not found, using default")
+        DefaultWinSettings()
+        SaveWinSettings()
+    }
+    LoadSettings()
+}
+LoadSettings()
+{
+    ; window load
+    MapUserWindowKey()
+    ; basic load
+    Basic := HyperSettings.Basic
+    ;; startup 
+    if Basic.StartUp = 1
+    {
+        autostartLnk:=A_Startup . "\capsLock++.lnk"
+        if FileExist(autostartLnk)
+        {
+            FileGetShortcut, %autostartLnk%, lnkTarget
+            if(lnkTarget!=A_ScriptFullPath)
+            {
+                Debug("Create autostartLnk")
+                FileCreateShortcut, %A_ScriptFullPath%, %autostartLnk%
+            }
+                
+        }
+        else
+        {
+            Debug("Create autostartLnk")
+            FileCreateShortcut, %A_ScriptFullPath%, %autostartLnk%
+        }
+    }
+    else
+    {
+        autostartLnk:=A_Startup . "\capsLock++.lnk"
+        if FileExist(autostartLnk)
+        {
+            Debug("Delete autostartLnk")
+            FileDelete, %autostartLnk%
+        }
+    }
+}
 AutoReloader()
 {
     static timestamps := {}
@@ -77,19 +154,21 @@ FileIncluder(dirs, dst_file)
 
 WatchSettings()
 {
-    WatchList := ["HyperSettings.ini", "HyperWinSettings.ini"]
-    static LastModified := [0, 0]
-    for index, filename in WatchList
+    static timestamps := {}
+    for index, filename in HyperSettings.SettingIni
     {
-        if LastModified[index] := 0
+        FileGetTime, temp, %filename%
+        if not timestamps.haskey(filename)
         {
-            FileGetTime, temp, %filename%
-            LastModified[index] := temp
+            timestamps[filename] := temp
             Continue
         }
-        FileGetTime, last, %filename%
-        if (last != LastModified[index])
+        else if (temp != timestamps[filename])
         {
+            ;last := timestamps[filename]
+            ;MsgBox %last%->%temp%
+            ;MsgBox %filename% changed, read settings now
+            timestamps[filename] := temp
             if (filename = "HyperSettings.ini")
             {
                 ReadSettings()
@@ -97,49 +176,92 @@ WatchSettings()
             if (filename = "HyperWinSettings.ini")
             {
                 ReadWinSettings()
-                MapUserWindowKey()
             }
+            LoadSettings()
         }
     }
 }
 
-InitSettings()
+; functions for HyperSetting.ini
+ReadSettings()
 {
-    ; main settings
-
-    if FileExist("HyperSettings.ini")
+    IniRead, Keymap, HyperSettings.ini, Keymap
+    Keymaps := StrSplit(Keymap, "`n")
+    for index, line in Keymaps
     {
-        ReadSettings()
-    }
-    else
-    {
-        MsgBox HyperSettings.ini not found, using default
-        DefaultKeySettings()
-        HyperSettings.TabHotString["sample"] := "this is a TabHotString sample"
-        SaveSettings()
+        pair := StrSplit(line, "=")
+        keyname := pair[1]
+        funcname := pair[2]
+        AssignKeymap(keyname, funcname)
     }
 
-    ; for window
-    if FileExist("HyperWinSettings.ini")
+    IniRead, TabHotString, HyperSettings.ini, TabHotString
+    TabHotStrings := StrSplit(TabHotString, "`n")
+    for index, line in TabHotStrings
     {
-        ReadWinSettings()
-        ;for key, value in HyperSettings.UserWindow
-        ;{
-        ;    msgbox %key%
-        ;}`
-    }
-    else
-    {
-        MsgBox HyperWinSettings.ini not found, using default
-        DefaultWinSettings()
-        SaveWinSettings()
+        pair := StrSplit(line, "=")
+        str := pair[1]
+        sub := pair[2]
+        AssignHotString(str, sub)
     }
 
-    MapUserWindowKey()
+    IniRead, Basic, HyperSettings.ini, Basic
+    Basics := StrSplit(Basic, "`n")
+    for index, line in Basics
+    {
+        pair := StrSplit(line, "=")
+        key := pair[1]
+        val := pair[2]
+        AssignBasic(key, val)
+    }
+}
+SaveSettings()
+{
+    for key, val in HyperSettings.Keymap
+    {
+        IniWrite, % val, HyperSettings.ini, Keymap, % key
+    }
+    for key, val in HyperSettings.TabHotString
+    {
+        IniWrite, % val, HyperSettings.ini, TabHotString, % key
+    }
+    for key, val in HyperSettings.Basic
+    {
+        IniWrite, % val, HyperSettings.ini, Basic, % key
+    }
 }
 
-
-; only functions
+AssignHotString(str, sub)
+{
+    old_val := HyperSettings.TabHotString[str]
+    if (old_val && old_val != sub)
+    {
+        MsgBox Duplicate HotString: %str%`nold value: %old_val%`nnew value: %sub%
+    }
+    ;msgbox %str%, %sub%
+    HyperSettings.TabHotString[str] := sub
+}
+AssignKeymap(key, func_name)
+{
+    old_val := HyperSettings.Keymap[key]
+    if (old_val && old_val != func_name)
+    {
+        MsgBox Duplicate key: %key%`nold value: %old_val%`nnew value: %func_name%
+    }
+    ;msgbox %key%, %func_name%
+    HyperSettings.Keymap[key] := func_name
+}
+AssignBasic(key, val)
+{
+    old_val := HyperSettings.Basic[key]
+    if (old_val && old_val != val)
+    {
+        MsgBox Duplicate Basic: %key%`nold value: %old_val%`nnew value: %val%
+    }
+    ;msgbox %key%, %val%
+    HyperSettings.Basic[key] := val
+}
+; functions for HyperWinSetting.ini
 
 ReadWinSettings()
 {
@@ -168,41 +290,6 @@ SaveWinSettings()
         }
     }
 }
-ReadSettings()
-{
-    IniRead, Keymap, HyperSettings.ini, Keymap
-    Keymaps := StrSplit(Keymap, "`n")
-    for index, line in Keymaps
-    {
-        pair := StrSplit(line, "=")
-        keyname := pair[1]
-        funcname := pair[2]
-        AssignKeymap(keyname, funcname)
-    }
-}
-SaveSettings()
-{
-    for key, val in HyperSettings.Keymap
-    {
-        IniWrite, % val, HyperSettings.ini, Keymap, % key
-    }
-    for key, val in HyperSettings.TabHotString
-    {
-        IniWrite, % val, HyperSettings.ini, TabHotString, % key
-    }
-}
-
-AssignKeymap(key, func_name)
-{
-    old_val := HyperSettings.Keymap[key]
-    if (old_val && old_val != func_name)
-    {
-        MsgBox Duplicate key: %key%`nold value: %old_val%`nnew value: %func_name%
-    }
-    ;msgbox %key%, %func_name%
-    HyperSettings.Keymap[key] := func_name
-}
-
 MapUserWindowKey()
 {
     for appname, value in HyperSettings.UserWindow
@@ -215,11 +302,11 @@ MapUserWindowKey()
     ;test := HyperSettings.Keymap["hyper_a"]
     ;msgbox %test%
 }
-AddHotString(key, replace)
-{
-    HyperSettings.TabHotString[key] := replace
-}
 
+
+
+
+; default setting
 DefaultWinSettings()
 {
     HyperSettings.UserWindow := {"Chrome":{"key":"a"
@@ -284,4 +371,25 @@ DefaultKeySettings()
     HyperSettings.Keymap.hyper_minus := "WindowCClear"
 
     HyperSettings.Keymap.hyper_tab := "HyperTab"
+
+    HyperSettings.Keymap.hyper_alt_1 := "switchDesktopByNumber(1)"
+    HyperSettings.Keymap.hyper_alt_2 := "switchDesktopByNumber(2)"
+    HyperSettings.Keymap.hyper_alt_3 := "switchDesktopByNumber(3)"
+}
+DefaultBasicSettings()
+{
+    HyperSettings.Basic.StartUp := 1
+    HyperSettings.Basic.Debug := 0
+}
+DefaultHotStringSettings()
+{
+    HyperSettings.TabHotString["sample"] := "this is a TabHotString sample"
+}
+
+Debug(msg)
+{
+    if HyperSettings.Basic.Debug = 1
+    {
+        Msgbox %msg%
+    }
 }

@@ -199,7 +199,6 @@ Return
 ;---------test
 !t:: ;for test
 msgbox test
-;test1()
 
 return
 
