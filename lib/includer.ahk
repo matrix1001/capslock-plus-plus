@@ -1,3 +1,4 @@
+; auto generated, don't touch me
 #Include lib\apps.ahk
 #Include lib\basicfunc.ahk
 #Include lib\basickey.ahk

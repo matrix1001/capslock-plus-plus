@@ -12,10 +12,10 @@ global HyperSettings := {"Keymap":{}
 
 ; main 
 InitSettings()
-SetTimer, WatchSettings, 1000
-SetTimer, AutoReloader, 1000
+SetTimer, SettingMonitor, 1000
+SetTimer, ScriptMonitor, 1000
 FileIncluder(HyperSettings.ScriptDir, HyperSettings.Includer)
-#Include lib/includer.ahk
+#Include *i lib/includer.ahk
 
 
 ; end
@@ -90,7 +90,7 @@ LoadSettings()
         }
     }
 }
-AutoReloader()
+ScriptMonitor()
 {
     static timestamps := {}
     static firsttime := 1
@@ -103,6 +103,7 @@ AutoReloader()
     lst.Push(A_ScriptName)
     ;msgbox %A_ScriptName%
     
+    ; at first put all filename into timestamps
     if firsttime
     {
         for index, filename in lst
@@ -112,8 +113,21 @@ AutoReloader()
             timestamps[filename] := temp
         }
         firsttime := 0
+        return
     }
 
+    ; first check if missing some file
+    old_num := timestamps.count()
+    new_num := lst.count()
+    ;msgbox %old_num%, %new_num%
+    if (old_num != new_num)
+    {
+        Msgbox Scripts number change, now reload
+        FileIncluder(HyperSettings.ScriptDir, HyperSettings.Includer)
+        Reload
+    }
+
+    ; main loop
     for index, filename in lst
     {
         FileGetTime, temp, %filename%
@@ -143,6 +157,7 @@ FileIncluder(dirs, dst_file)
     }
 
     f := FileOpen(dst_file, "w")
+    f.Write("; auto generated, don't touch me`n")
     for index, filename in lst
     {
         line := Format("#Include {1}`n", filename)
@@ -152,7 +167,7 @@ FileIncluder(dirs, dst_file)
     f.Close()
 }
 
-WatchSettings()
+SettingMonitor()
 {
     static timestamps := {}
     for index, filename in HyperSettings.SettingIni
@@ -167,7 +182,7 @@ WatchSettings()
         {
             ;last := timestamps[filename]
             ;MsgBox %last%->%temp%
-            ;MsgBox %filename% changed, read settings now
+            MsgBox %filename% changed, read settings now
             timestamps[filename] := temp
             if (filename = "HyperSettings.ini")
             {
