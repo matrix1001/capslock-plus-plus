@@ -88,7 +88,7 @@ typ=A
 So many keys, what if there is a conflict ? Don't worry, my script will give you a message box to warn you.
 ## UserScript
 Now if want to put your script into `capslock++.ahk`, your have to follow these:
-- All scripts should not use `global`. If your global variable is important, put them into `HyperSettings` (check `settings.ahk`). However, if you insist to use `global`, there is little change to get you into trouble.
+- All scripts should not use `global`. If your global variable is important, put them into `HyperSettings` (check `settings.ahk`). However, if you insist to use `global`, there is little chance to get you into trouble.
 - All scripts are function based. Prevent the use of `label`.
 - If some function can be reused by other script, put it into `basicfunc.ahk`. Also you can `#include lib/basicfunc.ahk` only.
 - Leave one function as a entry for keymap.
@@ -98,7 +98,7 @@ Then:
 - If your want to map a key to it, just change `HyperSettings.ini`, it will be auto loaded.
 
 ## Modification
-Any modification of `ahk` script (scripts in `lib` and `script` and `capslock++.ahk`) will trigger `Reload`. However there will be a message box to confirm.
+Any modification of `ahk` script (scripts in `lib` and `script`, and `capslock++.ahk`) will trigger `Reload`. However there will be a message box to confirm.
 # Documention
 TODO
 
