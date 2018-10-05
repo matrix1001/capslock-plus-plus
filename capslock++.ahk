@@ -24,7 +24,7 @@ Process Priority,,High
 ; 
 global Hyper, Flag, HyperAlt，HyperWin, FuncRunning
 ;-----------CapsLock key setting----------
-Alt & ESC::Suspend 
+Ctrl & ESC::Suspend 
 
 Capslock::
 
