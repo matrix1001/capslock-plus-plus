@@ -25,7 +25,7 @@ HyperTab()
         Clipboard := ""
         SendInput, +{Home}
         sleep, 10 ;make sure text is selecting
-        UnixCopy()
+        Send, ^{Insert}
         ClipWait, 0.1
 
         ;msgbox % Clipboard
@@ -40,8 +40,9 @@ HyperTab()
             temp:=RegExReplace(Clipboard, "\Q" . matchKey . "\E$", TabHotString[matchKey])
             StringReplace, temp, temp, \n, `n, All ;替换换行符
             StringReplace, temp, temp, \`n, \n, All ;有转义符的换回来
+            temp := EvalString(temp)
             Clipboard:=temp
-            UnixPaste()
+            Send, +{Insert}
             Sleep, 200
         }
     }
@@ -53,3 +54,22 @@ HyperTab()
     return calResult
 }
 
+EvalString(str)
+{
+    func_array := RegExFindAll("S" . str . "E", "[^<]<([^<>]+)>[^>]")
+    result := str
+    for index, match in func_array
+    {
+        ;msgbox %index%:%match%
+        replace := RunFunc(match)
+        ;msgbox out func: %replace%
+        result := StrReplace(result, "<" . match . ">" , replace)
+    }
+    ;msgbox %result%
+
+    ; replace <<>> to <>
+    result := StrReplace(result, "<<", "<")
+    result := StrReplace(result, ">>", ">")
+    return result
+    
+}

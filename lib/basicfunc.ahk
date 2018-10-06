@@ -32,8 +32,10 @@ GetSelText()
 RunFunc(str){
     if(!RegExMatch(Trim(str), "\)$"))
     {
-        %str%()
-        return
+        ; msgbox Runfunc: %str%
+        result := %str%()
+        ; msgbox Runfunc result: %result%
+        return result
     }
     if(RegExMatch(str, "(\w+)\((.*)\)$", match))
     {
@@ -41,8 +43,8 @@ RunFunc(str){
         
         if(!match2)
         {
-            func.()
-            return
+            result := func.()
+            return result
         }
 
         params:={}
@@ -53,7 +55,8 @@ RunFunc(str){
 
         parmasLen:=params.MaxIndex()
         
-        func.(params*)
+        result := func.(params*)
+        return result
     }
 }
 FileList(dir)
@@ -69,4 +72,29 @@ FileList(dir)
         lst.Push(path)
     }
     return lst
+}
+RegExFindAll(haystack, needle)
+{
+    result := []
+    pos := 1
+    while pos:=RegExMatch(haystack, needle, match, pos)
+    {
+        ; msgbox %pos% -> %match1%
+        pos := pos + StrLen(match1)
+        result.push(match1)
+    }
+    Return result
+}
+StringUpper(str)
+{
+    return Format("{:U}", str)
+}
+StringLower(str)
+{
+    return Format("{:L}", str)
+}
+GetDateTime(fmt := "yyyy/M/d")
+{
+    FormatTime, CurrentDateTime,, %fmt%
+    return CurrentDateTime
 }

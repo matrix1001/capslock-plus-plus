@@ -399,6 +399,8 @@ DefaultBasicSettings()
 DefaultHotStringSettings()
 {
     HyperSettings.TabHotString["sample"] := "this is a TabHotString sample"
+    HyperSettings.TabHotString["date1"] := "<GetDateTime>"
+    HyperSettings.TabHotString["date2"] := "<GetDateTime(""yyyy-M-d"")>"
 }
 
 Debug(msg)

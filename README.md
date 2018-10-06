@@ -6,6 +6,40 @@ Original idea if from [capslock-plus](https://github.com/wo52616111/capslock-plu
 - Tabscript (something like auto replace)
 - Easy configuration & auto reload configuration & auto reload all scripts if there is any change
 # Usage
+## TabScript
+TabScript helps you to auto complete some long strings with simple words, triggerd by CapsLock + Tab.
+
+Take a look at default HyperSetting.ini, you will find this
+```ini
+[TabHotString]
+sample=this is a TabHotString sample
+date1=<GetDateTime>
+date2=<GetDateTime("yyyy-M-d")>
+```
+Move your cursor after word `sample`, press CapsLock + Tab, and it will be auto replaced by `this is a TabHotString sample`
+
+However, I have implemented function support.
+
+In `lib/basicfunc.ahk`, you will find this function
+```ahk
+GetDateTime(fmt := "yyyy/M/d")
+{
+    FormatTime, CurrentDateTime,, %fmt%
+    return CurrentDateTime
+}
+```
+
+And just use function between `<>`, it will be automaticly evaluated. What if I need to use `<` or `>` instead of a function call? Use `<<`, `>>` instead. 
+
+Example
+```
+[before] date1 -> [after] 2018/10/6
+[before] date2 -> [after] 2018-10-6
+```
+Also multiple functions call is supported.
+
+If you want to add your TabScript into it, just change HyperSettings.ini. If you need other function, check `UserScript` in `Usage`.
+
 ## HyperSettings.ini
 In this section, I will show you how to do with HyperSettings.ini
 
@@ -103,6 +137,9 @@ Any modification of `ahk` script (scripts in `lib` and `script`, and `capslock++
 TODO
 
 # Devlog
+## 2018/10/6 version 0.1.2
+- add function support to tabscript
+- add tabscript usage to readme
 ## 2018/10/5 version 0.1.1
 - add desktoputil
 - better autoloader and settingwatcher

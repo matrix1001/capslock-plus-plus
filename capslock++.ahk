@@ -1,18 +1,20 @@
 ; #InstallKeybdHook
-; if not A_IsAdmin ;running by administrator
-; {
-;    Run *RunAs "%A_ScriptFullPath%" 
-;    ExitApp
-; }
-
-;---------initial setting
-
-IfExist, hyper.ico
+if not A_IsAdmin ;running by administrator
 {
-;unfreeze icon, change when suspend or pause
-menu, Tray, Icon, hyper.ico
+   Run *RunAs "%A_ScriptFullPath%" 
+   ExitApp
 }
 
+;---------icon setting
+
+
+IfExist, % "hyper.ico"
+{
+;unfreeze icon, change when suspend or pause
+menu, Tray, Icon, % "hyper.ico"
+}
+
+;---------
 #Include lib/settings.ahk
 
 SetCapsLockState, AlwaysOff 
@@ -199,6 +201,8 @@ Return
 ;---------test
 !t:: ;for test
 msgbox test
-
+temp := EvalString("<StringUpper(""fdsF"")>, <StringLower(""kKk"")> <<test>> <StringUpper(""akA"")>")
+msgbox %temp%
 return
+
 
