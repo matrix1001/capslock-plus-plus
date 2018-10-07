@@ -469,7 +469,7 @@ DefaultHotStringSettings()
     HyperSettings.TabHotString["sample"] := "this is a TabHotString sample"
     HyperSettings.TabHotString["date1"] := "<GetDateTime>"
     HyperSettings.TabHotString["date2"] := "<GetDateTime(""yyyy-M-d"")>"
-    HyperSettings.TabHotString["cmain"] := "main=int main(int *argc, char **argv)"
+    HyperSettings.TabHotString["cmain"] := "int main(int *argc, char **argv)"
 }
 
 Debug(msg)
