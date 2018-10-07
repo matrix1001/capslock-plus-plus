@@ -1,11 +1,98 @@
 # CapsLock++
-Original idea if from [capslock-plus](https://github.com/wo52616111/capslock-plus) and [Capslock](https://github.com/Vonng/Capslock). But it seems that `capslock-plus` is no longer maintained. And I feel painful to read its source code. So I plan to rewrite it (Some codes are directly copied from `capslock-plus`. 
+Original idea if from [capslock-plus](https://github.com/wo52616111/capslock-plus) and [Capslock](https://github.com/Vonng/Capslock). But it seems that `capslock-plus` is no longer maintained. And I feel painful to read its source code. So I plan to rewrite it. 
 # Feature
-- Function based script. Easy to understand for most AHK user. (Try to have a look at `capslock-plus` and you will know why)
-- Quick window swift & quick desktop swift
-- Tabscript (something like auto replace)
-- Easy configuration & auto reload configuration & auto reload all scripts if there is any change
+- Function based script
+- WindowSwitch
+- Tabscript
+- Autoload configuration and script
+  
+This project is in progress. Other fantastic funtions will be joined.
 # Usage
+## Basic
+Basic usage is according to the default settings. If you are not starter of `AHK`, just ignore this. These settings are in `HyperSettings.ini`.
+
+In the following part, I will ignore `capslock` in keyset.
+
+| key | function |
+| ------ | ------ |
+| ` | toggle capslock|
+| alt+1 | switch to virtual desktop 1 |
+| alt+2 | switch to virtual desktop 2 |
+| alt+3 | switch to virtual desktop 3 |
+| h | move left |
+| j | move down |
+| k | move up |
+| l | move right |
+| u | page up |
+| p | page down |
+| i | move to start |
+| o | move to end |
+| c | copy |
+| v | paste |
+| ↑ | volumne up |
+| ↓ | volumne down |
+| ← | prev virtual desktop |
+| → | next virtual desktop |
+| space | toggle window always on top |
+| 1,2,3,4,5 | window bind |
+| tab | tab script |
+
+By the way, you may want to `suspend` | `restart` the script when you play games. Press `Ctrl + Esc` will help. And its icon will change.
+
+
+## WindowSwitch
+WindowSwitch is designed for quick switch between multiple windows. Extremely good for those who need to work with multiple window applications.
+
+I have implemented 2 types of window switch functions.
+
+### Type 1
+- `WindowA` can be used for most application.
+- `WindowB` should be used for `web browser`. There is little difference from `WindowA`
+
+These two functions need to configured before you use it.
+
+Check default HyperWinSettings.ini
+```ini
+[Chrome]
+exe=C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
+id=ahk_class Chrome_WidgetWin_1 ahk_exe chrome.exe
+key=a
+typ=B
+```
+Just put infomation of your application here, and assign a `key` to it, then you can use it by press `Capslock + key`.
+`key` can also be `alt_a` if you want `Capslock + alt + a`.
+
+About `id`, you can figure it out by using `windowspy`, which it installed by `autohotkey`.
+
+After you finish configuration, it will be auto loaded. The manner of `Type 1` functions is:
+- Start your application if not started
+- Active your application window if not actived
+- Minimize your application window if actived
+  
+### Type 2
+- `WindowC` can dynamicly bind any window.
+`Type 2` function does not require any configuration. But it need to be assigned to keymap.
+
+Check Default HyperSettings.ini
+```ini
+[Keymap]
+hyper_1=WindowC(1)
+hyper_2=WindowC(2)
+hyper_3=WindowC(3)
+hyper_4=WindowC(4)
+hyper_5=WindowC(5)
+hyper_minus=WindowCClear
+```
+The manner is similar to `Type 1`:
+- If no window bind, bind current window
+- Active your application window if not actived
+- Minimize your application window if actived
+
+To clear a window bind, you got two ways.
+- Close the binded window, press its binded key again
+- Press `Casplock + -`, then its binded key
+
+I only assign 5 `WindowC` by default. It supports at most 10 window. But I guess you will never use that much.
 ## TabScript
 TabScript helps you to auto complete some long strings with simple words, triggerd by CapsLock + Tab.
 
@@ -40,86 +127,8 @@ Also multiple functions call is supported.
 
 If you want to add your TabScript into it, just change HyperSettings.ini. If you need other function, check `UserScript` in `Usage`.
 
-## HyperSettings.ini
-In this section, I will show you how to do with HyperSettings.ini
 
-Default Settings:
-```ini
-[Keymap] ;map key to functions
-;hyper is CapsLock
 
-; heres window bind, select a window, press CapsLock + 1, 
-; then press again and again, you will know.
-hyper_1=WindowC(1)
-hyper_2=WindowC(2)
-hyper_3=WindowC(3)
-hyper_4=WindowC(4)
-hyper_5=WindowC(5)
-; heres virtual desktop swift. you need to create in your windows before you use
-; pay attention to ALT, press CapsLock before ALT
-; example : Press CapsLock then Alt then !release Alt! then 1
-hyper_alt_1=switchDesktopByNumber(1)
-hyper_alt_2=switchDesktopByNumber(2)
-hyper_alt_3=switchDesktopByNumber(3)
-; CapsLock + `(the one on the top of Tab)
-hyper_backquote=ToggleCapsLock
-; as its name
-; UnixCopy and UnixPaste use Shift/Ctrl+Insert,
-; they work well and will not send Ctrl+C to interrupt some task
-hyper_c=UnixCopy
-hyper_down=VolumeDown
-hyper_g=WindowKill
-hyper_h=MoveLeft
-hyper_i=MoveHome
-hyper_j=MoveDown
-hyper_k=MoveUp
-hyper_l=MoveRight
-hyper_left=PrevDesktop
-hyper_minus=WindowCClear
-hyper_o=MoveEnd
-hyper_p=PageDown
-hyper_right=NextDesktop
-hyper_space=WindowToggleOnTop
-; CapsLock + Tab is the TabHotString feature
-hyper_tab=HyperTab
-hyper_u=PageUp
-hyper_up=VolumeUp
-hyper_v=UnixPaste
-hyper_wheeldown=VolumeDown
-hyper_wheelup=VolumeUp
-[TabHotString]
-; move your cursor after word `sample` , 
-; press CapsLock + Tab, it will be replaces
-sample=this is a TabHotString sample
-[Basic]
-Debug=0
-; Start at startup of your system
-StartUp=1
-
-```
-You can find all those names (`MoveRight` for example) in `script` and `lib` dir. All of them are actually functions. What if I want to change those settings? Just change it and save it. `capslock++` will auto reload your settings.
-## HyperWinSettings.ini
-I give you my setting as a template
-```ini
-[Chrome] ;just a name
-;you have to assign `exe` `id` `key` `typ`
-exe=C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
-;you can figure out `id` with `window spy`(ahk has it)
-id=ahk_class Chrome_WidgetWin_1 ahk_exe chrome.exe
-;it means CapsLock + a , also you can use `alt_a`
-;press CapsLock + a, chrome will start automaticly, 
-;press again, it will minimize
-;then press again, it will show up
-key=a
-;this `typ` is `A` or `B`, web browser should use `B`, others `A` will suit.
-typ=B
-[NotePad]
-exe=C:\Program Files\Notepad++\notepad++
-id=ahk_class Notepad++
-key=w
-typ=A
-```
-So many keys, what if there is a conflict ? Don't worry, my script will give you a message box to warn you.
 ## UserScript
 Now if want to put your script into `capslock++.ahk`, your have to follow these:
 - All scripts should not use `global`. If your global variable is important, put them into `HyperSettings` (check `settings.ahk`). However, if you insist to use `global`, there is little chance to get you into trouble.
@@ -137,6 +146,11 @@ Any modification of `ahk` script (scripts in `lib` and `script`, and `capslock++
 TODO
 
 # Devlog
+## 2018/10/7 version 0.1.3
+- add some useful basic func, like `splashtext`, `streq`..
+- refine includer to avoid some problem
+- add more option like `icon`, `admin` in INI file
+- add windowswitch usage to readme
 ## 2018/10/6 version 0.1.2
 - add function support to tabscript
 - add tabscript usage to readme
