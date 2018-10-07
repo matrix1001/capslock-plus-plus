@@ -11,9 +11,18 @@ global HyperSettings := {"Keymap":{}
 
 
 ; main 
+
+
 InitSettings()
 
+
+
 ; this must be put at last , because userscript may stuck
+if not FileExist(HyperSettings.Includer)
+{
+    GenIncluder(HyperSettings.ScriptDir, HyperSettings.Includer)
+    Reload
+}
 #Include *i lib/Includer.ahk
 
 ; end
@@ -21,12 +30,6 @@ InitSettings()
 ; functions for init settings
 InitSettings()
 {
-    ; check includer.ahk
-    if not FileExist(HyperSettings.Includer)
-    {
-        GenIncluder(HyperSettings.ScriptDir, HyperSettings.Includer)
-        Reload
-    }
     ; main settings
     if FileExist("HyperSettings.ini")
     {
