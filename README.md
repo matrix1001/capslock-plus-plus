@@ -46,10 +46,10 @@ WindowSwitch is designed for quick switch between multiple windows. Extremely go
 I have implemented 2 types of window switch functions.
 
 ### Type 1
-- `WindowA` can be used for most application.
+- `WindowA` can be used for most applications.
 - `WindowB` should be used for `web browser`. There is little difference from `WindowA`
 
-These two functions need to configured before you use it.
+These two functions need to be configured before you use it.
 
 Check default HyperWinSettings.ini
 ```ini
@@ -71,6 +71,7 @@ After you finish configuration, it will be auto loaded. The manner of `Type 1` f
   
 ### Type 2
 - `WindowC` can dynamicly bind any window.
+
 `Type 2` function does not require any configuration. But it need to be assigned to keymap.
 
 Check Default HyperSettings.ini
@@ -94,7 +95,7 @@ To clear a window bind, you got two ways.
 
 I only assign 5 `WindowC` by default. It supports at most 10 window. But I guess you will never use that much.
 ## TabScript
-TabScript helps you to auto complete some long strings with simple words, triggerd by CapsLock + Tab.
+TabScript helps you to auto complete some long strings with simple words, triggerd by `CapsLock + Tab`.
 
 Take a look at default HyperSetting.ini, you will find this
 ```ini
@@ -103,7 +104,7 @@ sample=this is a TabHotString sample
 date1=<GetDateTime>
 date2=<GetDateTime("yyyy-M-d")>
 ```
-Move your cursor after word `sample`, press CapsLock + Tab, and it will be auto replaced by `this is a TabHotString sample`
+Move your cursor after the word `sample`, press `CapsLock + Tab`, and it will be auto replaced by `this is a TabHotString sample`
 
 However, I have implemented function support.
 
