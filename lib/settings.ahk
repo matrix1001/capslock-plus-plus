@@ -454,12 +454,15 @@ DefaultBasicSettings()
     HyperSettings.Basic.Debug := 0
     HyperSettings.Basic.Admin := 0
     HyperSettings.Basic.Icon := "hyper.ico"
+    HyperSettings.Basic.SettingMonitor := 1
+    HyperSettings.Basic.ScriptMonitor := 1
 }
 DefaultHotStringSettings()
 {
     HyperSettings.TabHotString["sample"] := "this is a TabHotString sample"
     HyperSettings.TabHotString["date1"] := "<GetDateTime>"
     HyperSettings.TabHotString["date2"] := "<GetDateTime(""yyyy-M-d"")>"
+    HyperSettings.TabHotString["cmain"] := "main=int main(int *argc, char **argv)"
 }
 
 Debug(msg)
