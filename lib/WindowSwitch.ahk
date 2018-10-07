@@ -1,3 +1,4 @@
+#Include lib/BasicFunc.ahk
 WindowA(window_class, exec)                                          
 {                                                                   
     DetectHiddenWindows, on                                         
@@ -77,16 +78,11 @@ WindowCClear()
 {
     ; msgbox getinput
     ; must set hyper to 0 for those who need input
-    old_value := hyper
-    hyper := 0
-    Input, UserInput,,,1,2,3,4,5,6,7,8,9,0     
-    hyper := old_value
-
+    
+    UserInput := ReadDigit()
     ; msgbox get %UserInput%                           
     WindowC(UserInput, opt:=0)                                                
-    SplashImage,,x0 y0 b fs12, QuickWindow%UserInput% cleared.                
-    Sleep, 1500                                                          
-    SplashImage, Off                                                     
+    SplashText(Format("QuickWindow {} cleared.", UserInput))                                                               
 }
 
 WindowKill()
@@ -101,15 +97,11 @@ WindowToggleOnTop()
     if (ExStyle & 0x8)  ; 0x8 is WS_EX_TOPMOST.                         
     {                                                                   
         Winset, AlwaysOnTop, off, ahk_id %currentWindow%                
-        SplashImage,, x0 y0 b fs12, Window always on top OFF.           
-        Sleep, 1500                                                     
-        SplashImage, Off                                                
+        SplashText("Window always on top OFF.")                                                   
     }                                                                   
     else                                                                
     {                                                                   
         WinSet, AlwaysOnTop, on, ahk_id %currentWindow%                 
-        SplashImage,,x0 y0 b fs12, Window always on top ON.             
-        Sleep, 1500                                                     
-        SplashImage, Off                                                
+        SplashText("Window always on top ON.")                                                            
     }   
 }

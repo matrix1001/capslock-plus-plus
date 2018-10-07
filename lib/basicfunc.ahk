@@ -1,14 +1,96 @@
-ToggleCapsLock()
+;------function util
+RunFunc(str)
 {
-    GetKeyState, CapsLockState, CapsLock, T                              
-    if CapsLockState = D                                                 
-        SetCapsLockState, AlwaysOff                                      
-    else                                                                 
-        SetCapsLockState, AlwaysOn                                       
-    KeyWait, ``                                                          
-    return     
+    if (!RegExMatch(Trim(str), "\)$"))
+    {
+        result := %str%()
+        return result
+    }
+    else if (RegExMatch(str, "(\w+)\((.*)\)$", match))
+    {
+        func := Func(match1)
+        
+        if (!match2)
+        {
+            result := func.()
+            return result
+        }
+        else
+        {
+            params:={}
+            loop, Parse, match2, CSV
+            {
+                params.insert(A_LoopField)
+            }
+            parmasLen:=params.MaxIndex()
+            result := func.(params*)
+            return result
+        }
+    }
+    return
 }
 
+RunThreadedFunc(str)
+{
+    static func_name, func, params
+    if (!RegExMatch(Trim(str), "\)$"))
+    {
+        func_name := str
+        SetTimer, direct, -1
+        return
+    }
+    else if (RegExMatch(str, "(\w+)\((.*)\)$", match))
+    {
+        func := Func(match1)
+        
+        if (!match2)
+        {
+            SetTimer, noarg, -1
+            return
+        }
+        else
+        {
+            params:={}
+            loop, Parse, match2, CSV
+            {
+                params.insert(A_LoopField)
+            }
+            parmasLen:=params.MaxIndex()
+            SetTimer, witharg, -1
+            return
+        }
+    }
+    return
+
+    direct:
+    ;msgbox direct, %func_name%
+    %func_name%()
+    return
+
+    noarg:
+    func.()
+    return
+
+    witharg:
+    func.(params*)
+    return
+}
+
+;--------system function
+FileList(dir)
+{
+    
+    fulldir := Format("{1}\*", dir)
+    ; msgbox %fulldir%
+    lst := []
+    Loop, Files, %fulldir%, F ; file only, ignore subdir
+    {
+        ; msgbox %A_LoopFileName%
+        path := Format("{1}\{2}", dir, A_LoopFileName)
+        lst.Push(path)
+    }
+    return lst
+}
 GetSelText()
 {
     ClipboardOld:=ClipboardAll
@@ -29,62 +111,29 @@ GetSelText()
     return
 }
 
-RunFunc(str){
-    if(!RegExMatch(Trim(str), "\)$"))
-    {
-        ; msgbox Runfunc: %str%
-        result := %str%()
-        ; msgbox Runfunc result: %result%
-        return result
-    }
-    if(RegExMatch(str, "(\w+)\((.*)\)$", match))
-    {
-        func:=Func(match1)
-        
-        if(!match2)
-        {
-            result := func.()
-            return result
-        }
-
-        params:={}
-        loop, Parse, match2, CSV
-        {
-            params.insert(A_LoopField)
-        }
-
-        parmasLen:=params.MaxIndex()
-        
-        result := func.(params*)
-        return result
-    }
+;--------IO function
+ReadDigit()
+{
+    ; avoid hyper block
+    old_value := hyper
+    hyper := 0
+    Input, UserInput,,,1,2,3,4,5,6,7,8,9,0     
+    hyper := old_value
+    return UserInput
 }
-FileList(dir)
+SplashText(msg, width := 400, height := 200, delay := 3000)
 {
     
-    fulldir := Format("{1}\*", dir)
-    ; msgbox %fulldir%
-    lst := []
-    Loop, Files, %fulldir%, F ; file only, ignore subdir
-    {
-        ; msgbox %A_LoopFileName%
-        path := Format("{1}\{2}", dir, A_LoopFileName)
-        lst.Push(path)
-    }
-    return lst
+    SplashTextOn, %width%, %height%, Capslock++, %msg%
+    WinGetPos,,, Width, Height, Capslock++
+    WinMove, Capslock++, , (A_ScreenWidth)-(Width)-20, (A_ScreenHeight)-(Height)-40
+    SetTimer, splashoff, -%delay%
+    return
+    splashoff:
+    SplashTextOff
+    return
 }
-RegExFindAll(haystack, needle)
-{
-    result := []
-    pos := 1
-    while pos:=RegExMatch(haystack, needle, match, pos)
-    {
-        ; msgbox %pos% -> %match1%
-        pos := pos + StrLen(match1)
-        result.push(match1)
-    }
-    Return result
-}
+;--------String function
 StringUpper(str)
 {
     return Format("{:U}", str)
@@ -97,4 +146,21 @@ GetDateTime(fmt := "yyyy/M/d")
 {
     FormatTime, CurrentDateTime,, %fmt%
     return CurrentDateTime
+}
+
+RegExFindAll(haystack, needle)
+{
+    result := []
+    pos := 1
+    while pos:=RegExMatch(haystack, needle, match, pos)
+    {
+        ; msgbox %pos% -> %match1%
+        pos := pos + StrLen(match1)
+        result.push(match1)
+    }
+    Return result
+}
+StrEq(str1, str2)
+{
+    return InStr(str1, str2) && InStr(str2, str1)
 }

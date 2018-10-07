@@ -2,28 +2,28 @@ global HyperSettings := {"Keymap":{}
     , "TabHotString":{}
     , "UserWindow":{}
     , "ScriptDir":["lib", "script"]
-    , "Includer":"lib/includer.ahk"
+    , "Includer":"lib\Includer.ahk"
     , "SettingIni":["HyperSettings.ini", "HyperWinSettings.ini"]
     , "Basic":{}}
 
-#Include lib/basicfunc.ahk
+#Include lib/BasicFunc.ahk
 
 
 
 ; main 
 InitSettings()
-SetTimer, SettingMonitor, 1000
-SetTimer, ScriptMonitor, 1000
-FileIncluder(HyperSettings.ScriptDir, HyperSettings.Includer)
-#Include *i lib/includer.ahk
 
+GenIncluder(HyperSettings.ScriptDir, HyperSettings.Includer)
+
+; this must be put at last , because userscript may stuck
+#Include *i lib/Includer.ahk
 
 ; end
 ; functions for init settings
 InitSettings()
 {
     ; main settings
-
+    ;msgbox initsettings
     if FileExist("HyperSettings.ini")
     {
         ReadSettings()
@@ -89,6 +89,43 @@ LoadSettings()
             FileDelete, %autostartLnk%
         }
     }
+    ;; admin
+    if Basic.Admin = 1
+    {
+        if not A_IsAdmin ;running by administrator
+        {
+        Run *RunAs "%A_ScriptFullPath%" 
+        ExitApp
+        }   
+    }
+    ;; icon
+    icon := Basic.Icon
+    IfExist, %icon%
+    {
+        menu, TRAY, Icon,  %icon%, , 0
+    }
+    ;; settingmonitor
+    if Basic.SettingMonitor = 1
+    {
+        SetTimer, SettingMonitor, 1000
+    }
+    else
+    {
+        SetTimer, SettingMonitor, off
+    }
+    ;; scriptmonitor
+    if Basic.ScriptMonitor = 1
+    {
+        SetTimer, ScriptMonitor, 1000
+    }
+    else 
+    {
+        SetTimer, ScriptMonitor, off
+    }
+     
+
+
+
 }
 ScriptMonitor()
 {
@@ -123,7 +160,7 @@ ScriptMonitor()
     if (old_num != new_num)
     {
         Msgbox Scripts number change, now reload
-        FileIncluder(HyperSettings.ScriptDir, HyperSettings.Includer)
+        GenIncluder(HyperSettings.ScriptDir, HyperSettings.Includer)
         Reload
     }
 
@@ -134,7 +171,7 @@ ScriptMonitor()
         if not timestamps.haskey(filename)
         {
             Msgbox New file %filename% detected, now reload 
-            FileIncluder(HyperSettings.ScriptDir, HyperSettings.Includer) ; gen new includer.ahk
+            GenIncluder(HyperSettings.ScriptDir, HyperSettings.Includer) ; gen new includer.ahk
             Reload
         }
         else if timestamps[filename] != temp
@@ -142,29 +179,47 @@ ScriptMonitor()
             ;old := timestamps[filename]
             ;msgbox %old% -> %temp%
             Msgbox %filename% changed, now reload
-            FileIncluder(HyperSettings.ScriptDir, HyperSettings.Includer)
+            GenIncluder(HyperSettings.ScriptDir, HyperSettings.Includer)
             Reload
         }
     }
 }
 
-FileIncluder(dirs, dst_file)
+GenIncluder(dirs, dst_file)
 {
+    ;msgbox includer works
     lst := []
+    
     for index, dir in dirs
     {
         lst.Push(FileList(dir)*)
     }
 
-    f := FileOpen(dst_file, "w")
-    f.Write("; auto generated, don't touch me`n")
+    
+    content := "; auto generated, don't touch me`n"
     for index, filename in lst
     {
+        if (StrEq(filename,  dst_file))
+        {
+            ;ignore self
+            Continue
+        }
+            
         line := Format("#Include {1}`n", filename)
-        f.Write(line)
+        content .= line
     }
     ; msgbox write to %dst_file%
-    f.Close()
+    FileRead, old_content, %dst_file%
+    if not StrEq(old_content, content)
+    {
+        ;msgbox not eq
+        ;msgbox old: %old_content% 
+        msgbox write to %dst_file% 
+        f := FileOpen(dst_file, "w")
+        f.Write(content)
+        f.Close()
+    }
+    
 }
 
 SettingMonitor()
@@ -390,11 +445,15 @@ DefaultKeySettings()
     HyperSettings.Keymap.hyper_alt_1 := "switchDesktopByNumber(1)"
     HyperSettings.Keymap.hyper_alt_2 := "switchDesktopByNumber(2)"
     HyperSettings.Keymap.hyper_alt_3 := "switchDesktopByNumber(3)"
+
+    HyperSettings.Keymap.hyper_s := "AppWox"
 }
 DefaultBasicSettings()
 {
     HyperSettings.Basic.StartUp := 1
     HyperSettings.Basic.Debug := 0
+    HyperSettings.Basic.Admin := 0
+    HyperSettings.Basic.Icon := "hyper.ico"
 }
 DefaultHotStringSettings()
 {

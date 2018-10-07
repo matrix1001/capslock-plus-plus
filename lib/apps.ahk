@@ -1,4 +1,4 @@
-#Include lib/basicfunc.ahk
+#Include lib/BasicFunc.ahk
 AppWox(){
     selText:=GetSelText()
 

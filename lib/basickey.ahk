@@ -1,3 +1,17 @@
+ToggleCapsLock()
+{
+    GetKeyState, CapsLockState, CapsLock, T                              
+    if CapsLockState = D                                                 
+        SetCapsLockState, AlwaysOff                                      
+    else                                                                 
+        SetCapsLockState, AlwaysOn                                       
+    KeyWait, ``                                                          
+    return     
+}
+ExitScript()
+{
+    ExitApp
+}
 MoveUp()
 {
     Send, {Up}
