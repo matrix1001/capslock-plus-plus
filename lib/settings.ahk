@@ -13,17 +13,21 @@ global HyperSettings := {"Keymap":{}
 ; main 
 InitSettings()
 
-GenIncluder(HyperSettings.ScriptDir, HyperSettings.Includer)
-
 ; this must be put at last , because userscript may stuck
 #Include *i lib/Includer.ahk
 
 ; end
+
 ; functions for init settings
 InitSettings()
 {
+    ; check includer.ahk
+    if not FileExist(HyperSettings.Includer)
+    {
+        GenIncluder(HyperSettings.ScriptDir, HyperSettings.Includer)
+        Reload
+    }
     ; main settings
-    ;msgbox initsettings
     if FileExist("HyperSettings.ini")
     {
         ReadSettings()
@@ -214,7 +218,7 @@ GenIncluder(dirs, dst_file)
     {
         ;msgbox not eq
         ;msgbox old: %old_content% 
-        msgbox write to %dst_file% 
+        Debug("write to " . dst_file)
         f := FileOpen(dst_file, "w")
         f.Write(content)
         f.Close()
