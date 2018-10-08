@@ -454,6 +454,7 @@ DefaultKeySettings()
     HyperSettings.Keymap.hyper_alt_3 := "switchDesktopByNumber(3)"
 
     HyperSettings.Keymap.hyper_s := "AppWox"
+    HyperSettings.Keymap.hyper_t := "GoogleTransSel"
 }
 DefaultBasicSettings()
 {

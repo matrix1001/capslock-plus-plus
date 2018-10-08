@@ -185,29 +185,9 @@ Return
 
 ;---------test
 !t:: ;for test
-;test := GoogleTrans("hola")
-;msgbox % test.trans
-;ToolTip("test")
-;test()
-;ToolTip("test", 100000)
-OnMouseToolTip("testmsg")
 return
 
 
 
 
-test()
-{
-    content := GetSelText()
-    result := GoogleTrans(content)
-    if result
-    {
-        msg := Format("{1}->{2}`n{3}", result.src, result.dst, result.trans)
-    }
-    else
-    {
-        msg := "error"
-    }
-    OnMouseToolTip(msg)
 
-}

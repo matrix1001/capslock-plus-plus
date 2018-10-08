@@ -1,3 +1,5 @@
+#Include lib/BasicFunc.ahk
+#Include lib/Json.ahk
 GoogleTrans(content, src := "auto", dst := "zh")
 {
     url := Format("http://translate.google.cn/translate_a/single?client=gtx&dt=t&dj=1&ie=UTF-8&sl={1}&tl={2}&q={3}"
@@ -9,7 +11,7 @@ GoogleTrans(content, src := "auto", dst := "zh")
     response := HttpGet(url, header)
     try
     {
-        msgbox %response%
+        ;msgbox %response%
         json_obj := JSON.Load(response)
         src := json_obj.src
         trans := json_obj.sentences[1].trans
@@ -23,5 +25,20 @@ GoogleTrans(content, src := "auto", dst := "zh")
         ;SplashText("ERROR: GoogleTrans Failed. `nurl: " . url)
         return
     }
+
+}
+GoogleTransSel()
+{
+    content := GetSelText()
+    result := GoogleTrans(content)
+    if result
+    {
+        msg := Format("{1}->{2}`n{3}", result.src, result.dst, result.trans)
+    }
+    else
+    {
+        msg := "error"
+    }
+    OnMouseToolTip(msg)
 
 }
