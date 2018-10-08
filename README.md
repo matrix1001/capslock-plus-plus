@@ -2,9 +2,11 @@
 Original idea if from [capslock-plus](https://github.com/wo52616111/capslock-plus) and [Capslock](https://github.com/Vonng/Capslock). But it seems that `capslock-plus` is no longer maintained. And I feel painful to read its source code. So I plan to rewrite it. 
 # Feature
 - Function based script
+- Translation
 - WindowSwitch
 - Tabscript
 - Autoload configuration and script
+
   
 This project is in progress. Other fantastic funtions will be joined.
 # Usage
@@ -40,6 +42,20 @@ In the following part, I will ignore `capslock` in keyset.
 By the way, you may want to `suspend` | `restart` the script when you play games. Press `Ctrl + Esc` will help. And its icon will change.
 
 
+## Translation
+Default translation is triggered by `Capslock + t`. You have to select a word or a sentense at first.
+
+Here's some examples for you to test.
+```
+hola
+Olá
+ مرحبا 
+```
+Here's some picture for demo.
+![demo1](img/trans1.png)
+![demo2](img/trans2.png)
+
+Still feels a little bit complicated? More convenitent way will be produced later.
 ## WindowSwitch
 WindowSwitch is designed for quick switch between multiple windows. Extremely good for those who need to work with multiple window applications.
 
@@ -147,6 +163,9 @@ Any modification of `ahk` script (scripts in `lib` and `script`, and `capslock++
 TODO
 
 # Devlog
+## 2018/10/8 version 0.1.4
+- add tranlation tooltip
+- add `httpget`, `tooltip` to basicfunc
 ## 2018/10/7 version 0.1.3
 - add some useful basic func, like `splashtext`, `streq`..
 - refine includer to avoid some problem
