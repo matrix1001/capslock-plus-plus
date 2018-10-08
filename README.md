@@ -55,6 +55,7 @@ Olá
 Here's some picture for demo.
 ![demo1](img/trans1.png)
 ![demo2](img/trans2.png)
+![demo3](img/trans3.png)
 
 Still feels a little bit complicated? More convenitent way will be produced later.
 ## WindowSwitch
