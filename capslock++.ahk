@@ -184,7 +184,7 @@ Return
 
 
 ;---------test
-!t:: ;for test
+!z:: ;for test
 return
 
 
