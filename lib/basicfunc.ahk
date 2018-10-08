@@ -121,6 +121,7 @@ ReadDigit()
     hyper := old_value
     return UserInput
 }
+;--------msg
 SplashText(msg, width := 400, height := 200, delay := 3000)
 {
     
@@ -131,6 +132,30 @@ SplashText(msg, width := 400, height := 200, delay := 3000)
     return
     splashoff:
     SplashTextOff
+    return
+}
+ToolTip(msg, delay := 1000)
+{
+    ToolTip %msg%
+    SetTimer, tooltipoff, -%delay%
+    return
+    tooltipoff:
+    ToolTip
+    return
+
+}
+OnMouseToolTip(msg, delay := 1000)
+{
+    MouseGetPos X, Y
+    ToolTip %msg%, X, Y
+    SetTimer, tooltipchk, %delay%
+    return
+    tooltipchk:
+    if not MouseIsOver("ahk_class tooltips_class32")
+    {
+        ToolTip
+        SetTimer, tooltipchk, off
+    }
     return
 }
 ;--------String function
@@ -163,4 +188,31 @@ RegExFindAll(haystack, needle)
 StrEq(str1, str2)
 {
     return InStr(str1, str2) && InStr(str2, str1)
+}
+
+;-------http
+HttpGet(url, headers := "")
+{
+    try
+    {
+        whr := ComObjCreate("WinHttp.WinHttpRequest.5.1")
+        whr.Open("GET", url, false)
+        if (headers != "")
+        {
+            for key, value in headers
+            {
+                whr.SetRequestHeader(key, value)
+            }
+        }
+        whr.Send()
+        ; Using 'true' above and the call below allows the script to remain responsive.
+        ; whr.WaitForResponse()
+        return whr.ResponseText
+    }
+    catch e
+    {
+        MsgBox, 16,, % "Exception thrown!`n`nwhat: " e.what "`nfile: " e.file
+            . "`nline: " e.line "`nmessage: " e.message "`nextra: " e.extra
+        return ""
+    }
 }
