@@ -38,6 +38,7 @@ In the following part, I will ignore `capslock` in keyset.
 | space | toggle window always on top |
 | 1,2,3,4,5 | window bind |
 | tab | tab script |
+| t | google translate |
 
 By the way, you may want to `suspend` | `restart` the script when you play games. Press `Ctrl + Esc` will help. And its icon will change.
 
