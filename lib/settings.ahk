@@ -77,14 +77,14 @@ LoadSettings()
             if(lnkTarget!=A_ScriptFullPath)
             {
                 Debug("Create autostartLnk")
-                FileCreateShortcut, %A_ScriptFullPath%, %autostartLnk%
+                FileCreateShortcut, %A_ScriptFullPath%, %autostartLnk%, %A_ScriptDir%
             }
                 
         }
         else
         {
             Debug("Create autostartLnk")
-            FileCreateShortcut, %A_ScriptFullPath%, %autostartLnk%
+            FileCreateShortcut, %A_ScriptFullPath%, %autostartLnk%, %A_ScriptDir%
         }
     }
     else

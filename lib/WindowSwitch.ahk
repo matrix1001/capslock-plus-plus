@@ -80,9 +80,17 @@ WindowCClear()
     ; must set hyper to 0 for those who need input
     
     UserInput := ReadDigit()
-    ; msgbox get %UserInput%                           
-    WindowC(UserInput, opt:=0)                                                
-    SplashText(Format("QuickWindow {} cleared.", UserInput))                                                               
+    if UserInput != -1 ;success
+    {
+        WindowC(UserInput, opt:=0)                                                
+        SplashText(Format("QuickWindow {} cleared.", UserInput))    
+    }
+    ; msgbox get %UserInput%       
+    else
+    {
+        SplashText(Format("QuickWindow clear failed, error: {}", ErrorLevel))
+    }                    
+                                                               
 }
 
 WindowKill()

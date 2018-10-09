@@ -112,14 +112,20 @@ GetSelText()
 }
 
 ;--------IO function
-ReadDigit()
+ReadDigit() ;return a digit at success, return -1 at error
 {
     ; avoid hyper block
     old_value := hyper
     hyper := 0
-    Input, UserInput,,,1,2,3,4,5,6,7,8,9,0     
-    hyper := old_value
-    return UserInput
+    Input, UserInput, T3*,,1,2,3,4,5,6,7,8,9,0 
+    hyper := old_value 
+    i := -1
+    if StrEq(ErrorLevel, "Match")
+    {
+        i := SubStr(UserInput, 0)
+        i := i+0
+    }
+    return i
 }
 ;--------msg
 SplashText(msg, width := 400, height := 200, delay := 3000)

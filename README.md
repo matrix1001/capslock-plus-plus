@@ -165,6 +165,11 @@ Any modification of `ahk` script (scripts in `lib` and `script`, and `capslock++
 TODO
 
 # Devlog
+## 2018/10/9 version 0.1.5
+this is a most bug-fix edition
+- fix startup error
+- fix `mouseisover` function not found
+- fix userinput block when call `windowcclear`
 ## 2018/10/8 version 0.1.4
 - add tranlation tooltip
 - add `httpget`, `tooltip` to basicfunc
