@@ -173,6 +173,7 @@ this is a most bug-fix edition
 - better error/exception message
 - better notification ui
 - fix `windowc` bind the desktop
+
 TODO:
 - chinese version
 
