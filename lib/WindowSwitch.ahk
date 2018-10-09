@@ -83,12 +83,12 @@ WindowCClear()
     if UserInput != -1 ;success
     {
         WindowC(UserInput, opt:=0)                                                
-        SplashText(Format("QuickWindow {} cleared.", UserInput))    
+        InfoMsg(Format("QuickWindow {} cleared.", UserInput))    
     }
     ; msgbox get %UserInput%       
     else
     {
-        SplashText(Format("QuickWindow clear failed, error: {}", ErrorLevel))
+        InfoMsg(Format("QuickWindow clear failed, error: {}", ErrorLevel))
     }                    
                                                                
 }
@@ -105,11 +105,11 @@ WindowToggleOnTop()
     if (ExStyle & 0x8)  ; 0x8 is WS_EX_TOPMOST.                         
     {                                                                   
         Winset, AlwaysOnTop, off, ahk_id %currentWindow%                
-        SplashText("Window always on top OFF.")                                                   
+        InfoMsg("Window always on top OFF.")                                                   
     }                                                                   
     else                                                                
     {                                                                   
         WinSet, AlwaysOnTop, on, ahk_id %currentWindow%                 
-        SplashText("Window always on top ON.")                                                            
+        InfoMsg("Window always on top ON.")                                                            
     }   
 }

@@ -185,8 +185,11 @@ Return
 
 ;---------test
 !z:: ;for test
-d := ReadDigit()
-msgbox %d%
+InfoMsg("testinfo")
+sleep 1000
+SuccessMsg("successtest")
+sleep 1000
+DebugMsg("debug test")
 return
 
 

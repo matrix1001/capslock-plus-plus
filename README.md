@@ -170,9 +170,11 @@ this is a most bug-fix edition
 - fix startup error
 - fix `mouseisover` function not found
 - fix userinput block when call `windowcclear`
-TODO:
-- better error/exception handle
+- better error/exception message(half down)
 - better notification ui
+TODO:
+- chinese version
+
 ## 2018/10/8 version 0.1.4
 - add tranlation tooltip
 - add `httpget`, `tooltip` to basicfunc

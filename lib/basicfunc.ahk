@@ -128,16 +128,22 @@ ReadDigit() ;return a digit at success, return -1 at error
     return i
 }
 ;--------msg
-SplashText(msg, width := 400, height := 200, delay := 3000)
+SplashText(msg, title := "", width := 400, delay := 3000)
 {
-    
-    SplashTextOn, %width%, %height%, Capslock++, %msg%
-    WinGetPos,,, Width, Height, Capslock++
-    WinMove, Capslock++, , (A_ScreenWidth)-(Width)-20, (A_ScreenHeight)-(Height)-40
-    SetTimer, splashoff, -%delay%
+    length := StrLen(msg)
+    height := ToInt(length / 40) * 20 + CountLines(msg) * 20 + 30
+    title := "Capslock++                  " . title
+    SplashTextOn, %width%, %height%, %title%, %msg%
+    WinGetPos,,, Width, Height, %title%
+    WinMove, %title%, , (A_ScreenWidth)-(Width)-20, (A_ScreenHeight)-(Height)-40
+    SetTimer, splashchk, %delay%
     return
-    splashoff:
-    SplashTextOff
+    splashchk:
+    if not MouseIsOver("ahk_class AutoHotkey2")
+    {
+        SplashTextOff
+        SetTimer, splashchk, off
+    }
     return
 }
 ToolTip(msg, delay := 1000)
@@ -185,7 +191,7 @@ RegExFindAll(haystack, needle)
     pos := 1
     while pos:=RegExMatch(haystack, needle, match, pos)
     {
-        ; msgbox %pos% -> %match1%
+        ;msgbox %pos% -> %match1%
         pos := pos + StrLen(match1)
         result.push(match1)
     }
@@ -194,6 +200,21 @@ RegExFindAll(haystack, needle)
 StrEq(str1, str2)
 {
     return InStr(str1, str2) && InStr(str2, str1)
+}
+ToInt(s)
+{
+    return Format("{:i}", s)
+}
+CountSubStr(haystack, needle)
+{
+    needle := Format("({})", needle)
+    result := RegExFindAll(haystack, needle)
+    num := result.count()
+    return num
+}
+CountLines(content)
+{
+    return CountSubStr(content, "`n")
 }
 
 ;-------http
@@ -217,8 +238,7 @@ HttpGet(url, headers := "")
     }
     catch e
     {
-        MsgBox, 16,, % "Exception thrown!`n`nwhat: " e.what "`nfile: " e.file
-            . "`nline: " e.line "`nmessage: " e.message "`nextra: " e.extra
+        
         return ""
     }
 }
@@ -226,4 +246,32 @@ HttpGet(url, headers := "")
 MouseIsOver(WinTitle) {
     MouseGetPos,,, Win
     return WinExist(WinTitle . " ahk_id " . Win)
+}
+;----notification
+ErrorMsg(e="", msg="")
+{
+    err_msg := "ERROR`n`n"
+    if msg
+    {
+        err_msg .= "Function msg:`n" . msg . "`n`n"
+    }
+    if e
+    {
+        err_msg .= "Exception:`nwhat: " e.what "`nfile: " e.file
+            . "`nline: " e.line "`nmessage: " e.message "`nextra: " e.extra
+    }
+    
+    MsgBox, 16,, % err_msg
+}
+SuccessMsg(msg)
+{
+    SplashText(msg, "SUCCESS")
+}
+InfoMsg(msg)
+{
+    SplashText(msg, "INFO")
+}
+DebugMsg(msg)
+{
+    SplashText(msg, "DEBUG")
 }
