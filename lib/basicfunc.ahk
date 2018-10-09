@@ -170,7 +170,7 @@ OnMouseToolTip(msg, delay := 1000)
     }
     return
 }
-;--------String function
+;--------String/Array function
 StringUpper(str)
 {
     return Format("{:U}", str)
@@ -216,6 +216,20 @@ CountLines(content)
 {
     return CountSubStr(content, "`n")
 }
+
+IsStrInArray(val, arr)
+{
+    for key, value in arr
+    {
+        ;msgbox %val%, %value%
+        if StrEq(val, value)
+        {
+            return True
+        }
+    }
+    return False
+}
+
 
 ;-------http
 HttpGet(url, headers := "")
@@ -265,13 +279,33 @@ ErrorMsg(e="", msg="")
 }
 SuccessMsg(msg)
 {
+    if HyperSettings.Basic.SuccessMsg = 0
+    {
+        return
+    } 
     SplashText(msg, "SUCCESS")
+}
+WarningMsg(msg)
+{
+    if HyperSettings.Basic.WarningMsg = 0 
+    {
+        return
+    } 
+    SplashText(msg, "WARNING", , 6000)
 }
 InfoMsg(msg)
 {
+    if HyperSettings.Basic.InfoMsg = 0
+    {
+        return
+    } 
     SplashText(msg, "INFO")
 }
 DebugMsg(msg)
 {
+    if HyperSettings.Basic.DebugMsg = 0
+    {
+        return
+    }
     SplashText(msg, "DEBUG")
 }

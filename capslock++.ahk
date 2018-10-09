@@ -7,6 +7,7 @@ Process Priority,,High
 global Hyper, Flag, HyperAlt，HyperWin, FuncRunning
 
 ;include should be put at last
+SuccessMsg("Start Capslock++")
 #Include lib/Settings.ahk
 
 
@@ -150,31 +151,29 @@ else
 }
 
 ; msgbox % keyname
+
+
 if (HyperAlt = 1)
 {
-    func_name := HyperSettings.Keymap["hyper_alt_" . keyname]
+    keyname := "alt_" . keyname
 }
 else if (HyperWin = 1)
 {
-    func_name := HyperSettings.Keymap["hyper_win_" . keyname]
+    keyname := "win_" . keyname
 }
-else
-{
-    func_name := HyperSettings.Keymap["hyper_" . keyname]
-}
-
+keyname := "hyper_" . keyname
+func_name := HyperSettings.Keymap[keyname]
 try
 {
     ; msgbox %func_name%
     FuncRunning := 1 ; avoid multiple capslock key confict
+    DebugMsg(Format("Key:{}`nFunc:{}", keyname, func_name))
     RunFunc(func_name)
     FuncRunning := 0
 }
 catch e
 {
-    MsgBox, 16,, % "Exception thrown!`n`nwhat: " e.what "`nfile: " e.file
-        . "`nline: " e.line "`nmessage: " e.message "`nextra: " e.extra
-    Exit
+    ErrorMsg(e, Format("Key:{}`nFunc:{}", keyname, func_name))
 }
 
 Flag := 1
@@ -187,11 +186,12 @@ Return
 !z:: ;for test
 InfoMsg("testinfo")
 sleep 1000
-SuccessMsg("successtest")
+DebugMsg("testdebug")
 sleep 1000
-DebugMsg("debug test")
+SuccessMsg("testsucc")
+sleep 1000
+WarningMsg("warn")
 return
-
 
 
 

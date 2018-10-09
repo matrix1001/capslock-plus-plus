@@ -67,8 +67,21 @@ WindowC(idx, opt:=1)
         }                                                            
         else 
         {
+            ;ahk_class WorkerW
+            ;ahk_exe Explorer.EXE
+            ; avoid binding desktop
             WinGet, windowid, ID, A
-            QuickWindows[idx] := windowid
+            WinGet, windowexe, ProcessName, A
+            WinGetClass, windowclass, A
+            if StrEq(windowexe, "Explorer.EXE") && StrEq(windowclass, "WorkerW")
+            {  
+                WarningMsg(Format("Don't bind window {} to Desktop", idx))
+            }
+            else
+            {
+                QuickWindows[idx] := windowid
+                InfoMsg(Format("Bind window {} to {}", idx, windowexe))
+            }
         }   
     }                                                                                                
 }  

@@ -20,8 +20,7 @@ InitSettings()
 ; this must be put at last , because userscript may stuck
 if not FileExist(HyperSettings.Includer)
 {
-    GenIncluder(HyperSettings.ScriptDir, HyperSettings.Includer)
-    Reload
+    ScriptReload()
 }
 #Include *i lib/Includer.ahk
 
@@ -37,7 +36,7 @@ InitSettings()
     }
     else
     {
-        Debug("HyperSettings.ini not found, using default")
+        InfoMsg("HyperSettings.ini not found, using default")
         DefaultKeySettings()
         DefaultBasicSettings()
         DefaultHotStringSettings()
@@ -55,7 +54,7 @@ InitSettings()
     }
     else
     {
-        Debug("HyperWinSettings.ini not found, using default")
+        InfoMsg("HyperWinSettings.ini not found, using default")
         DefaultWinSettings()
         SaveWinSettings()
     }
@@ -76,14 +75,14 @@ LoadSettings()
             FileGetShortcut, %autostartLnk%, lnkTarget
             if(lnkTarget!=A_ScriptFullPath)
             {
-                Debug("Create autostartLnk")
+                InfoMsg("Create autostartLnk")
                 FileCreateShortcut, %A_ScriptFullPath%, %autostartLnk%, %A_ScriptDir%
             }
                 
         }
         else
         {
-            Debug("Create autostartLnk")
+            InfoMsg("Create autostartLnk")
             FileCreateShortcut, %A_ScriptFullPath%, %autostartLnk%, %A_ScriptDir%
         }
     }
@@ -92,7 +91,7 @@ LoadSettings()
         autostartLnk:=A_Startup . "\capsLock++.lnk"
         if FileExist(autostartLnk)
         {
-            Debug("Delete autostartLnk")
+            InfoMsg("Delete autostartLnk")
             FileDelete, %autostartLnk%
         }
     }
@@ -164,30 +163,31 @@ ScriptMonitor()
     old_num := timestamps.count()
     new_num := lst.count()
     ;msgbox %old_num%, %new_num%
-    if (old_num != new_num)
+    ; check if deleted
+    for filename, value in timestamps
     {
-        Msgbox Scripts number change, now reload
-        GenIncluder(HyperSettings.ScriptDir, HyperSettings.Includer)
-        Reload
+        if not IsStrInArray(filename, lst)
+        {
+            InfoMsg(filename . " has been deleted`nPress Capslock + Alt + r to reload")
+            timestamps.delete(filename)
+        }
     }
 
-    ; main loop
+    ; timestamp and new file check
     for index, filename in lst
     {
         FileGetTime, temp, %filename%
         if not timestamps.haskey(filename)
         {
-            Msgbox New file %filename% detected, now reload 
-            GenIncluder(HyperSettings.ScriptDir, HyperSettings.Includer) ; gen new includer.ahk
-            Reload
+            InfoMsg("New file " . filename . " detected`n Press Capslock + Alt + r to reload")
+            timestamps[filename] := temp
         }
         else if timestamps[filename] != temp
         {
             ;old := timestamps[filename]
             ;msgbox %old% -> %temp%
-            Msgbox %filename% changed, now reload
-            GenIncluder(HyperSettings.ScriptDir, HyperSettings.Includer)
-            Reload
+            InfoMsg(filename . " changed`n Press Capslock + Alt + r to reload")
+            timestamps[filename] := temp
         }
     }
 }
@@ -221,7 +221,7 @@ GenIncluder(dirs, dst_file)
     {
         ;msgbox not eq
         ;msgbox old: %old_content% 
-        Debug("write to " . dst_file)
+        DebugMsg("write to " . dst_file)
         f := FileOpen(dst_file, "w")
         f.Write(content)
         f.Close()
@@ -244,17 +244,8 @@ SettingMonitor()
         {
             ;last := timestamps[filename]
             ;MsgBox %last%->%temp%
-            MsgBox %filename% changed, read settings now
+            InfoMsg(filename . " changed`nPress Capslock + Alt + s to read settings")
             timestamps[filename] := temp
-            if (filename = "HyperSettings.ini")
-            {
-                ReadSettings()
-            }
-            if (filename = "HyperWinSettings.ini")
-            {
-                ReadWinSettings()
-            }
-            LoadSettings()
         }
     }
 }
@@ -449,21 +440,28 @@ DefaultKeySettings()
 
     HyperSettings.Keymap.hyper_tab := "HyperTab"
 
+    HyperSettings.Keymap.hyper_s := "AppWox"
+    HyperSettings.Keymap.hyper_t := "GoogleTransSel"
+
     HyperSettings.Keymap.hyper_alt_1 := "switchDesktopByNumber(1)"
     HyperSettings.Keymap.hyper_alt_2 := "switchDesktopByNumber(2)"
     HyperSettings.Keymap.hyper_alt_3 := "switchDesktopByNumber(3)"
 
-    HyperSettings.Keymap.hyper_s := "AppWox"
-    HyperSettings.Keymap.hyper_t := "GoogleTransSel"
+    HyperSettings.Keymap.hyper_alt_s := "SettingReload"
+    HyperSettings.Keymap.hyper_alt_r := "ScriptReload"
 }
 DefaultBasicSettings()
 {
     HyperSettings.Basic.StartUp := 1
-    HyperSettings.Basic.Debug := 0
     HyperSettings.Basic.Admin := 0
     HyperSettings.Basic.Icon := "hyper.ico"
     HyperSettings.Basic.SettingMonitor := 1
     HyperSettings.Basic.ScriptMonitor := 1
+
+    HyperSettings.Basic.DebugMsg := 0
+    HyperSettings.Basic.SuccessMsg := 1
+    HyperSettings.Basic.WarningMsg := 1
+    HyperSettings.Basic.InfoMsg := 1
 }
 DefaultHotStringSettings()
 {
@@ -473,10 +471,16 @@ DefaultHotStringSettings()
     HyperSettings.TabHotString["cmain"] := "int main(int *argc, char **argv)"
 }
 
-Debug(msg)
+ScriptReload()
 {
-    if HyperSettings.Basic.Debug = 1
-    {
-        Msgbox %msg%
-    }
+    SetTimer ScriptMonitor, off
+    GenIncluder(HyperSettings.ScriptDir, HyperSettings.Includer)
+    Reload
+}
+SettingReload()
+{
+    InfoMsg("Reload Settings")
+    ReadSettings()
+    ReadWinSettings()
+    LoadSettings()
 }

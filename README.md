@@ -170,8 +170,9 @@ this is a most bug-fix edition
 - fix startup error
 - fix `mouseisover` function not found
 - fix userinput block when call `windowcclear`
-- better error/exception message(half down)
+- better error/exception message
 - better notification ui
+- fix `windowc` bind the desktop
 TODO:
 - chinese version
 
