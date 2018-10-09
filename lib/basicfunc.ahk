@@ -216,3 +216,8 @@ HttpGet(url, headers := "")
         return ""
     }
 }
+;----mouse
+MouseIsOver(WinTitle) {
+    MouseGetPos,,, Win
+    return WinExist(WinTitle . " ahk_id " . Win)
+}
