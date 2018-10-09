@@ -11,7 +11,7 @@ global Hyper, Flag, HyperAlt，HyperWin, FuncRunning
 
 
 ;-----------CapsLock key setting----------
-Ctrl & ESC::Suspend
+!Esc::Suspend
 
 Capslock::
 
