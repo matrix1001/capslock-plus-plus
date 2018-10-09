@@ -39,6 +39,8 @@ In the following part, I will ignore `capslock` in keyset.
 | 1,2,3,4,5 | window bind |
 | tab | tab script |
 | t | google translate |
+| alt+s | reload settings |
+| alt+r | reload script |
 
 By the way, you may want to `suspend` | `restart` the script when you play games. Press `Alt + Esc` will help. And its icon will change.
 
