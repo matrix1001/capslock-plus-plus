@@ -4,7 +4,8 @@ global HyperSettings := {"Keymap":{}
     , "ScriptDir":["lib", "script"]
     , "Includer":"lib\Includer.ahk"
     , "SettingIni":["HyperSettings.ini", "HyperWinSettings.ini"]
-    , "Basic":{}}
+    , "Basic":{}
+    , "Trans":{}}
 
 #Include lib/BasicFunc.ahk
 
@@ -40,6 +41,7 @@ InitSettings()
         DefaultKeySettings()
         DefaultBasicSettings()
         DefaultHotStringSettings()
+        DefualtTransSettings()
         SaveSettings()
     }
 
@@ -253,81 +255,48 @@ SettingMonitor()
 ; functions for HyperSetting.ini
 ReadSettings()
 {
-    IniRead, Keymap, HyperSettings.ini, Keymap
-    Keymaps := StrSplit(Keymap, "`n")
-    for index, line in Keymaps
-    {
-        pair := StrSplit(line, "=")
-        keyname := pair[1]
-        funcname := pair[2]
-        AssignKeymap(keyname, funcname)
-    }
-
-    IniRead, TabHotString, HyperSettings.ini, TabHotString
-    TabHotStrings := StrSplit(TabHotString, "`n")
-    for index, line in TabHotStrings
-    {
-        pair := StrSplit(line, "=")
-        str := pair[1]
-        sub := pair[2]
-        AssignHotString(str, sub)
-    }
-
-    IniRead, Basic, HyperSettings.ini, Basic
-    Basics := StrSplit(Basic, "`n")
-    for index, line in Basics
+    ReadSetting("Keymap")
+    ReadSetting("TabHotString")
+    ReadSetting("Basic")
+    ReadSetting("Trans")
+}
+ReadSetting(sec)
+{
+    IniRead, var, HyperSettings.ini, %sec%
+    lst := StrSplit(var, "`n")
+    for index, line in lst
     {
         pair := StrSplit(line, "=")
         key := pair[1]
         val := pair[2]
-        AssignBasic(key, val)
+        AssignSetting(key, val, sec)
     }
 }
 SaveSettings()
 {
-    for key, val in HyperSettings.Keymap
+    SaveSetting("Keymap")
+    SaveSetting("TabHotString")
+    SaveSetting("Basic")
+    SaveSetting("Trans")
+}
+SaveSetting(sec)
+{
+    for key, val in HyperSettings[sec]
     {
-        IniWrite, % val, HyperSettings.ini, Keymap, % key
-    }
-    for key, val in HyperSettings.TabHotString
-    {
-        IniWrite, % val, HyperSettings.ini, TabHotString, % key
-    }
-    for key, val in HyperSettings.Basic
-    {
-        IniWrite, % val, HyperSettings.ini, Basic, % key
+        IniWrite, % val, HyperSettings.ini, %sec%, % key
     }
 }
-
-AssignHotString(str, sub)
+AssignSetting(key, val, sec)
 {
-    old_val := HyperSettings.TabHotString[str]
-    if (old_val && old_val != sub)
-    {
-        MsgBox Duplicate HotString: %str%`nold value: %old_val%`nnew value: %sub%
-    }
-    ;msgbox %str%, %sub%
-    HyperSettings.TabHotString[str] := sub
-}
-AssignKeymap(key, func_name)
-{
-    old_val := HyperSettings.Keymap[key]
-    if (old_val && old_val != func_name)
-    {
-        MsgBox Duplicate key: %key%`nold value: %old_val%`nnew value: %func_name%
-    }
-    ;msgbox %key%, %func_name%
-    HyperSettings.Keymap[key] := func_name
-}
-AssignBasic(key, val)
-{
-    old_val := HyperSettings.Basic[key]
+    section := HyperSettings[sec]
+    old_val := section[key]
     if (old_val && old_val != val)
     {
-        MsgBox Duplicate Basic: %key%`nold value: %old_val%`nnew value: %val%
+        MsgBox Duplicate %sec%: %key%`nold value: %old_val%`nnew value: %val%
     }
     ;msgbox %key%, %val%
-    HyperSettings.Basic[key] := val
+    section[key] := val
+    HyperSettings[sec] := section
 }
 ; functions for HyperWinSetting.ini
 
@@ -365,7 +334,7 @@ MapUserWindowKey()
         key := "hyper_" . value["key"]
         func_name := Format("Window{1}(""{2}"",""{3}"")", value["typ"], value["id"], value["exe"])
         ; msgbox %key%, %funcname%
-        AssignKeymap(key, func_name)
+        AssignSetting(key, func_name, "Keymap")
     }
     ;test := HyperSettings.Keymap["hyper_a"]
     ;msgbox %test%
@@ -470,7 +439,13 @@ DefaultHotStringSettings()
     HyperSettings.TabHotString["date2"] := "<GetDateTime(""yyyy-M-d"")>"
     HyperSettings.TabHotString["cmain"] := "int main(int *argc, char **argv)"
 }
+DefualtTransSettings()
+{
+    HyperSettings.Trans.SourceLanguage := "auto"
+    HyperSettings.Trans.TargetLanguage := "zh"
+}
 
+; reload function
 ScriptReload()
 {
     SetTimer ScriptMonitor, off

@@ -1,7 +1,7 @@
 # CapsLock++
 [中文说明](https://github.com/matrix1001/capslock-plus-plus/blob/master/README-zh.md)
 
-Original idea if from [capslock-plus](https://github.com/wo52616111/capslock-plus) and [Capslock](https://github.com/Vonng/Capslock). But it seems that `capslock-plus` is no longer maintained. And I feel painful to read its source code. So I plan to rewrite it. 
+Amazing, extendable, readable `autohotkey` scripts framework utilized by `Capslock`.
 # Feature
 - Plug in and play
 - Function based script
@@ -12,6 +12,8 @@ Original idea if from [capslock-plus](https://github.com/wo52616111/capslock-plu
 
   
 This project is in progress. Other fantastic funtions will be joined.
+# Update
+This project is updating very quickly. If you pulled the latest version, remember to delete the old `ini` files in order to load new ones to gain new features.
 # Usage
 ## Basic
 Basic usage is according to the default settings. If you are not starter of `AHK`, just ignore this. These settings are in `HyperSettings.ini`.
@@ -47,6 +49,19 @@ In the following part, I will ignore `capslock` in keyset.
 
 By the way, you may want to `suspend` | `restart` the script when you play games. Press `Alt + Esc` will help. And its icon will change.
 
+Here follows the basic configuration in `HyperSettings.ini`
+```ini
+[Basic]
+Admin=0 ;run as admin
+DebugMsg=0 ;debug msg, check it by your selt
+Icon=hyper.ico
+InfoMsg=1
+ScriptMonitor=1 ;notify you about the changes of the scripts
+SettingMonitor=1 ;notify you about the chagnes of the setting
+StartUp=1 ;start on windows start
+SuccessMsg=1
+WarningMsg=1
+```
 
 ## Translation
 Default translation is triggered by `Capslock + t`. You have to select a word or a sentense at first.
@@ -62,6 +77,12 @@ Here's some picture for demo.
 ![demo2](img/trans2.png)
 ![demo3](img/trans3.png)
 
+Also, language support has been added to `HyperSettings.ini`. Remember to use the language shortcut.
+```ini
+[Trans]
+SourceLanguage=auto
+TargetLanguage=zh ; for example, change this to es (spanish)
+```
 Still feels a little bit complicated? More convenitent way will be produced later.
 ## WindowSwitch
 WindowSwitch is designed for quick switch between multiple windows. Extremely good for those who need to work with multiple window applications.
@@ -170,6 +191,11 @@ Any modification of `ahk` script (scripts in `lib` and `script`, and `capslock++
 TODO
 
 # Devlog
+## 2018/10/10 version 0.1.6
+- chinese version readme
+- refine `settings.ahk`
+- add language choise in `HyperSettings.ini`
+
 ## 2018/10/9 version 0.1.5
 this is a most bug-fix edition
 - fix startup error

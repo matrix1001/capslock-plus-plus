@@ -139,7 +139,7 @@ GoogleTrans(content, src := "auto", dst := "zh")
 GoogleTransSel()
 {
     content := GetSelText()
-    result := GoogleTrans(content)
+    result := GoogleTrans(content, HyperSettings.Trans.SourceLanguage, HyperSettings.Trans.TargetLanguage)
     if result
     {
         msg := Format("{1}->{2}`n{3}", result.src, result.dst, result.trans)
