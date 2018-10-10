@@ -49,6 +49,20 @@ __最新功能__
 
 另外，如果想要临时暂停或者激活脚本，请按 `Alt + Esc` 。图标会有所变化，便于你观察。
 
+这里是 `HyperSettings.ini` 的一些基本配置
+
+```ini
+[Basic]
+Admin=0 ;管理员权限
+DebugMsg=0 ;调试信息，你可以自己看看
+Icon=hyper.ico
+InfoMsg=1
+ScriptMonitor=1 ;脚本监控
+SettingMonitor=1 ;配置文件监控
+StartUp=1 ;开机启动
+SuccessMsg=1
+WarningMsg=1
+```
 
 ## 翻译
 翻译请按 `Capslock + t`。但首先要选中需要翻译的内容。
@@ -60,6 +74,7 @@ Olá
  مرحبا 
 ```
 以下是效果。
+
 ![demo1](img/trans1.png)
 ![demo2](img/trans2.png)
 ![demo3](img/trans3.png)
@@ -69,7 +84,7 @@ Olá
 窗口快速切换适合经常在电脑上同时使用多种软件的人。
 
 我总体设计了两种类型。
-### 一
+### 类型一
 - `WindowA` 适用于大多数窗口应用
 - `WindowB` 适用于浏览器等多标签应用
 
@@ -91,7 +106,7 @@ typ=B
 - 若窗口未激活，则激活
 - 若窗口激活，则最小化
   
-### 二
+### 类型二
 - `WindowC` 支持实时绑定窗口
 
 无需提前配置，实时动态绑定。
@@ -129,7 +144,7 @@ date2=<GetDateTime("yyyy-M-d")>
 ```
 找个地方输入`sample`，按 `CapsLock + Tab`，即可自动替换为 `this is a TabHotString sample`
 
-然而这个的特色是实现了函数支持。
+这个功能实现了函数支持。
 
 在 `lib/basicfunc.ahk`里面，有这样一个函数。
 ```ahk
@@ -139,10 +154,10 @@ GetDateTime(fmt := "yyyy/M/d")
     return CurrentDateTime
 }
 ```
-于是默认配置的两个日期补全，会有如下结果。
+将默认配置的两个日期补全，会有如下结果。
 ```
 [before] date1 -> [after] 2018/10/6
 [before] date2 -> [after] 2018-10-6
 ```
 
-使用函数用 `<>`即可，如果需要使用 `<` 或 `>`，请用 `<<`， `>>` 。它们会被替换回来。 
+调用函数用 `<>`即可，如果需要使用 `<` 或 `>`，请用 `<<`， `>>` ，它们会被替换回来。 
