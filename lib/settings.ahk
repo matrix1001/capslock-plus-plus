@@ -418,6 +418,9 @@ DefaultKeySettings()
 
     HyperSettings.Keymap.hyper_alt_s := "SettingReload"
     HyperSettings.Keymap.hyper_alt_r := "ScriptReload"
+
+    HyperSettings.Keymap.hyper_double_click := "GoogleTransDoubleClick"
+    HyperSettings.Keymap.hyper_alt_t := "GoogleTransDoubleClick(1)"
 }
 DefaultBasicSettings()
 {
