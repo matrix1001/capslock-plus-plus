@@ -12,7 +12,13 @@ SuccessMsg("Start Capslock++")
 
 
 ;-----------CapsLock key setting----------
-!Esc::Suspend
+!Esc::
+Suspend
+if %A_IsSuspended%
+    InfoMsg("Suspend the script")
+else
+    InfoMsg("Enable the script")
+return
 
 Capslock::
 
@@ -194,8 +200,9 @@ return
 
 
 ;---------test
-!z:: ;for test
+!z::
 return
+
 
 
 
