@@ -1,6 +1,9 @@
 # CapsLock++
+[中文说明](https://github.com/matrix1001/capslock-plus-plus/blob/master/README-zh.md)
+
 Original idea if from [capslock-plus](https://github.com/wo52616111/capslock-plus) and [Capslock](https://github.com/Vonng/Capslock). But it seems that `capslock-plus` is no longer maintained. And I feel painful to read its source code. So I plan to rewrite it. 
 # Feature
+- Plug in and play
 - Function based script
 - Translation
 - WindowSwitch
