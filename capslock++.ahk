@@ -180,17 +180,21 @@ Flag := 1
 Return
 
 #If
+;---------other key util
+~*LButton::
+c := HotKeyCounter(200)
+if c=2
+{
+    keyname := "hyper_" . "double_click"
+    func_name := HyperSettings.Keymap[keyname]
+    DebugMsg(Format("Key:{}`nFunc:{}", keyname, func_name))
+    RunFunc(func_name)
+}
+return
 
 
 ;---------test
 !z:: ;for test
-InfoMsg("testinfo")
-sleep 1000
-DebugMsg("testdebug")
-sleep 1000
-SuccessMsg("testsucc")
-sleep 1000
-WarningMsg("warn")
 return
 
 

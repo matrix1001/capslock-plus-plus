@@ -2,6 +2,9 @@
 [中文说明](https://github.com/matrix1001/capslock-plus-plus/blob/master/README-zh.md)
 
 Amazing, extendable, readable `autohotkey` scripts framework utilized by `Capslock`.
+
+__New Features__
+- double click to translate!
 # Feature
 - Plug in and play
 - Function based script
@@ -9,7 +12,6 @@ Amazing, extendable, readable `autohotkey` scripts framework utilized by `Capslo
 - WindowSwitch
 - Tabscript
 - Autoload configuration and script
-
   
 This project is in progress. Other fantastic funtions will be joined.
 # Update
@@ -46,6 +48,7 @@ In the following part, I will ignore `capslock` in keyset.
 | t | google translate |
 | alt+s | reload settings |
 | alt+r | reload script |
+| alt+t | enable double click translate |
 
 By the way, you may want to `suspend` | `restart` the script when you play games. Press `Alt + Esc` will help. And its icon will change.
 
@@ -83,7 +86,11 @@ Also, language support has been added to `HyperSettings.ini`. Remember to use th
 SourceLanguage=auto
 TargetLanguage=zh ; for example, change this to es (spanish)
 ```
-Still feels a little bit complicated? More convenitent way will be produced later.
+
+__Surprising New Feature__
+Double Click To Translate
+- First press `Capslock + Alt + t` to enable/disable it.
+- Then double click a work, it will be translated!
 ## WindowSwitch
 WindowSwitch is designed for quick switch between multiple windows. Extremely good for those who need to work with multiple window applications.
 
@@ -195,6 +202,7 @@ TODO
 - chinese version readme
 - refine `settings.ahk`
 - add language choise in `HyperSettings.ini`
+- add double click to translate
 
 ## 2018/10/9 version 0.1.5
 this is a most bug-fix edition

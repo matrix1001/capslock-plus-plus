@@ -309,3 +309,15 @@ DebugMsg(msg)
     }
     SplashText(msg, "DEBUG")
 }
+
+;----hotkey util
+HotKeyCounter(timeout := 500)
+{
+    static counter := 0
+    SetTimer, reset, -%timeout%
+    counter += 1
+    return counter
+    reset:
+    counter := 0
+    return
+}
