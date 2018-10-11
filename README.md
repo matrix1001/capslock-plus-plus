@@ -198,6 +198,9 @@ Any modification of `ahk` script (scripts in `lib` and `script`, and `capslock++
 TODO
 
 # Devlog
+## 2018/10/11 version 0.1.7
+- add multi lines translation
+- add suspend msg
 ## 2018/10/10 version 0.1.6
 - chinese version readme
 - refine `settings.ahk`
