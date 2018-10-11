@@ -123,8 +123,21 @@ GoogleTrans(content, src := "auto", dst := "zh")
         ;msgbox %response%
         json_obj := JSON.Load(response)
         src := json_obj.src
-        trans := json_obj.sentences[1].trans
-        orig := json_obj.sentences[1].orig
+        trans := ""
+        orig := ""
+        origs := []
+        for value, sentence in json_obj.sentences
+        {
+            trans .= sentence.trans . "`n"
+            if not IsStrInArray(sentence.orig, origs)
+            {
+                origs.push(sentence.orig)
+                orig .= sentence.orig . " "
+            }
+            
+        }
+        ;trans := json_obj.sentences[1].trans
+        ;orig := json_obj.sentences[1].orig
 
         result := {"src":LANGUAGES[src], "dst":LANGUAGES[dst], "trans":trans, "orig":orig}
         return result
