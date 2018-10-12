@@ -182,8 +182,8 @@ try
 {
     ; msgbox %func_name%
     FuncRunning := 1 ; avoid multiple capslock key confict
-    DebugMsg(Format("Key:{}`nFunc:{}", keyname, func_name))
     RunFunc(func_name)
+    DebugMsg(Format("Key:{}`nFunc:{}", keyname, func_name))
     FuncRunning := 0
 }
 catch e
@@ -204,7 +204,6 @@ if c=2
     func_name := HyperSettings.Keymap[keyname]
     RunThreadedFunc(func_name)
     DebugMsg(Format("Key:{}`nFunc:{}", keyname, func_name))
-    
 }
 return
 
@@ -213,7 +212,7 @@ return
 !z::
 WinNotification("title1", "msg1`n`naaa")
 sleep 500
-WinNotification("title2", "msg1`n`naaa")
+WinNotification("title2", "msg1`n`naaa", 6000)
 sleep 500
 WinNotification("title3", "msg1`n`naaa")
 sleep 500

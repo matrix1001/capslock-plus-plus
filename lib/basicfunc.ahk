@@ -187,7 +187,15 @@ IsStrInArray(val, arr)
     return False
 }
 
-
+GetReverseArray(arr)
+{
+    rarr := []
+    for index, value in arr
+    {
+        rarr.insertat(1, value)
+    }
+    return rarr
+}
 ;-------http
 HttpGet(url, headers := "")
 {
@@ -255,8 +263,7 @@ SuccessMsg(msg)
     {
         return
     } 
-    noti := {"msg":msg, "title":"SUCCESS"}
-    HyperSettings.Notifications.push(noti)
+    AddNotification(msg, "SUCCESS")
 }
 WarningMsg(msg)
 {
@@ -264,8 +271,7 @@ WarningMsg(msg)
     {
         return
     } 
-    noti := {"msg":msg, "title":"WARNING"}
-    HyperSettings.Notifications.push(noti)
+    AddNotification(msg, "WARNING", 6000)
 }
 InfoMsg(msg)
 {
@@ -273,8 +279,7 @@ InfoMsg(msg)
     {
         return
     } 
-    noti := {"msg":msg, "title":"INFO"}
-    HyperSettings.Notifications.push(noti)
+    AddNotification(msg, "INFO")
 }
 DebugMsg(msg)
 {
@@ -282,7 +287,11 @@ DebugMsg(msg)
     {
         return
     }
-    noti := {"msg":msg, "title":"DEBUG"}
-    HyperSettings.Notifications.push(noti)
+    AddNotification(msg, "DEBUG")
     return
+}
+AddNotification(msg, title:="", delay:=3000)
+{
+    noti := {"msg":msg, "title":title, "delay":delay}
+    HyperSettings.Notifications.insertat(1, noti)
 }

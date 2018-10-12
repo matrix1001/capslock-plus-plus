@@ -246,10 +246,10 @@ SettingMonitor()
 
 NotificationMonitor()
 {
-    for index, val in HyperSettings.Notifications
+    noti := HyperSettings.Notifications.pop()
+    if noti
     {
-        HyperSettings.Notifications.removeat(index)
-        WinNotification(val.msg, val.title)
+        WinNotification(noti.msg, noti.title, noti.delay)
     }
 }
 ; functions for HyperSetting.ini

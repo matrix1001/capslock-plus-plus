@@ -2,43 +2,49 @@
 
 
 
-WinNotification(message, title, new_timeout:=3000, max:=5)
+WinNotification(message, title, delay:=3000)
 {
-    static records := [], init := 0, timeout:=3000
-    timeout := new_timeout
-    if (init=0)
-    {
-        SetTimer, notichecker, 250
-        SetTimer, noticounter, 250
-        init := 1
-    }
+    static records := [], max:=5
+
+    ;turn off threads to avoid race condition
+    SetTimer, notichecker, off
+    SetTimer, noticounter, off
+ 
     info := WinNotificationInit(message, title)
-    info.counter := 0
+    info.counter := delay
+
+    ;move old notification up
     prev_height := info.height 
     for index, val in records
     {
         ;msgbox %index%
         hwnd := val.hwnd
-        if (index >= max)
-        {
-            ;msgbox %index%, %max%
-            Gui, %hwnd%:Destroy
-            Break
-        }
-        
         y := val.y - prev_height
         Gui, %hwnd%:Show, NoActivate y%y% 
         prev_height += val.height
     }
+
+    ;show new notification
     hwnd := info.hwnd
     Width := info.Width
     Height := info.Height
     x := info.x
     y := info.y 
     ;Gui, %hwnd%:Show, W%Width% H%Height% NoActivate Hide x%x% y%y%
-    ;WinFade(hwnd, "in", 500)
+    ;WinFade(hwnd, "in", 100)
     Gui, %hwnd%:Show, W%Width% H%Height% NoActivate x%x% y%y%
+
+    ;max notification limit
+    while (records.count() >= max-1)
+    {
+        val := records.pop()
+        hwnd := val.hwnd
+        Gui, %hwnd%:Destroy
+    }
     records.insertat(1, info)
+
+    SetTimer, notichecker, 250
+    SetTimer, noticounter, 250
     return
 
 
@@ -46,33 +52,38 @@ WinNotification(message, title, new_timeout:=3000, max:=5)
     for index, val in records
     {
         
-        val.counter := val.counter + 250
+        val.counter -= 250
         records[index] := val
     }
     return
     notichecker:
+    rrecords := GetReverseArray(records)
+    for index, val in rrecords
+    {
+        if (val.counter < 0)
+        {
+            WinFade(val.hwnd, "out", 100)
+            
+        }
+    }
     for index, val in records
     {
-        if (val.counter > timeout)
+        if (val.counter < 0)
         {
+            hwnd := val.hwnd
+            Gui, %hwnd%:Destroy
             records.removeat(index)
-            WinFade(val.hwnd)
-            try
-            {
-                hwnd := val.hwnd
-                Gui, %hwnd%:Destroy
-            } 
         }
     }
     return
 
 }
 
-WinNotificationInit(message, title, prev_y:=0, Width:=400) 
+WinNotificationInit(message, title, Width:=400) 
 {
-    static hwnd
+    ;static hwnd
     Gui, New
-    Gui, +AlwaysOnTop +ToolWindow -SysMenu -Caption +LastFound +Hwndhwnd
+    Gui, +AlwaysOnTop +ToolWindow -SysMenu -Caption +LastFound +Hwndhwnd -DPIScale
     Gui, Color, 808080
     Gui, Margin, 0, 10
     Gui, Font, s13 cD0D0D0 Bold
@@ -82,28 +93,17 @@ WinNotificationInit(message, title, prev_y:=0, Width:=400)
     Gui, Add, Text, % "x7 y+10 Center w" (Width-14), %message%
 
     pos := WinGetPosHide(hwnd)
-    ;GuiControlGet, P, Pos, %hwnd%
-    ;msgbox %PH%, %PW%
-    ;pos := {"height":PH, "width":PW, "x":PX, "y":PY}
 
     Height := pos.height
-    dpi_fix := A_ScreenDPI/96
-    W := Width * dpi_fix
-    H := Height * dpi_fix
-    WinSet, Region, 0-0 w%W% h%H% r6-6
+    ; TODO fix all dpi problem
+    ; dpi_fix := A_ScreenDPI/96
+    ; W := Width * dpi_fix
+    ; H := Height * dpi_fix
+    WinSet, Region, 0-0 w%Width% h%Height% r6-6
     
     SysGet, Mon, MonitorWorkArea
     x := MonRight-pos.width-5
-    if prev_y
-    {
-        y := prev_y - pos.height
-    }
-    else
-    {
-        y := MonBottom-pos.height-25
-    }
-    
-    ;Gui, Show, W%Width% H%Height% NoActivate Hide x%x% y%y%
+    y := MonBottom-pos.height-25
 
     return {"x":x, "y":y, "width":Width, "height":Height, "hwnd":hwnd}
 }
@@ -156,14 +156,7 @@ WinFade(hwnd, method:="out", delay:=1000) ;0 for fade out, 1 for fade in
 
 WinGetPosHide(hwnd)
 {
-    
-
-    Gui, %hwnd%:Show, Hide NoActivate
-
-    ;GuiControlGet, MyEdit, %hwnd%:Pos
-    ;MsgBox The X coordinate is %MyEditX%. The Y coordinate is %MyEditY%. The width is %MyEditW%. The height is %MyEditH%.
-    ;msgbox test
-
+    Gui, %hwnd%:Show, Hide
     WinGetPos, x, y, width, height
     result := {"width": width, "height":height, "x":x, "y":y}
     return result
