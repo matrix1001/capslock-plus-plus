@@ -1,13 +1,5 @@
-global HyperSettings := {"Keymap":{}
-    , "TabHotString":{}
-    , "UserWindow":{}
-    , "ScriptDir":["lib", "script"]
-    , "Includer":"lib\Includer.ahk"
-    , "SettingIni":["HyperSettings.ini", "HyperWinSettings.ini"]
-    , "Basic":{}
-    , "Trans":{}}
-
 #Include lib/BasicFunc.ahk
+#Include lib/Gui.ahk
 
 
 
@@ -131,9 +123,9 @@ LoadSettings()
         SetTimer, ScriptMonitor, off
     }
      
+    ;; notification
 
-
-
+    SetTimer, NotificationMonitor, 250
 }
 ScriptMonitor()
 {
@@ -252,6 +244,14 @@ SettingMonitor()
     }
 }
 
+NotificationMonitor()
+{
+    for index, val in HyperSettings.Notifications
+    {
+        HyperSettings.Notifications.removeat(index)
+        WinNotification(val.msg, val.title)
+    }
+}
 ; functions for HyperSetting.ini
 ReadSettings()
 {

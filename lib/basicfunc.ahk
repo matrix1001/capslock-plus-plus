@@ -127,49 +127,6 @@ ReadDigit() ;return a digit at success, return -1 at error
     }
     return i
 }
-;--------msg
-SplashText(msg, title := "", width := 400, delay := 3000)
-{
-    length := StrLen(msg)
-    height := ToInt(length / 40) * 20 + CountLines(msg) * 20 + 30
-    title := "Capslock++                  " . title
-    SplashTextOn, %width%, %height%, %title%, %msg%
-    WinGetPos,,, Width, Height, %title%
-    WinMove, %title%, , (A_ScreenWidth)-(Width)-20, (A_ScreenHeight)-(Height)-40
-    SetTimer, splashchk, %delay%
-    return
-    splashchk:
-    if not MouseIsOver("ahk_class AutoHotkey2")
-    {
-        SplashTextOff
-        SetTimer, splashchk, off
-    }
-    return
-}
-ToolTip(msg, delay := 1000)
-{
-    ToolTip %msg%
-    SetTimer, tooltipoff, -%delay%
-    return
-    tooltipoff:
-    ToolTip
-    return
-
-}
-OnMouseToolTip(msg, delay := 1000)
-{
-    MouseGetPos X, Y
-    ToolTip %msg%, X, Y
-    SetTimer, tooltipchk, %delay%
-    return
-    tooltipchk:
-    if not MouseIsOver("ahk_class tooltips_class32")
-    {
-        ToolTip
-        SetTimer, tooltipchk, off
-    }
-    return
-}
 ;--------String/Array function
 StringUpper(str)
 {
@@ -261,6 +218,19 @@ MouseIsOver(WinTitle) {
     MouseGetPos,,, Win
     return WinExist(WinTitle . " ahk_id " . Win)
 }
+
+;----hotkey util
+HotKeyCounter(timeout := 500)
+{
+    static counter := 0
+    SetTimer, reset, -%timeout%
+    counter += 1
+    return counter
+    reset:
+    counter := 0
+    return
+}
+
 ;----notification
 ErrorMsg(e="", msg="")
 {
@@ -277,13 +247,16 @@ ErrorMsg(e="", msg="")
     
     MsgBox, 16,, % err_msg
 }
+
+
 SuccessMsg(msg)
 {
     if HyperSettings.Basic.SuccessMsg = 0
     {
         return
     } 
-    SplashText(msg, "SUCCESS")
+    noti := {"msg":msg, "title":"SUCCESS"}
+    HyperSettings.Notifications.push(noti)
 }
 WarningMsg(msg)
 {
@@ -291,7 +264,8 @@ WarningMsg(msg)
     {
         return
     } 
-    SplashText(msg, "WARNING", , 6000)
+    noti := {"msg":msg, "title":"WARNING"}
+    HyperSettings.Notifications.push(noti)
 }
 InfoMsg(msg)
 {
@@ -299,7 +273,8 @@ InfoMsg(msg)
     {
         return
     } 
-    SplashText(msg, "INFO")
+    noti := {"msg":msg, "title":"INFO"}
+    HyperSettings.Notifications.push(noti)
 }
 DebugMsg(msg)
 {
@@ -307,17 +282,7 @@ DebugMsg(msg)
     {
         return
     }
-    SplashText(msg, "DEBUG")
-}
-
-;----hotkey util
-HotKeyCounter(timeout := 500)
-{
-    static counter := 0
-    SetTimer, reset, -%timeout%
-    counter += 1
-    return counter
-    reset:
-    counter := 0
+    noti := {"msg":msg, "title":"DEBUG"}
+    HyperSettings.Notifications.push(noti)
     return
 }

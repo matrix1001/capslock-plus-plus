@@ -198,6 +198,11 @@ Any modification of `ahk` script (scripts in `lib` and `script`, and `capslock++
 TODO
 
 # Devlog
+## 2018/10/12 version 0.1.8
+this is not a stable version. i'm trying to make a better ui. next stable version will be 0.2.0
+- refine UI
+- trying to use thread to make user action faster
+
 ## 2018/10/11 version 0.1.7
 - add multi lines translation
 - add suspend msg

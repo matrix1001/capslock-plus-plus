@@ -1,8 +1,17 @@
 ; #InstallKeybdHook
-
+global HyperSettings := {"Keymap":{}
+    , "TabHotString":{}
+    , "UserWindow":{}
+    , "ScriptDir":["lib", "script"]
+    , "Includer":"lib\Includer.ahk"
+    , "SettingIni":["HyperSettings.ini", "HyperWinSettings.ini"]
+    , "Basic":{}
+    , "Trans":{}
+    , "Notifications":[]}
 ;---------
 SetCapsLockState, AlwaysOff 
 Process Priority,,High
+DetectHiddenWindows, On
 
 global Hyper, Flag, HyperAlt，HyperWin, FuncRunning
 
@@ -193,14 +202,23 @@ if c=2
 {
     keyname := "hyper_" . "double_click"
     func_name := HyperSettings.Keymap[keyname]
+    RunThreadedFunc(func_name)
     DebugMsg(Format("Key:{}`nFunc:{}", keyname, func_name))
-    RunFunc(func_name)
+    
 }
 return
 
 
 ;---------test
 !z::
+WinNotification("title1", "msg1`n`naaa")
+sleep 500
+WinNotification("title2", "msg1`n`naaa")
+sleep 500
+WinNotification("title3", "msg1`n`naaa")
+sleep 500
+WinNotification("title4", "msg1`n`naaa")
+sleep 500
 return
 
 
