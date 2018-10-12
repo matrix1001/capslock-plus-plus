@@ -87,7 +87,10 @@ WinNotificationInit(message, title, prev_y:=0, Width:=400)
     ;pos := {"height":PH, "width":PW, "x":PX, "y":PY}
 
     Height := pos.height
-    WinSet, Region, 0-0 w%Width% h%Height% r6-6
+    dpi_fix := A_ScreenDPI/96
+    W := Width * dpi_fix
+    H := Height * dpi_fix
+    WinSet, Region, 0-0 w%W% h%H% r6-6
     
     SysGet, Mon, MonitorWorkArea
     x := MonRight-pos.width-5
@@ -97,7 +100,7 @@ WinNotificationInit(message, title, prev_y:=0, Width:=400)
     }
     else
     {
-        y := MonBottom-pos.height-5
+        y := MonBottom-pos.height-25
     }
     
     ;Gui, Show, W%Width% H%Height% NoActivate Hide x%x% y%y%
