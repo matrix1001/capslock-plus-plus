@@ -92,9 +92,9 @@ WinNotificationInit(message, title, Width:=400)
     Gui, Add, Progress, % "x-1 y-1 w" (Width+2) " h31 Background404040 Disabled hwndHPROG"
     Gui, Add, Text, % "x0 y0 w" Width " h30 BackgroundTrans Center 0x200", %title%
     Gui, Font, s10
-    Gui, Add, Text, % "x7 y+10 Center r2 w" (Width-14), %message%
+    Gui, Add, Text, % "x7 y+10 Center w" (Width-14), %message%
 
-    pos := WinGetPosHide(hwnd)  
+    pos := WinGetPosHide(hwnd, Width)  
 
     Height := pos.height
     ;msgbox % pos.width
@@ -153,9 +153,21 @@ WinFade(hwnd, method:="out", delay:=1000) ;0 for fade out, 1 for fade in
     return
 }
 
-WinGetPosHide(hwnd)
+WinGetPosHide(hwnd, W:="", H:="")
 {
-    Gui, %hwnd%:Show, Hide
+    if (W && H)
+    {
+        Gui, %hwnd%:Show, Hide W%W% H%H%
+    }
+    else if (W)
+    {
+        Gui, %hwnd%:Show, Hide W%W%
+    }
+    else if (H)
+    {
+        Gui, %hwnd%:Show, Hide H%H%
+    }
+        
     WinGetPos, x, y, width, height
     result := {"width": width, "height":height, "x":x, "y":y}
     return result

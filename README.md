@@ -5,6 +5,7 @@ Amazing, extendable, readable `autohotkey` scripts framework utilized by `Capslo
 
 __New Features__
 - double click to translate!
+- new notification UI!
 # Feature
 - Plug in and play
 - Function based script
