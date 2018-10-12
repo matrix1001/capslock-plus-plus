@@ -12,6 +12,7 @@ global HyperSettings := {"Keymap":{}
 SetCapsLockState, AlwaysOff 
 Process Priority,,High
 DetectHiddenWindows, On
+SetWinDelay, 0
 
 global Hyper, Flag, HyperAlt，HyperWin, FuncRunning
 
@@ -210,14 +211,14 @@ return
 
 ;---------test
 !z::
-WinNotification("title1", "msg1`n`naaa")
+WinNotification("msg1`na`na`n", "title1")
 sleep 500
 WinNotification("title2", "msg1`n`naaa", 6000)
 sleep 500
 WinNotification("title3", "msg1`n`naaa")
 sleep 500
 WinNotification("title4", "msg1`n`naaa")
-sleep 500
+WinNotification("title4", "msg1`n`naaa")
 return
 
 

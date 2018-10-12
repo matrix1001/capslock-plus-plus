@@ -2,7 +2,7 @@
 
 
 
-WinNotification(message, title, delay:=3000)
+WinNotification(message, title, delay:=3000) ;note: accept only two lines for message
 {
     static records := [], max:=5
 
@@ -10,6 +10,14 @@ WinNotification(message, title, delay:=3000)
     SetTimer, notichecker, off
     SetTimer, noticounter, off
  
+    ;max notification limit
+    while (records.count() >= max)
+    {
+        val := records.pop()
+        hwnd := val.hwnd
+        Gui, %hwnd%:Destroy
+    }
+
     info := WinNotificationInit(message, title)
     info.counter := delay
 
@@ -30,17 +38,11 @@ WinNotification(message, title, delay:=3000)
     Height := info.Height
     x := info.x
     y := info.y 
-    ;Gui, %hwnd%:Show, W%Width% H%Height% NoActivate Hide x%x% y%y%
-    ;WinFade(hwnd, "in", 100)
-    Gui, %hwnd%:Show, W%Width% H%Height% NoActivate x%x% y%y%
+    Gui, %hwnd%:Show, W%Width% H%Height% NoActivate Hide x%x% y%y%
+    WinFade(hwnd, "in", 100)
+    ;Gui, %hwnd%:Show, W%Width% H%Height% NoActivate x%x% y%y%
 
-    ;max notification limit
-    while (records.count() >= max-1)
-    {
-        val := records.pop()
-        hwnd := val.hwnd
-        Gui, %hwnd%:Destroy
-    }
+    
     records.insertat(1, info)
 
     SetTimer, notichecker, 250
@@ -90,20 +92,17 @@ WinNotificationInit(message, title, Width:=400)
     Gui, Add, Progress, % "x-1 y-1 w" (Width+2) " h31 Background404040 Disabled hwndHPROG"
     Gui, Add, Text, % "x0 y0 w" Width " h30 BackgroundTrans Center 0x200", %title%
     Gui, Font, s10
-    Gui, Add, Text, % "x7 y+10 Center w" (Width-14), %message%
+    Gui, Add, Text, % "x7 y+10 Center r2 w" (Width-14), %message%
 
-    pos := WinGetPosHide(hwnd)
+    pos := WinGetPosHide(hwnd)  
 
     Height := pos.height
-    ; TODO fix all dpi problem
-    ; dpi_fix := A_ScreenDPI/96
-    ; W := Width * dpi_fix
-    ; H := Height * dpi_fix
+    ;msgbox % pos.width
     WinSet, Region, 0-0 w%Width% h%Height% r6-6
     
     SysGet, Mon, MonitorWorkArea
     x := MonRight-pos.width-5
-    y := MonBottom-pos.height-25
+    y := MonBottom-pos.height-5
 
     return {"x":x, "y":y, "width":Width, "height":Height, "hwnd":hwnd}
 }
