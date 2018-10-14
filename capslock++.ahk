@@ -15,15 +15,18 @@ global Hyper, Flag, HyperAlt，HyperWin, FuncRunning
 
 ;-----------CapsLock key setting----------
 !Esc::
-Suspend
+Suspend, Permit
 if %A_IsSuspended%
 {
-    InfoMsg("Suspend the script")
+    Suspend
+    InfoMsg("Enable the script")
 }
 else
 {
-    InfoMsg("Enable the script")
+    InfoMsg("Suspend the script")
+    Suspend
 }
+
 return
 
 Capslock::
