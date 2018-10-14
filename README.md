@@ -86,6 +86,7 @@ TargetLanguage=zh ; for example, change this to es (spanish)
 ```
 
 __Surprising New Feature__
+
 Double Click To Translate
 - First press `Capslock + Alt + t` to enable/disable it.
 - Then double click a work, it will be translated!
@@ -212,6 +213,10 @@ TODO
 ## 2018/10/14 version 0.1.9
 - UI bug fix
 - Notify
+
+TODO
+- find and fix bugs
+- add intelligent search
 ## 2018/10/12 version 0.1.8
 this is not a stable version. i'm trying to make a better ui. next stable version will be 0.2.0
 - refine UI
