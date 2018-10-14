@@ -42,8 +42,8 @@ In the following part, I will ignore `capslock` in keyset.
 | o | move to end |
 | c | copy |
 | v | paste |
-| ↑ | volumne up |
-| ↓ | volumne down |
+| ↑ | volume up |
+| ↓ | volume down |
 | ← | prev virtual desktop |
 | → | next virtual desktop |
 | space | toggle window always on top |
@@ -62,7 +62,7 @@ Here follows the basic configuration in `HyperSettings.ini`
 Admin=0 ;run as admin
 Icon=hyper.ico
 ScriptMonitor=1 ;notify you about the changes of the scripts
-SettingMonitor=1 ;notify you about the chagnes of the setting
+SettingMonitor=1 ;notify you about the changes of the setting
 StartUp=1 ;start on windows start
 ```
 

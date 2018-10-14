@@ -197,12 +197,16 @@ GetReverseArray(arr)
     return rarr
 }
 ;-------http
-HttpGet(url, headers := "")
+HttpGet(url, headers := "", proxy := "") ;proxy 127.0.0.1:1080
 {
     try
     {
         whr := ComObjCreate("WinHttp.WinHttpRequest.5.1")
         whr.Open("GET", url, false)
+        If proxy
+        {
+            whr.SetProxy(2,proxy)
+        }
         if (headers != "")
         {
             for key, value in headers

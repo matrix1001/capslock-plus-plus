@@ -182,8 +182,8 @@ try
 {
     ; msgbox %func_name%
     FuncRunning := 1 ; avoid multiple capslock key confict
-    RunFunc(func_name)
     DebugMsg(Format("Key:{}`nFunc:{}", keyname, func_name))
+    RunFunc(func_name)
     FuncRunning := 0
 }
 catch e
@@ -202,15 +202,14 @@ if c=2
 {
     keyname := "hyper_" . "double_click"
     func_name := HyperSettings.Keymap[keyname]
-    RunThreadedFunc(func_name)
     DebugMsg(Format("Key:{}`nFunc:{}", keyname, func_name))
+    RunThreadedFunc(func_name)
 }
 return
 
 
 ;---------test
 !z::
-SuccessMsg("Start Capslock++")
 return
 
 
