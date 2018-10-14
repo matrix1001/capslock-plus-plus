@@ -26,10 +26,13 @@ WinNotification(message, title, delay:=3000) ;note: accept only two lines for me
     for index, val in records
     {
         ;msgbox %index%
-        hwnd := val.hwnd
-        y := val.y - prev_height
-        Gui, %hwnd%:Show, NoActivate y%y% 
-        prev_height += val.height
+        if (val.counter > 0)
+        {
+            hwnd := val.hwnd
+            y := val.y - prev_height
+            Gui, %hwnd%:Show, NoActivate  NA y%y% 
+            prev_height += val.height
+        }
     }
 
     ;show new notification
@@ -38,9 +41,20 @@ WinNotification(message, title, delay:=3000) ;note: accept only two lines for me
     Height := info.Height
     x := info.x
     y := info.y 
-    Gui, %hwnd%:Show, W%Width% H%Height% NoActivate Hide x%x% y%y%
-    WinFade(hwnd, "in", 100)
-    ;Gui, %hwnd%:Show, W%Width% H%Height% NoActivate x%x% y%y%
+    if StrEq(HyperSettings.Notify.Style, "fade")
+    {
+        Gui, %hwnd%:Show, W%Width% H%Height% NoActivate Hide x%x% y%y%
+        WinFade(hwnd, "in", 300)
+    }
+    else if StrEq(HyperSettings.Notify.Style, "slide")
+    {
+        Gui, %hwnd%:Show, W%Width% H%Height% NoActivate Hide x%x% y%y%
+        WinSlide(hwnd, "in", "r", 300)
+    }
+    else
+    {
+        Gui, %hwnd%:Show, W%Width% H%Height% NoActivate x%x% y%y%
+    }
 
     
     records.insertat(1, info)
@@ -64,17 +78,19 @@ WinNotification(message, title, delay:=3000) ;note: accept only two lines for me
     {
         if (val.counter < 0)
         {
-            WinFade(val.hwnd, "out", 100)
-            
-        }
-    }
-    for index, val in records
-    {
-        if (val.counter < 0)
-        {
             hwnd := val.hwnd
-            Gui, %hwnd%:Destroy
-            records.removeat(index)
+            if StrEq(HyperSettings.Notify.Style, "fade")
+            {
+                WinFade(hwnd, "out", 200)
+            }
+            else if StrEq(HyperSettings.Notify.Style, "slide")
+            {
+                WinSlide(hwnd, "out", "l", 200)
+            }
+            else
+            {
+                Gui, %hwnd%:Cancel
+            }
         }
     }
     return
@@ -107,7 +123,7 @@ WinNotificationInit(message, title, Width:=400)
     return {"x":x, "y":y, "width":Width, "height":Height, "hwnd":hwnd}
 }
 
-WinSlide(hwnd, method:="in", begin_pos:="b", delay:=500) ;0 for in, 1 for out, dir: l, r, u, d
+WinSlide(hwnd, method:="in", begin_pos:="b", delay:=500) ;direction: l, r, u, d
 {
     ;https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-animatewindow
     ;value := 0x40000+method*0x10000
@@ -139,7 +155,7 @@ WinSlide(hwnd, method:="in", begin_pos:="b", delay:=500) ;0 for in, 1 for out, d
     DllCall("AnimateWindow","UInt",hwnd,"Int",delay,"UInt",value)
     Return
 }
-WinFade(hwnd, method:="out", delay:=1000) ;0 for fade out, 1 for fade in
+WinFade(hwnd, method:="out", delay:=1000) 
 {
     if StrEq(method, "out")
     {
@@ -157,15 +173,15 @@ WinGetPosHide(hwnd, W:="", H:="")
 {
     if (W && H)
     {
-        Gui, %hwnd%:Show, Hide W%W% H%H%
+        Gui, %hwnd%:Show, NoActivate Hide W%W% H%H%
     }
     else if (W)
     {
-        Gui, %hwnd%:Show, Hide W%W%
+        Gui, %hwnd%:Show, NoActivate Hide W%W%
     }
     else if (H)
     {
-        Gui, %hwnd%:Show, Hide H%H%
+        Gui, %hwnd%:Show, NoActivate Hide H%H%
     }
         
     WinGetPos, x, y, width, height

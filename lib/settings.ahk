@@ -1,7 +1,16 @@
+global HyperSettings := {"Keymap":{}
+    , "TabHotString":{}
+    , "UserWindow":{}
+    , "Basic":{}
+    , "Trans":{}
+    , "Notify":{}
+    , "ScriptDir":["lib", "script"]
+    , "Includer":"lib\Includer.ahk"
+    , "SettingIni":["HyperSettings.ini", "HyperWinSettings.ini"]
+    , "Notifications":[]}
+
 #Include lib/BasicFunc.ahk
 #Include lib/Gui.ahk
-
-
 
 ; main 
 
@@ -15,6 +24,7 @@ if not FileExist(HyperSettings.Includer)
 {
     ScriptReload()
 }
+SuccessMsg("Start Capslock++")
 #Include *i lib/Includer.ahk
 
 ; end
@@ -33,7 +43,8 @@ InitSettings()
         DefaultKeySettings()
         DefaultBasicSettings()
         DefaultHotStringSettings()
-        DefualtTransSettings()
+        DefaultTransSettings()
+        DefaultNotifySettings()
         SaveSettings()
     }
 
@@ -61,7 +72,7 @@ LoadSettings()
     ; basic load
     Basic := HyperSettings.Basic
     ;; startup 
-    if Basic.StartUp = 1
+    if (Basic.StartUp = 1)
     {
         autostartLnk:=A_Startup . "\capsLock++.lnk"
         if FileExist(autostartLnk)
@@ -90,7 +101,7 @@ LoadSettings()
         }
     }
     ;; admin
-    if Basic.Admin = 1
+    if (Basic.Admin = 1)
     {
         if not A_IsAdmin ;running by administrator
         {
@@ -105,7 +116,7 @@ LoadSettings()
         menu, TRAY, Icon,  %icon%, , 0
     }
     ;; settingmonitor
-    if Basic.SettingMonitor = 1
+    if (Basic.SettingMonitor = 1)
     {
         SetTimer, SettingMonitor, 1000
     }
@@ -114,7 +125,7 @@ LoadSettings()
         SetTimer, SettingMonitor, off
     }
     ;; scriptmonitor
-    if Basic.ScriptMonitor = 1
+    if (Basic.ScriptMonitor = 1)
     {
         SetTimer, ScriptMonitor, 1000
     }
@@ -124,8 +135,16 @@ LoadSettings()
     }
      
     ;; notification
-
-    SetTimer, NotificationMonitor, 250
+    Notify := HyperSettings.Notify
+    if (Notify.Enable = 1)
+    {
+        SetTimer, NotificationMonitor, 250
+    }
+    else
+    {
+        SetTimer, NotificationMonitor, off
+    }
+    
 }
 ScriptMonitor()
 {
@@ -259,6 +278,7 @@ ReadSettings()
     ReadSetting("TabHotString")
     ReadSetting("Basic")
     ReadSetting("Trans")
+    ReadSetting("Notify")
 }
 ReadSetting(sec)
 {
@@ -278,6 +298,7 @@ SaveSettings()
     SaveSetting("TabHotString")
     SaveSetting("Basic")
     SaveSetting("Trans")
+    SaveSetting("Notify")
 }
 SaveSetting(sec)
 {
@@ -429,11 +450,12 @@ DefaultBasicSettings()
     HyperSettings.Basic.Icon := "hyper.ico"
     HyperSettings.Basic.SettingMonitor := 1
     HyperSettings.Basic.ScriptMonitor := 1
-
-    HyperSettings.Basic.DebugMsg := 0
-    HyperSettings.Basic.SuccessMsg := 1
-    HyperSettings.Basic.WarningMsg := 1
-    HyperSettings.Basic.InfoMsg := 1
+}
+DefaultNotifySettings()
+{
+    HyperSettings.Notify.Enable := 1
+    HyperSettings.Notify.Style := "slide" ; fade/none/slide
+    HyperSettings.Notify.MsgLevel := 1  ;0 for debug, 1 for info, 2 for succ/warning
 }
 DefaultHotStringSettings()
 {
@@ -442,7 +464,7 @@ DefaultHotStringSettings()
     HyperSettings.TabHotString["date2"] := "<GetDateTime(""yyyy-M-d"")>"
     HyperSettings.TabHotString["cmain"] := "int main(int *argc, char **argv)"
 }
-DefualtTransSettings()
+DefaultTransSettings()
 {
     HyperSettings.Trans.SourceLanguage := "auto"
     HyperSettings.Trans.TargetLanguage := "zh"

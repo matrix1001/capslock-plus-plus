@@ -1,13 +1,5 @@
 ; #InstallKeybdHook
-global HyperSettings := {"Keymap":{}
-    , "TabHotString":{}
-    , "UserWindow":{}
-    , "ScriptDir":["lib", "script"]
-    , "Includer":"lib\Includer.ahk"
-    , "SettingIni":["HyperSettings.ini", "HyperWinSettings.ini"]
-    , "Basic":{}
-    , "Trans":{}
-    , "Notifications":[]}
+
 ;---------
 SetCapsLockState, AlwaysOff 
 Process Priority,,High
@@ -17,7 +9,7 @@ SetWinDelay, 0
 global Hyper, Flag, HyperAlt，HyperWin, FuncRunning
 
 ;include should be put at last
-SuccessMsg("Start Capslock++")
+;
 #Include lib/Settings.ahk
 
 
@@ -25,9 +17,13 @@ SuccessMsg("Start Capslock++")
 !Esc::
 Suspend
 if %A_IsSuspended%
+{
     InfoMsg("Suspend the script")
+}
 else
+{
     InfoMsg("Enable the script")
+}
 return
 
 Capslock::
@@ -211,14 +207,7 @@ return
 
 ;---------test
 !z::
-WinNotification("msg1`na`na`n", "title1")
-sleep 500
-WinNotification("title2", "msg1`n`naaa", 6000)
-sleep 500
-WinNotification("title3", "msg1`n`naaa")
-sleep 500
-WinNotification("title4", "msg1`n`naaa")
-WinNotification("title4", "msg1`n`naaa")
+SuccessMsg("Start Capslock++")
 return
 
 

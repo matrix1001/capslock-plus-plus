@@ -243,11 +243,11 @@ HotKeyCounter(timeout := 500)
 ErrorMsg(e="", msg="")
 {
     err_msg := "ERROR`n`n"
-    if msg
+    if (msg)
     {
         err_msg .= "Function msg:`n" . msg . "`n`n"
     }
-    if e
+    if (e)
     {
         err_msg .= "Exception:`nwhat: " e.what "`nfile: " e.file
             . "`nline: " e.line "`nmessage: " e.message "`nextra: " e.extra
@@ -259,39 +259,37 @@ ErrorMsg(e="", msg="")
 
 SuccessMsg(msg)
 {
-    if HyperSettings.Basic.SuccessMsg = 0
+    if (HyperSettings.Notify.MsgLevel <= 2)
     {
-        return
+        AddNotification(msg, "SUCCESS")
     } 
-    AddNotification(msg, "SUCCESS")
 }
 WarningMsg(msg)
 {
-    if HyperSettings.Basic.WarningMsg = 0 
+    if (HyperSettings.Notify.MsgLevel <= 2)
     {
-        return
+        AddNotification(msg, "WARNING", 6000)
     } 
-    AddNotification(msg, "WARNING", 6000)
 }
 InfoMsg(msg)
 {
-    if HyperSettings.Basic.InfoMsg = 0
+    if (HyperSettings.Notify.MsgLevel <= 1)
     {
-        return
+        AddNotification(msg, "INFO")
     } 
-    AddNotification(msg, "INFO")
 }
 DebugMsg(msg)
 {
-    if HyperSettings.Basic.DebugMsg = 0
+    if (HyperSettings.Notify.MsgLevel = 0)
     {
-        return
+        AddNotification(msg, "DEBUG")
     }
-    AddNotification(msg, "DEBUG")
-    return
 }
 AddNotification(msg, title:="", delay:=3000)
 {
-    noti := {"msg":msg, "title":title, "delay":delay}
-    HyperSettings.Notifications.insertat(1, noti)
+    if (not A_IsSuspended)
+    {
+        noti := {"msg":msg, "title":title, "delay":delay}
+        HyperSettings.Notifications.insertat(1, noti)
+    }
 }
