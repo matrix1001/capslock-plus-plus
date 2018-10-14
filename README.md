@@ -3,6 +3,8 @@
 
 Amazing, extendable, readable `autohotkey` scripts framework utilized by `Capslock`.
 
+Original core concept is to make your `Capslock` key as a new `fn`. You have to install [AutoHotkey](https://autohotkey.com/) first. 
+
 __New Features__
 - double click to translate!
 - new notification UI (Notify) !
