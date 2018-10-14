@@ -4,14 +4,14 @@
 
 WinNotification(message, title, delay:=3000) ;note: accept only two lines for message
 {
-    static records := [], max:=5
+    static records := []
 
     ;turn off threads to avoid race condition
     SetTimer, notichecker, off
     SetTimer, noticounter, off
  
     ;max notification limit
-    while (records.count() >= max)
+    while (records.count() >= HyperSettings.Notify.Max)
     {
         val := records.pop()
         hwnd := val.hwnd

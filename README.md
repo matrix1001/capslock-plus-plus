@@ -5,13 +5,14 @@ Amazing, extendable, readable `autohotkey` scripts framework utilized by `Capslo
 
 __New Features__
 - double click to translate!
-- new notification UI!
+- new notification UI (Notify) !
 # Feature
 - Plug in and play
 - Function based script
 - Translation
 - WindowSwitch
 - Tabscript
+- Notify
 - Autoload configuration and script
   
 This project is in progress. Other fantastic funtions will be joined.
@@ -57,14 +58,10 @@ Here follows the basic configuration in `HyperSettings.ini`
 ```ini
 [Basic]
 Admin=0 ;run as admin
-DebugMsg=0 ;debug msg, check it by your selt
 Icon=hyper.ico
-InfoMsg=1
 ScriptMonitor=1 ;notify you about the changes of the scripts
 SettingMonitor=1 ;notify you about the chagnes of the setting
 StartUp=1 ;start on windows start
-SuccessMsg=1
-WarningMsg=1
 ```
 
 ## Translation
@@ -181,7 +178,20 @@ Also multiple functions call is supported.
 If you want to add your TabScript into it, just change HyperSettings.ini. If you need other function, check `UserScript` in `Usage`.
 
 
+## Notify
+Notify is a notification UI. Configuration is simple.
+```ini
+[Notify]
+Enable=1
+MsgLevel=1
+Style=slide
+Max=5
+```
+About `MsgLevel`, set `0` to show all notifications including `DEBUG`. However, sometimes it is annoying. Set to `1` to show all necessary notifications including `INFO`, `SUCCESS` and `WARNING`. Set to `2` to show `SUCCESS` and `WARNING`. Higher number means no notification will show up (Same as setting `Enable` to `0`).
 
+About `Style`, I have implemented three styles for you. `slide` means the notification will slide in ane slide out. `fade` means fade in and fade out. `none` means no any effect. 
+
+About `Max`, `5` is enough for you to use. It is useful when you need to use `DEBUG` mode.
 ## UserScript
 Now if want to put your script into `capslock++.ahk`, your have to follow these:
 - All scripts should not use `global`. If your global variable is important, put them into `HyperSettings` (check `settings.ahk`). However, if you insist to use `global`, there is little chance to get you into trouble.
@@ -199,6 +209,9 @@ Any modification of `ahk` script (scripts in `lib` and `script`, and `capslock++
 TODO
 
 # Devlog
+## 2018/10/14 version 0.1.9
+- UI bug fix
+- Notify
 ## 2018/10/12 version 0.1.8
 this is not a stable version. i'm trying to make a better ui. next stable version will be 0.2.0
 - refine UI

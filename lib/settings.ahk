@@ -456,6 +456,7 @@ DefaultNotifySettings()
     HyperSettings.Notify.Enable := 1
     HyperSettings.Notify.Style := "slide" ; fade/none/slide
     HyperSettings.Notify.MsgLevel := 1  ;0 for debug, 1 for info, 2 for succ/warning
+    HyperSettings.Notify.Max := 5
 }
 DefaultHotStringSettings()
 {
