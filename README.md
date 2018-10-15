@@ -190,7 +190,7 @@ MsgLevel=1
 Style=slide
 Max=5
 ```
-About `MsgLevel`, set `0` to show all notifications including `DEBUG`. However, sometimes it is annoying. Set to `1` to show all necessary notifications including `INFO`, `SUCCESS` and `WARNING`. Set to `2` to show `SUCCESS` and `WARNING`. Higher number means no notification will show up (Same as setting `Enable` to `0`).
+About `MsgLevel`, set `0` to show all notifications including `DEBUG`. However, sometimes it is annoying. Set to `1` to show all necessary notifications including `INFO`, `SUCCESS` and `WARNING`. Set to `2` to show only `WARNING`. Higher number means no notification will show up (Same as setting `Enable` to `0`).
 
 About `Style`, I have implemented three styles for you. `slide` means the notification will slide in ane slide out. `fade` means fade in and fade out. `none` means no any effect. 
 

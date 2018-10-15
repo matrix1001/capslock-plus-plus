@@ -13,10 +13,11 @@ GoogleSuggest(query)
     url := Format("http://suggestqueries.google.com/complete/search?output=firefox&q={}", query)
     ;msgbox %url%
     header := {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36"}
-    response := HttpGet(url, header, "127.0.0.1:1080")
+    ;response := HttpGet(url, header, "127.0.0.1:1080")
+    response := HttpGet(url, header)
     try
     {
-        ;msgbox %response%
+        msgbox %response%
         json_obj := JSON.Load(response)
         ;msgbox % json_obj[1]
 

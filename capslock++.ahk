@@ -178,10 +178,12 @@ else if (HyperWin = 1)
 }
 keyname := "hyper_" . keyname
 func_name := HyperSettings.Keymap[keyname]
+Critical
 try
 {
     ; msgbox %func_name%
     FuncRunning := 1 ; avoid multiple capslock key confict
+    
     DebugMsg(Format("Key:{}`nFunc:{}", keyname, func_name))
     RunFunc(func_name)
     FuncRunning := 0
@@ -192,6 +194,7 @@ catch e
 }
 
 Flag := 1
+Critical, off
 Return
 
 #If
@@ -210,6 +213,15 @@ return
 
 ;---------test
 !z::
+InfoMsg("start")
+r := GoogleSuggest("tes")
+for index, value in r
+{
+    msgbox %value%
+}
+InfoMsg("end")
+
+
 return
 
 

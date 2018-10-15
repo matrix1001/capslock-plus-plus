@@ -197,12 +197,13 @@ GetReverseArray(arr)
     return rarr
 }
 ;-------http
-HttpGet(url, headers := "", proxy := "") ;proxy 127.0.0.1:1080
+HttpGet(url, headers := "", proxy := "", timeout := 500) ;proxy 127.0.0.1:1080
 {
     try
     {
         whr := ComObjCreate("WinHttp.WinHttpRequest.5.1")
         whr.Open("GET", url, false)
+        whr.SetTimeouts(0, timeout, timeout, timeout)
         If proxy
         {
             whr.SetProxy(2,proxy)
@@ -263,7 +264,7 @@ ErrorMsg(e="", msg="")
 
 SuccessMsg(msg)
 {
-    if (HyperSettings.Notify.MsgLevel <= 2)
+    if (HyperSettings.Notify.MsgLevel <= 1)
     {
         AddNotification(msg, "SUCCESS")
     } 
