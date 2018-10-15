@@ -5,6 +5,8 @@ SetCapsLockState, AlwaysOff
 Process Priority,,High
 DetectHiddenWindows, On
 SetWinDelay, 0
+SetKeyDelay, 0
+SendMode, Input
 
 global Hyper, Flag, HyperAlt，HyperWin, FuncRunning
 
@@ -213,15 +215,9 @@ return
 
 ;---------test
 !z::
-InfoMsg("start")
-r := GoogleSuggest("tes")
-for index, value in r
-{
-    msgbox %value%
-}
-InfoMsg("end")
-
-
+a := []
+if (a.count() = 0)
+    msgbox test
 return
 
 
