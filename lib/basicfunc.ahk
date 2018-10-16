@@ -97,12 +97,12 @@ GetSelText()
     Clipboard:=""
     SendInput, ^{insert}
     ClipWait, 0.1
-    if(!ErrorLevel)
+    if (!ErrorLevel)
     {
         selText:=Clipboard
         Clipboard:=ClipboardOld
         StringRight, lastChar, selText, 1
-        if(Asc(lastChar)!=10) ;如果最后一个字符是换行符，就认为是在IDE那复制了整行，不要这个结果
+        if (Asc(lastChar)!=10) ;last char is `n, it's the IDE selected the whole line
         {
             return selText
         }

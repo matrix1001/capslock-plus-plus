@@ -14,18 +14,15 @@ global HyperSettings := {"Keymap":{}
 #Include lib/Gui.ahk
 
 ; main 
-
-
 InitSettings()
 
-
-
-; this must be put at last , because userscript may stuck
 if not FileExist(HyperSettings.Includer)
 {
     ScriptReload()
 }
 SuccessMsg("Start Capslock++")
+
+; this must be put at last , because userscript may stuck
 #Include *i lib/Includer.ahk
 
 ; end
@@ -45,14 +42,10 @@ InitSettings()
         SaveSettings()
     }
 
-    ; for window
+    ; for hyper switch
     if FileExist("HyperSwitchSettings.ini")
     {
         ReadSwitchSettings()
-        ;for key, value in HyperSettings.Switch
-        ;{
-        ;    msgbox %key%
-        ;}`
     }
     else
     {
@@ -64,7 +57,7 @@ InitSettings()
 }
 LoadSettings()
 {
-    ; window load
+    ; switch key load
     MapSwitchKey()
     ; basic load
     Basic := HyperSettings.Basic
@@ -216,7 +209,7 @@ GenIncluder(dirs, dst_file)
             Continue
         }
             
-        line := Format("#Include {1}`n", filename)
+        line := Format("#Include *i {1}`n", filename)
         content .= line
     }
     ; msgbox write to %dst_file%
