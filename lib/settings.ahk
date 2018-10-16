@@ -1,12 +1,12 @@
 global HyperSettings := {"Keymap":{}
-    , "TabHotString":{}
-    , "UserWindow":{}
+    , "Tab":{}
+    , "Switch":{}
     , "Basic":{}
     , "Trans":{}
     , "Notify":{}
     , "ScriptDir":["lib", "script"]
     , "Includer":"lib\Includer.ahk"
-    , "SettingIni":["HyperSettings.ini", "HyperWinSettings.ini"]
+    , "SettingIni":["HyperSettings.ini", "HyperSwitchSettings.ini"]
     , "Notifications":[]
     , "RunTime":{"AutoComplete": 0}}
 
@@ -50,17 +50,17 @@ InitSettings()
     }
 
     ; for window
-    if FileExist("HyperWinSettings.ini")
+    if FileExist("HyperSwitchSettings.ini")
     {
         ReadWinSettings()
-        ;for key, value in HyperSettings.UserWindow
+        ;for key, value in HyperSettings.Switch
         ;{
         ;    msgbox %key%
         ;}`
     }
     else
     {
-        InfoMsg("HyperWinSettings.ini not found, using default")
+        InfoMsg("HyperSwitchSettings.ini not found, using default")
         DefaultWinSettings()
         SaveWinSettings()
     }
@@ -69,7 +69,7 @@ InitSettings()
 LoadSettings()
 {
     ; window load
-    MapUserWindowKey()
+    MapSwitchKey()
     ; basic load
     Basic := HyperSettings.Basic
     ;; startup 
@@ -276,7 +276,7 @@ NotificationMonitor()
 ReadSettings()
 {
     ReadSetting("Keymap")
-    ReadSetting("TabHotString")
+    ReadSetting("Tab")
     ReadSetting("Basic")
     ReadSetting("Trans")
     ReadSetting("Notify")
@@ -296,7 +296,7 @@ ReadSetting(sec)
 SaveSettings()
 {
     SaveSetting("Keymap")
-    SaveSetting("TabHotString")
+    SaveSetting("Tab")
     SaveSetting("Basic")
     SaveSetting("Trans")
     SaveSetting("Notify")
@@ -324,16 +324,16 @@ AssignSetting(key, val, sec)
 
 ReadWinSettings()
 {
-    IniRead, OutputVarSectionNames, HyperWinSettings.ini
+    IniRead, OutputVarSectionNames, HyperSwitchSettings.ini
     OutputVarSectionNames := StrSplit(OutputVarSectionNames, "`n")
     for index, appname in OutputVarSectionNames
     {
-        IniRead, typ, HyperWinSettings.ini, %appname%, typ
-        IniRead, key, HyperWinSettings.ini, %appname%, key
-        IniRead, exe, HyperWinSettings.ini, %appname%, exe
-        IniRead, id, HyperWinSettings.ini, %appname%, id
+        IniRead, typ, HyperSwitchSettings.ini, %appname%, typ
+        IniRead, key, HyperSwitchSettings.ini, %appname%, key
+        IniRead, exe, HyperSwitchSettings.ini, %appname%, exe
+        IniRead, id, HyperSwitchSettings.ini, %appname%, id
         ;msgbox %appname%, %typ%, %key%, %exe%, %id%
-        HyperSettings.UserWindow[appname] := {"typ":typ
+        HyperSettings.Switch[appname] := {"typ":typ
             ,"key":key
             ,"exe":exe
             ,"id":id}
@@ -341,17 +341,17 @@ ReadWinSettings()
 }
 SaveWinSettings()
 {
-    for name, content in HyperSettings.UserWindow
+    for name, content in HyperSettings.Switch
     {
         for key, val in content
         {
-            IniWrite, % val, HyperWinSettings.ini, %name%, % key
+            IniWrite, % val, HyperSwitchSettings.ini, %name%, % key
         }
     }
 }
-MapUserWindowKey()
+MapSwitchKey()
 {
-    for appname, value in HyperSettings.UserWindow
+    for appname, value in HyperSettings.Switch
     {
         key := "hyper_" . value["key"]
         func_name := Format("Window{1}(""{2}"",""{3}"")", value["typ"], value["id"], value["exe"])
@@ -368,7 +368,7 @@ MapUserWindowKey()
 ; default setting
 DefaultWinSettings()
 {
-    HyperSettings.UserWindow := {"Chrome":{"key":"a"
+    HyperSettings.Switch := {"Chrome":{"key":"a"
                                 ,"typ":"B"
                                 ,"id":"ahk_class Chrome_WidgetWin_1 ahk_exe chrome.exe"
                                 ,"exe":"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"}
@@ -461,10 +461,10 @@ DefaultNotifySettings()
 }
 DefaultHotStringSettings()
 {
-    HyperSettings.TabHotString["sample"] := "this is a TabHotString sample"
-    HyperSettings.TabHotString["date1"] := "<GetDateTime>"
-    HyperSettings.TabHotString["date2"] := "<GetDateTime(""yyyy-M-d"")>"
-    HyperSettings.TabHotString["cmain"] := "int main(int *argc, char **argv)"
+    HyperSettings.Tab["sample"] := "this is a Tab sample"
+    HyperSettings.Tab["date1"] := "<GetDateTime>"
+    HyperSettings.Tab["date2"] := "<GetDateTime(""yyyy-M-d"")>"
+    HyperSettings.Tab["cmain"] := "int main(int *argc, char **argv)"
 }
 DefaultTransSettings()
 {

@@ -1,5 +1,5 @@
 #Include lib/BasicFunc.ahk
-#Include lib/Trans.ahk
+#Include lib/HyperTrans.ahk
 ;lst := ["www.google.com"
 ;    ,"http://www.baidu.com"
 ;    ,"https://git.io"

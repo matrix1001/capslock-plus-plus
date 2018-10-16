@@ -8,18 +8,19 @@ Original core concept is to make your `Capslock` key as a new `fn`. You have to 
 __New Features__
 - Intelligent Search! 
 - AutoComplete && autosuggest (experimental, no access for common user)
+
+__Notice__
+This project is updating very quickly. If you pulled the latest version, *remember* to delete the old `ini` files in order to load new ones to gain new features.
+
 # Feature
-- Plug in and play
-- Function based script
-- Translation
-- WindowSwitch
-- Tabscript
-- Notify
-- Autoload configuration and script
+- Plug in and play & Function based script & Easy to read
+- HyperTrans (translation)
+- HyperSwitch (switch windows quickly)
+- HyperTab (intelligent replace text)
+- HyperSearch (intelligent search)
+- HyperNotify (amazing UI for notification)
   
 This project is in progress. Other fantastic funtions will be joined.
-# Update
-This project is updating very quickly. If you pulled the latest version, remember to delete the old `ini` files in order to load new ones to gain new features.
 # Usage
 ## Basic
 Basic usage is according to the default settings. If you are not starter of `AHK`, just ignore this. These settings are in `HyperSettings.ini`.
@@ -48,7 +49,8 @@ In the following part, I will ignore `capslock` in keyset.
 | → | next virtual desktop |
 | space | toggle window always on top |
 | 1,2,3,4,5 | window bind |
-| tab | tab script |
+| tab | hyper tab |
+| s | hyper search |
 | t | google translate |
 | alt+s | reload settings |
 | alt+r | reload script |
@@ -66,7 +68,7 @@ SettingMonitor=1 ;notify you about the changes of the setting
 StartUp=1 ;start on windows start
 ```
 
-## Translation
+## HyperTrans
 Default translation is triggered by `Capslock + t`. You have to select a word or a sentense at first.
 
 Here's some examples for you to test.
@@ -91,9 +93,9 @@ __Surprising New Feature__
 
 Double Click To Translate
 - First press `Capslock + Alt + t` to enable/disable it.
-- Then double click a work, it will be translated!
-## WindowSwitch
-WindowSwitch is designed for quick switch between multiple windows. Extremely good for those who need to work with multiple window applications.
+- Then double click a word, it will be translated!
+## HyperSwitch
+HyperSwitch is designed for quick switch between multiple windows. Extremely good for those who need to work with multiple window applications.
 
 I have implemented 2 types of window switch functions.
 
@@ -146,13 +148,13 @@ To clear a window bind, you got two ways.
 - Press `Casplock + -`, then its binded key
 
 I only assign 5 `WindowC` by default. It supports at most 10 window. But I guess you will never use that much.
-## TabScript
-TabScript helps you to auto complete some long strings with simple words, triggerd by `CapsLock + Tab`.
+## HyperTab
+HyperTab helps you to auto complete some long strings with simple words, triggerd by `CapsLock + Tab`.
 
 Take a look at default HyperSetting.ini, you will find this
 ```ini
-[TabHotString]
-sample=this is a TabHotString sample
+[Tab]
+sample=this is a Tab sample
 date1=<GetDateTime>
 date2=<GetDateTime("yyyy-M-d")>
 ```
@@ -178,11 +180,11 @@ Example
 ```
 Also multiple functions call is supported.
 
-If you want to add your TabScript into it, just change HyperSettings.ini. If you need other function, check `UserScript` in `Usage`.
+If you want to add your HotString into it, just change HyperSettings.ini. If you need other function, check `UserScript` in `Usage`.
 
 
-## Notify
-Notify is a notification UI. Configuration is simple.
+## HyperNotify
+HyperNotify is a notification UI. Configuration is simple.
 ```ini
 [Notify]
 Enable=1
@@ -274,8 +276,8 @@ TODO:
 - add more option like `icon`, `admin` in INI file
 - add windowswitch usage to readme
 ## 2018/10/6 version 0.1.2
-- add function support to tabscript
-- add tabscript usage to readme
+- add function support to HyperTab
+- add HyperTab usage to readme
 ## 2018/10/5 version 0.1.1
 - add desktoputil
 - better autoloader and settingwatcher
