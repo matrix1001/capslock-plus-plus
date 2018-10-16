@@ -234,6 +234,11 @@ TODO
 still not a stable version due to new feature
 - experimental autocomplete and its suggestion list box
 - HyperSearch
+
+TODO
+- refine framework itself for better support of future features
+- bug, bug, bug. I can't find them all on my own!!! Please help
+- finish autocomplete and hypersearch
 ## 2018/10/14 version 0.1.9
 - UI bug fix
 - Notify

@@ -4,6 +4,7 @@ global HyperSettings := {"Keymap":{}
     , "Basic":{}
     , "Trans":{}
     , "Notify":{}
+    , "SettingSections":["Basic", "Trans", "Notify", "Tab", "Keymap"]
     , "ScriptDir":["lib", "script"]
     , "Includer":"lib\Includer.ahk"
     , "SettingIni":["HyperSettings.ini", "HyperSwitchSettings.ini"]
@@ -40,18 +41,14 @@ InitSettings()
     else
     {
         InfoMsg("HyperSettings.ini not found, using default")
-        DefaultKeySettings()
-        DefaultBasicSettings()
-        DefaultHotStringSettings()
-        DefaultTransSettings()
-        DefaultNotifySettings()
+        DefaultSettings()
         SaveSettings()
     }
 
     ; for window
     if FileExist("HyperSwitchSettings.ini")
     {
-        ReadWinSettings()
+        ReadSwitchSettings()
         ;for key, value in HyperSettings.Switch
         ;{
         ;    msgbox %key%
@@ -60,8 +57,8 @@ InitSettings()
     else
     {
         InfoMsg("HyperSwitchSettings.ini not found, using default")
-        DefaultWinSettings()
-        SaveWinSettings()
+        DefaultSwitchSettings()
+        SaveSwitchSettings()
     }
     LoadSettings()
 }
@@ -274,11 +271,10 @@ NotificationMonitor()
 ; functions for HyperSetting.ini
 ReadSettings()
 {
-    ReadSetting("Keymap")
-    ReadSetting("Tab")
-    ReadSetting("Basic")
-    ReadSetting("Trans")
-    ReadSetting("Notify")
+    for index, sec in HyperSettings.SettingSections
+    {
+        ReadSetting(sec)
+    }
 }
 ReadSetting(sec)
 {
@@ -294,11 +290,10 @@ ReadSetting(sec)
 }
 SaveSettings()
 {
-    SaveSetting("Keymap")
-    SaveSetting("Tab")
-    SaveSetting("Basic")
-    SaveSetting("Trans")
-    SaveSetting("Notify")
+    for index, sec in HyperSettings.SettingSections
+    {
+        SaveSetting(sec)
+    }
 }
 SaveSetting(sec)
 {
@@ -321,7 +316,7 @@ AssignSetting(key, val, sec)
 }
 ; functions for HyperWinSetting.ini
 
-ReadWinSettings()
+ReadSwitchSettings()
 {
     IniRead, OutputVarSectionNames, HyperSwitchSettings.ini
     OutputVarSectionNames := StrSplit(OutputVarSectionNames, "`n")
@@ -338,7 +333,7 @@ ReadWinSettings()
             ,"id":id}
     }
 }
-SaveWinSettings()
+SaveSwitchSettings()
 {
     for name, content in HyperSettings.Switch
     {
@@ -365,7 +360,7 @@ MapSwitchKey()
 
 
 ; default setting
-DefaultWinSettings()
+DefaultSwitchSettings()
 {
     HyperSettings.Switch := {"Chrome":{"key":"a"
                                 ,"typ":"B"
@@ -392,8 +387,9 @@ DefaultWinSettings()
                                 ,"id":"ahk_class NeteaseYoudaoYNoteMainWnd"
                                 ,"exe":"C:\Program Files (x86)\Youdao\YoudaoNote\YoudaoNote.exe"}}
 }
-DefaultKeySettings()
+DefaultSettings()
 {
+    ;keymap
     HyperSettings.Keymap.hyper_wheelup := "VolumeUp"
     HyperSettings.Keymap.hyper_wheeldown := "VolumeDown"
 
@@ -442,31 +438,27 @@ DefaultKeySettings()
 
     HyperSettings.Keymap.hyper_double_click := "GoogleTransDoubleClick"
     HyperSettings.Keymap.hyper_alt_t := "GoogleTransDoubleClick(1)"
-}
-DefaultBasicSettings()
-{
+
+    ;basic
     HyperSettings.Basic.StartUp := 1
     HyperSettings.Basic.Admin := 0
     HyperSettings.Basic.Icon := "hyper.ico"
     HyperSettings.Basic.SettingMonitor := 1
     HyperSettings.Basic.ScriptMonitor := 1
-}
-DefaultNotifySettings()
-{
+
+    ;notify
     HyperSettings.Notify.Enable := 1
     HyperSettings.Notify.Style := "slide" ; fade/none/slide
     HyperSettings.Notify.MsgLevel := 1  ;0 for debug, 1 for info, 2 for succ/warning
     HyperSettings.Notify.Max := 5
-}
-DefaultHotStringSettings()
-{
+
+    ;tab
     HyperSettings.Tab["sample"] := "this is a Tab sample"
     HyperSettings.Tab["date1"] := "<GetDateTime>"
     HyperSettings.Tab["date2"] := "<GetDateTime(""yyyy-M-d"")>"
     HyperSettings.Tab["cmain"] := "int main(int *argc, char **argv)"
-}
-DefaultTransSettings()
-{
+
+    ;trans
     HyperSettings.Trans.SourceLanguage := "auto"
     HyperSettings.Trans.TargetLanguage := "zh"
 }
@@ -482,6 +474,6 @@ SettingReload()
 {
     InfoMsg("Reload Settings")
     ReadSettings()
-    ReadWinSettings()
+    ReadSwitchSettings()
     LoadSettings()
 }
