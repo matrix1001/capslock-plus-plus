@@ -152,6 +152,11 @@ GoogleTrans(content, src := "auto", dst := "zh")
 GoogleTransSel()
 {
     content := GetSelText()
+    GoogleTransToolTip(content)
+
+}
+GoogleTransToolTip(content)
+{
     result := GoogleTrans(content, HyperSettings.Trans.SourceLanguage, HyperSettings.Trans.TargetLanguage)
     if result
     {
@@ -161,8 +166,8 @@ GoogleTransSel()
     {
         msg := "error"
     }
+    ;msgbox %content% -> %result%
     OnMouseToolTip(msg)
-
 }
 GoogleTransDoubleClick(toggle := 0)
 {

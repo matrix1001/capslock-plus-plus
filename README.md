@@ -6,8 +6,8 @@ Amazing, extendable, readable `autohotkey` scripts framework utilized by `Capslo
 Original core concept is to make your `Capslock` key as a new `fn`. You have to install [AutoHotkey](https://autohotkey.com/) first. 
 
 __New Features__
-- double click to translate!
-- new notification UI (Notify) !
+- Intelligent Search! 
+- AutoComplete && autosuggest (experimental, no access for common user)
 # Feature
 - Plug in and play
 - Function based script
@@ -195,6 +195,22 @@ About `MsgLevel`, set `0` to show all notifications including `DEBUG`. However, 
 About `Style`, I have implemented three styles for you. `slide` means the notification will slide in ane slide out. `fade` means fade in and fade out. `none` means no any effect. 
 
 About `Max`, `5` is enough for you to use. It is useful when you need to use `DEBUG` mode.
+
+## HyperSearch
+HyperSearch is designed for intelligent search for the selected text, triggered by `Capsloc + s`.
+Here's some examples
+```
+www.baidu.com
+c:\
+c:\users
+d:\test.txt
+word
+this is a sentence
+```
+For web url, HyperSearch will open it in your default web browser. For file or folder, it will open it by your default program (notepad for .txt file, for example). For word or sentence, it will trigger translation.
+
+Futurer features are incoming.
+
 ## UserScript
 Now if want to put your script into `capslock++.ahk`, your have to follow these:
 - All scripts should not use `global`. If your global variable is important, put them into `HyperSettings` (check `settings.ahk`). However, if you insist to use `global`, there is little chance to get you into trouble.
@@ -212,6 +228,10 @@ Any modification of `ahk` script (scripts in `lib` and `script`, and `capslock++
 TODO
 
 # Devlog
+## 2018/10/16 version 0.2.0
+still not a stable version due to new feature
+- experimental autocomplete and its suggestion list box
+- HyperSearch
 ## 2018/10/14 version 0.1.9
 - UI bug fix
 - Notify

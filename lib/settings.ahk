@@ -7,7 +7,8 @@ global HyperSettings := {"Keymap":{}
     , "ScriptDir":["lib", "script"]
     , "Includer":"lib\Includer.ahk"
     , "SettingIni":["HyperSettings.ini", "HyperWinSettings.ini"]
-    , "Notifications":[]}
+    , "Notifications":[]
+    , "RunTime":{"AutoComplete": 0}}
 
 #Include lib/BasicFunc.ahk
 #Include lib/Gui.ahk
@@ -430,7 +431,7 @@ DefaultKeySettings()
 
     HyperSettings.Keymap.hyper_tab := "HyperTab"
 
-    HyperSettings.Keymap.hyper_s := "AppWox"
+    HyperSettings.Keymap.hyper_s := "HyperSearch"
     HyperSettings.Keymap.hyper_t := "GoogleTransSel"
 
     HyperSettings.Keymap.hyper_alt_1 := "switchDesktopByNumber(1)"

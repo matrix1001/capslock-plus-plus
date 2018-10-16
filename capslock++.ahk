@@ -3,10 +3,11 @@
 ;---------
 SetCapsLockState, AlwaysOff 
 Process Priority,,High
-DetectHiddenWindows, On
+;DetectHiddenWindows, On
 SetWinDelay, 0
 SetKeyDelay, 0
 SendMode, Input
+CoordMode, Caret
 
 global Hyper, Flag, HyperAlt，HyperWin, FuncRunning
 
@@ -215,12 +216,7 @@ return
 
 ;---------test
 !z::
-a := []
-if (a.count() = 0)
-    msgbox test
+
 return
-
-
-
 
 
