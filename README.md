@@ -1,4 +1,4 @@
-<div style="text-align:center"><img src ="hyper.ico" /></div>
+<span style="display:block;text-align:center">![ico](hyper.ico)</span>
 
 # CapsLock++
 
