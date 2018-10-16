@@ -9,7 +9,8 @@ SetKeyDelay, 0
 SendMode, Input
 CoordMode, Caret
 
-global Hyper, Flag, HyperAlt，HyperWin, FuncRunning
+global Hyper, Flag, HyperAlt，HyperWin
+menu, TRAY, Icon, hyper.ico, , 1
 
 ;include should be put at last
 ;
@@ -23,10 +24,12 @@ if %A_IsSuspended%
 {
     Suspend
     InfoMsg("Enable the script")
+    menu, TRAY, Icon, hyper.ico, , 1
 }
 else
 {
     InfoMsg("Suspend the script")
+    menu, TRAY, Icon, hyper-suspend.ico, , 1
     Suspend
 }
 
@@ -38,7 +41,6 @@ Hyper := 1
 Flag := 0
 HyperAlt := 0
 HyperWin := 0
-FuncRunning := 0
 
 KeyWait, Capslock
 
@@ -145,11 +147,7 @@ down::
 wheelup::
 wheeldown::
 
-if (FuncRunning = 1)
-{
-    ; msgbox FuncRunning
-    return  ; avoid multi hotkey conflict
-}
+Critical  ; use this to make thread uninterruptable
 
 key :=  A_ThisHotkey
 
@@ -157,19 +155,14 @@ key :=  A_ThisHotkey
 SPEC_KEY_TO_NAME := {"``":"backquote","-":"minus","=":"equal","[":"lbracket","]":"rbracket"
   ,"\":"backslash",";":"semicolon","'":"quote",",":"comma",".":"dot","/":"slash"}
 
-;if (InStr(SPEC_KEYS, key) != 0)
 if SPEC_KEY_TO_NAME.haskey(key)
 {
     keyname := SPEC_KEY_TO_NAME[key]
-    ; msgbox % keyname
 }
 else
 {
     keyname := key
 }
-
-; msgbox % keyname
-
 
 if (HyperAlt = 1)
 {
@@ -181,15 +174,10 @@ else if (HyperWin = 1)
 }
 keyname := "hyper_" . keyname
 func_name := HyperSettings.Keymap[keyname]
-Critical
 try
 {
-    ; msgbox %func_name%
-    FuncRunning := 1 ; avoid multiple capslock key confict
-    
     DebugMsg(Format("Key:{}`nFunc:{}", keyname, func_name))
     RunFunc(func_name)
-    FuncRunning := 0
 }
 catch e
 {
@@ -197,7 +185,6 @@ catch e
 }
 
 Flag := 1
-Critical, off
 Return
 
 #If

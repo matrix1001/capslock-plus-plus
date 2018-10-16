@@ -1,4 +1,8 @@
+
+![mark](hyper.ico)
+
 # CapsLock++
+
 [中文说明](https://github.com/matrix1001/capslock-plus-plus/blob/master/README-zh.md)
 
 Amazing, extendable, readable `autohotkey` scripts framework utilized by `Capslock`.
@@ -119,16 +123,19 @@ Just put infomation of your application here, and assign a `key` to it, then you
 About `id`, you can figure it out by using `windowspy`, which it installed by `autohotkey`.
 
 After you finish configuration, it will be auto loaded. The manner of `Type 1` functions is:
+
 - Start your application if not started
-- Active your application window if not actived
-- Minimize your application window if actived
+- Active your application window if not activated
+- Minimize your application window if activated
   
 ### Type 2
+
 - `WindowC` can dynamicly bind any window.
 
 `Type 2` function does not require any configuration. But it need to be assigned to keymap.
 
 Check Default HyperSettings.ini
+
 ```ini
 [Keymap]
 hyper_1=WindowC(1)
@@ -138,12 +145,15 @@ hyper_4=WindowC(4)
 hyper_5=WindowC(5)
 hyper_minus=WindowCClear
 ```
+
 The manner is similar to `Type 1`:
+
 - If no window bind, bind current window
-- Active your application window if not actived
-- Minimize your application window if actived
+- Active your application window if not activated
+- Minimize your application window if activated
 
 To clear a window bind, you got two ways.
+
 - Close the binded window, press its binded key again
 - Press `Casplock + -`, then its binded key
 
@@ -194,12 +204,12 @@ Max=5
 ```
 About `MsgLevel`, set `0` to show all notifications including `DEBUG`. However, sometimes it is annoying. Set to `1` to show all necessary notifications including `INFO`, `SUCCESS` and `WARNING`. Set to `2` to show only `WARNING`. Higher number means no notification will show up (Same as setting `Enable` to `0`).
 
-About `Style`, I have implemented three styles for you. `slide` means the notification will slide in ane slide out. `fade` means fade in and fade out. `none` means no any effect. 
+About `Style`, I have implemented three styles for you. `slide` means the notification will slide in ane slide out. `fade` means fade in and fade out. `none` means no any effect.
 
 About `Max`, `5` is enough for you to use. It is useful when you need to use `DEBUG` mode.
 
 ## HyperSearch
-HyperSearch is designed for intelligent search for the selected text, triggered by `Capsloc + s`.
+HyperSearch is designed for intelligent search for the selected text, triggered by `Capslock + s`.
 Here's some examples
 ```
 www.baidu.com
@@ -250,6 +260,7 @@ TODO
 this is not a stable version. i'm trying to make a better ui. next stable version will be 0.2.0
 - refine UI
 - trying to use thread to make user action faster
+- icon design
 
 ## 2018/10/11 version 0.1.7
 - add multi lines translation

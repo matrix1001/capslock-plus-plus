@@ -106,12 +106,6 @@ LoadSettings()
         ExitApp
         }   
     }
-    ;; icon
-    icon := Basic.Icon
-    IfExist, %icon%
-    {
-        menu, TRAY, Icon,  %icon%, , 0
-    }
     ;; settingmonitor
     if (Basic.SettingMonitor = 1)
     {
@@ -442,7 +436,6 @@ DefaultSettings()
     ;basic
     HyperSettings.Basic.StartUp := 1
     HyperSettings.Basic.Admin := 0
-    HyperSettings.Basic.Icon := "hyper.ico"
     HyperSettings.Basic.SettingMonitor := 1
     HyperSettings.Basic.ScriptMonitor := 1
 
