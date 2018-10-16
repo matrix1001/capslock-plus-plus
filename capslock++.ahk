@@ -6,7 +6,9 @@ Process Priority,,High
 SetWinDelay, 0
 SetKeyDelay, 0
 SendMode, Input
-;CoordMode, Caret
+CoordMode, Caret
+CoordMode, ToolTip
+CoordMode, Mouse
 
 global Hyper, Flag, HyperAlt，HyperWin
 menu, TRAY, Icon, hyper.ico, , 1

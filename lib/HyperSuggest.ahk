@@ -78,12 +78,14 @@ SuggestLastWord(opt := "baidu")
         ;msgbox no candi
         return
     }
-    content := ""
-    for index, value in candidate
-    {
-        content .= value . "`n"
-    }
-    content := SubStr(content, 1, -1)
-    ;msgbox %content%
-    OnCaretToolTip(content)
+    SuggestGui("show", candidate, word)
+    ;content := ""
+    ;for index, value in candidate
+    ;{
+    ;    content .= value . "`n"
+    ;}
+    ;content := SubStr(content, 1, -1)
+    ;;msgbox %content%
+    ;OnCaretToolTip(content)
+
 }

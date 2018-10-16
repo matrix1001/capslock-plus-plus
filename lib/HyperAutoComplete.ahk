@@ -4,14 +4,13 @@
 
 AutoComplete(opt := "")
 {
-    static MaxResults := 20, CurrentWord := "", ShowLength := 4, MatchList := "", CorrectCase := True, hWindow := 0, init := 0
+    static MaxResults := 20, CurrentWord := "", ShowLength := 4, MatchList := "", CorrectCase := True, init := 0
 
     if (init = 0)
     {
         NormalKeyList := "a`nb`nc`nd`ne`nf`ng`nh`ni`nj`nk`nl`nm`nn`no`np`nq`nr`ns`nt`nu`nv`nw`nx`ny`nz" ;list of key names separated by `n that make up words in upper and lower case variants
         NumberKeyList := "1`n2`n3`n4`n5`n6`n7`n8`n9`n0" ;list of key names separated by `n that make up words as well as their numpad equivalents
         OtherKeyList := "'`n-" ;list of key names separated by `n that make up words
-        ResetKeyList := "^z`nEsc`nSpace`nHome`nPGUP`nPGDN`nEnd`nLeft`nRight`nRButton`nMButton`n,`n.`n/`n[`n]`n;`n\`n=`n```n"""  ;list of key names separated by `n that cause suggestions to reset
 
         Hotkey, If, HyperSettings.RunTime.AutoComplete = 1
         Hotkey, ~BackSpace, Back, UseErrorLevel
@@ -30,11 +29,9 @@ AutoComplete(opt := "")
         Loop, Parse, OtherKeyList, `n
             Hotkey, ~%A_LoopField%, Key, UseErrorLevel
 
-        Loop, Parse, ResetKeyList, `n
-            Hotkey, ~*%A_LoopField%, ResetWord, UseErrorLevel
+
         Hotkey, If
         
-        SetTimer, SuggestWatcher, 250
         init := 1
     }
 
@@ -44,8 +41,6 @@ AutoComplete(opt := "")
         if (HyperSettings.RunTime.AutoComplete = 1)
         {
             HyperSettings.RunTime.AutoComplete := 0
-            SuggestGui("hide")
-            ;msgbox toggle
             CurrentWord := ""
         }
         else
@@ -60,8 +55,6 @@ AutoComplete(opt := "")
     else if StrEq(opt, "off")
     {
         HyperSettings.RunTime.AutoComplete := 0
-        SuggestGui("hide")
-        ;msgbox offreset
         CurrentWord := ""
     }
 
@@ -73,8 +66,6 @@ AutoComplete(opt := "")
     ;check word length against minimum length
     If StrLen(CurrentWord) < ShowLength
     {
-        ;splashtexton,,, len
-        SuggestGui("hide")
         Return
     }
 
@@ -83,7 +74,6 @@ AutoComplete(opt := "")
     ;check for a lack of matches
     If (MatchList.count() = 0)
     {
-        SuggestGui("hide")
         Return
     }
 
@@ -118,27 +108,14 @@ AutoComplete(opt := "")
     return
 
     ResetWord:
-    ;msgbox reset
     CurrentWord := ""
-    SuggestGui("hide")
-    return
-
-    SuggestWatcher:
-    window := WinExist("A")
-    If (window != hWindow)
-    {
-        ;msgbox windowreset
-        CurrentWord := ""
-        SuggestGui("hide")
-        hWindow := window
-    }
     return
 }
 
 SuggestGui(opt := "", val := "", val2 := "")
 {
     static CorrectCase := True, BoxHeight := 165, CurrentWord := ""
-    static ListBoxHwnd, init := 0, DisplayList := "", MaxWidth := 0
+    static ListBoxHwnd, init := 0, DisplayList := "", MaxWidth := 0, hWindow := 0
 
     ;splashtexton,,, %opt%
     if (init = 0)
@@ -149,11 +126,28 @@ SuggestGui(opt := "", val := "", val2 := "")
         Gui, Suggestions:-Caption +ToolWindow +AlwaysOnTop +LastFound
         Gui, Suggestions:Show, h%BoxHeight% Hide, AutoComplete
 
+        NormalKeyList := "a`nb`nc`nd`ne`nf`ng`nh`ni`nj`nk`nl`nm`nn`no`np`nq`nr`ns`nt`nu`nv`nw`nx`ny`nz" ;list of key names separated by `n that make up words in upper and lower case variants
+        NumberKeyList := "1`n2`n3`n4`n5`n6`n7`n8`n9`n0" ;list of key names separated by `n that make up words as well as their numpad equivalents
+        OtherKeyList := "'`n-" ;list of key names separated by `n that make up words
+
         TriggerKeyList := "Tab`nEnter" ;list of key names separated by `n that trigger completion
+        ResetKeyList := "Backspace`n^z`nEsc`nSpace`nHome`nPGUP`nPGDN`nEnd`nLeft`nRight`nRButton`nMButton`n,`n.`n/`n[`n]`n;`n\`n=`n```n"""
 
         Hotkey, IfWinExist, AutoComplete ahk_class AutoHotkeyGUI
         Loop, Parse, TriggerKeyList, `n
             Hotkey, %A_LoopField%, CompleteWord, UseErrorLevel
+
+        Loop, Parse, NormalKeyList, `n
+            Hotkey, ~%A_LoopField%, SuggestHide, UseErrorLevel
+
+        Loop, Parse, NumberKeyList, `n
+            Hotkey, ~%A_LoopField%, SuggestHide, UseErrorLevel
+        
+        Loop, Parse, OtherKeyList, `n
+            Hotkey, ~%A_LoopField%, SuggestHide, UseErrorLevel
+        
+        Loop, Parse, ResetKeyList, `n
+            Hotkey, ~%A_LoopField%, SuggestHide, UseErrorLevel
 
         Hotkey, Up, SuggestMoveUp, UseErrorLevel
         Hotkey, Down, SuggestMoveDown, UseErrorLevel
@@ -168,21 +162,28 @@ SuggestGui(opt := "", val := "", val2 := "")
         Hotkey, IfWinExist
 
         init := 1
-        return
     }
     if StrEq(opt, "destroy")
     {
         Gui, Suggestions:Destroy
+        SetTimer, SuggestGuiWatcher, off
         return
     }
     else if StrEq(opt, "hide")
     {
         Gui, Suggestions:Hide
+        SetTimer, SuggestGuiWatcher, off
         return
     }
     else if StrEq(opt, "show")
     {
+        hwindow := WinExist("A")
+        SetTimer, SuggestGuiWatcher, 100
         MatchList := val
+        if (MatchList = "" || MatchList.count() = 0)
+        {
+            return
+        }
         MaxWidth := 0
         DisplayList := ""
         for index, value in MatchList
@@ -218,6 +219,8 @@ SuggestGui(opt := "", val := "", val2 := "")
         PosX := A_ScreenWidth - MaxWidth
     If PosY + BoxHeight > A_ScreenHeight ;past bottom of the screen
         PosY := A_ScreenHeight - BoxHeight
+
+    ;msgbox %PosX%, %PosY%, scr %A_ScreenWidth%, %A_ScreenHeight%, car %A_CaretX%, %A_CaretY%
     Gui, Suggestions:Show, x%PosX% y%PosY% w%MaxWidth% NoActivate ;show window
 
     Return
@@ -230,7 +233,7 @@ SuggestGui(opt := "", val := "", val2 := "")
         Return
 
     Gui, Suggestions:Hide
-
+    SetTimer, SuggestGuiWatcher, off
     ;retrieve the word that was selected
     GuiControlGet, Index,, %ListBoxHwnd%
 
@@ -260,7 +263,19 @@ SuggestGui(opt := "", val := "", val2 := "")
     GuiControl, Choose, %ListBoxHwnd%, % Temp1 + 1
     return
 
+    SuggestHide:
+    Gui, Suggestions:Hide
+    SetTimer, SuggestGuiWatcher, off
+    return
 
+    SuggestGuiWatcher:
+    window := WinExist("A")
+    If (window != hWindow)
+    {
+        Gui, Suggestions:Hide
+        SetTimer, SuggestGuiWatcher, off
+    }
+    return
 }
 
 

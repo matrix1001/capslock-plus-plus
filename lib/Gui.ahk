@@ -245,6 +245,7 @@ OnCaretToolTip(msg, delay := 3000)
     }
     
     ;msgbox %X%, %Y%
+    ;msgbox %X%, %Y%, scr %A_ScreenWidth%, %A_ScreenHeight%, car %A_CaretX%, %A_CaretY%
     ToolTip %msg%, X, Y
     SetTimer, carettooltipchk, %delay%
     return
