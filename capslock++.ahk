@@ -3,11 +3,10 @@
 ;---------
 SetCapsLockState, AlwaysOff 
 Process Priority,,High
-;DetectHiddenWindows, On
 SetWinDelay, 0
 SetKeyDelay, 0
 SendMode, Input
-CoordMode, Caret
+;CoordMode, Caret
 
 global Hyper, Flag, HyperAlt，HyperWin
 menu, TRAY, Icon, hyper.ico, , 1
@@ -203,7 +202,9 @@ return
 
 ;---------test
 !z::
-
+SuggestLastWord()
 return
+
+
 
 

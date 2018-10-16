@@ -1,7 +1,7 @@
 #Include lib/BasicFunc.ahk
 WindowA(window_class, exec)                                          
 {                                                                   
-    DetectHiddenWindows, on                                         
+    ;DetectHiddenWindows, on                                         
     IfWinNotExist %window_class%                                    
     {                                                               
         Run %exec%                                                  
@@ -21,7 +21,7 @@ WindowA(window_class, exec)
 }
 WindowB(window_class, exec)                                       
 {                                                                  
-    DetectHiddenWindows, on                                        
+    ;DetectHiddenWindows, on                                        
     IfWinNotExist %window_class%                                   
     {                                                              
         Run %exec%                                                 

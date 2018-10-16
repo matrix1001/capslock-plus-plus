@@ -38,8 +38,8 @@ HyperTab()
         if (TabHotString[matchKey])
         {
             temp:=RegExReplace(Clipboard, "\Q" . matchKey . "\E$", TabHotString[matchKey])
-            StringReplace, temp, temp, \n, `n, All ;替换换行符
-            StringReplace, temp, temp, \`n, \n, All ;有转义符的换回来
+            StringReplace, temp, temp, \n, `n, All ;\n to `n
+            StringReplace, temp, temp, \`n, \n, All ;\`n to \n
             temp := EvalString(temp)
             Clipboard:=temp
             Send, +{Insert}

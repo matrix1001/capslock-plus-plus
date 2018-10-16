@@ -1,22 +1,6 @@
 #Include lib/BasicFunc.ahk
+#Include lib/Gui.ahk
 #Include lib/HyperTrans.ahk
-;lst := ["www.google.com"
-;    ,"http://www.baidu.com"
-;    ,"https://git.io"
-;    ,"c:\"
-;    ,"d:\file.txt"
-;    ,"e:\test"
-;    ,"word"
-;    ,"this is a sentence"
-;    ,"Hello, it's a good day today!`n it is 3:40pm, i got 2.5$ "
-;    ,"12345"
-;    ,""
-;    ,"0x1234"]
-;for index, value in lst
-;{
-;    result := CheckStrType(value)
-;    msgbox %value% ->%result%
-;}
 
 HyperSearch()
 {
@@ -35,6 +19,14 @@ HyperSearch()
     if (StrEq(typ, "word") || StrEq(typ, "sentence"))
     {
         GoogleTransToolTip(sel)
+    }
+    if (StrEq(typ, "number"))
+    {
+        OnMouseToolTip(Format("number -> hex`n{:d} 0x{:x}", sel, sel))
+    }
+    if (StrEq(typ, "hex"))
+    {
+        OnMouseToolTip(Format("hex -> number`n{} {:d}", sel, sel))
     }
         
 }

@@ -1,5 +1,6 @@
 #Include lib/BasicFunc.ahk
 #Include lib/Json.ahk
+#Include lib/Gui.ahk
 
 ;lst := BaiduSuggest("tes")
 ;for index, val in lst
@@ -56,4 +57,33 @@ BaiduSuggest(query)
         return
     }
 
+}
+
+
+SuggestLastWord(opt := "baidu")
+{
+    word := GetLastWord()
+    if StrEq(opt, "baidu")
+    {
+        candidate := BaiduSuggest(word)
+        ;msgbox test
+    }
+    else if StrEq(opt, "google")
+    {
+        candidate := GoogleSuggest(word)
+    }
+    
+    if (candidate.count() = 0)
+    {
+        ;msgbox no candi
+        return
+    }
+    content := ""
+    for index, value in candidate
+    {
+        content .= value . "`n"
+    }
+    content := SubStr(content, 1, -1)
+    ;msgbox %content%
+    OnCaretToolTip(content)
 }

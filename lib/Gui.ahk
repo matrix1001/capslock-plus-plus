@@ -232,5 +232,29 @@ OnMouseToolTip(msg, delay := 1000)
     }
     return
 }
+OnCaretToolTip(msg, delay := 3000)
+{
+    if CheckIfCaretNotDetectable()
+    {
+        MouseGetPos X, Y
+    }
+    else
+    {
+        X := A_CaretX + 5
+        Y := A_CaretY + 20
+    }
+    
+    ;msgbox %X%, %Y%
+    ToolTip %msg%, X, Y
+    SetTimer, carettooltipchk, %delay%
+    return
+    carettooltipchk:
+    if not MouseIsOver("ahk_class tooltips_class32")
+    {
+        ToolTip
+        SetTimer, tooltipchk, off
+    }
+    return
+}
 
 

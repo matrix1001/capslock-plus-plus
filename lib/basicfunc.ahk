@@ -110,6 +110,38 @@ GetSelText()
     Clipboard:=ClipboardOld
     return
 }
+GetLine()
+{
+    selText := GetSelText()
+    if not selText
+    {
+        ClipboardOld := ClipboardAll
+        Clipboard := ""
+        SendInput, +{Home}
+        sleep, 10 ;make sure text is selecting
+        Send, ^{Insert}
+        ClipWait, 0.1
+        selText := Clipboard
+        Clipboard := ClipboardOld
+        SendInput, {End}
+    }
+    return selText
+}
+GetLastWord()
+{
+    selText := GetLine()
+
+    pos := InStr(selText, " ", , 0) + 1
+    if (pos > 0)
+    {
+        word := SubStr(selText, pos)
+    }
+    else
+    {
+        word := selText
+    }
+    return word
+}
 
 ;--------IO function
 ReadDigit() ;return a digit at success, return -1 at error
@@ -161,6 +193,10 @@ StrEq(str1, str2)
 ToInt(s)
 {
     return Format("{:i}", s)
+}
+ToHex(i)
+{
+    return Format("{:x}", i)
 }
 CountSubStr(haystack, needle)
 {
