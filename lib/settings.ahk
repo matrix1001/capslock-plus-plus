@@ -7,8 +7,7 @@ global HyperSettings := {"Keymap":{}
     , "ScriptDir":["lib", "script"]
     , "Includer":"lib\Includer.ahk"
     , "SettingIni":["HyperSettings.ini", "HyperSwitchSettings.ini"]
-    , "Notifications":[]
-    , "RunTime":{"AutoComplete": 0}}
+    , "RunTime":{"AutoComplete": 0, "Notifications":[]}}
 
 #Include lib/BasicFunc.ahk
 #Include lib/Gui.ahk
@@ -266,7 +265,7 @@ SettingMonitor()
 
 NotificationMonitor()
 {
-    noti := HyperSettings.Notifications.pop()
+    noti := HyperSettings.RunTime.Notifications.pop()
     if noti
     {
         WinNotification(noti.msg, noti.title, noti.delay)

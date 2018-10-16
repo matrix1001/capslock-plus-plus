@@ -1,7 +1,7 @@
 #Include lib/BasicFunc.ahk
 HyperTab()
 {
-    TabHotString := HyperSettings.TabHotString
+    TabHotString := HyperSettings.Tab
     static regexHotString := ""
     if not regexHotString
     {

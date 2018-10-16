@@ -295,6 +295,6 @@ AddNotification(msg, title:="", delay:=3000)
     if (not A_IsSuspended)
     {
         noti := {"msg":msg, "title":title, "delay":delay}
-        HyperSettings.Notifications.insertat(1, noti)
+        HyperSettings.RunTime.Notifications.insertat(1, noti)
     }
 }
