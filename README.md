@@ -78,6 +78,18 @@ SettingMonitor=1 ;notify you about the changes of the setting
 StartUp=1 ;start on windows start
 ```
 
+__New Feature__
+
+I have redesigned the default tray UI. Take a look.
+
+![tray1](img/tray1.png)
+
+![tray2](img/tray2.png)
+
+Default action of double click the icon is to open the directory of `Capslock++`. New you can easily modify settings by right click the icon. Also, when your mouse is over the icon, there will be a status information.
+
+More menu options will be joined later.
+
 ## HyperTrans
 
 Default translation is triggered by `Capslock + t`. You have to select a word or a sentense at first.
@@ -228,7 +240,9 @@ Use `tab` or `enter` to autocomplete the word. Use `up`, `down` or `Capslock + k
 HyperNotify is a notification UI. Here follows some example.
 
 ![noti1](img/notify1.png)
+
 ![noti2](img/notify2.png)
+
 ![noti3](img/notify3.png)
 
 Configuration is simple.
@@ -292,6 +306,7 @@ next version will be a release version
 - merge autocomplete & suggestion into HyperTab
 - code refine
 - readme refine
+- tray menu design
 
 TODO
 

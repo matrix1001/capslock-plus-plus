@@ -11,12 +11,66 @@ CoordMode, ToolTip
 CoordMode, Mouse
 
 global Hyper, Flag, HyperAlt，HyperWin
-menu, TRAY, Icon, hyper.ico, , 1
+menu, Tray, Icon, hyper.ico, , 1
 
-;include should be put at last
-;
+menu, Tray, NoStandard
+menu, Tray, add, Capslock++, OpenGithub
+menu, Tray, add, Open Directory, OpenScriptDir
+menu, Tray, Default, Open Directory
+menu, Tray, add, Edit Settings, EditSettings
+menu, Tray, add, Edit SwitchSettings, EditSwitchSettings
+menu, Tray, add, Reset All Settings, ResetSettings
+
+menu, defaultment, Standard
+menu, Tray, add, AutoHotkey, :defaultment
+
+SetTimer, IconGetStatus, 1000
+
 #Include lib/Settings.ahk
 
+OpenGithub:
+run https://github.com/matrix1001/capslock-plus-plus
+return
+OpenScriptDir:
+run %A_ScriptDir%
+return
+EditSettings:
+run HyperSettings.ini
+return
+EditSwitchSettings:
+run HyperSwitchSettings.ini
+return
+ResetSettings:
+msgbox 0x124, Capslock++, Are you sure to reset all settings?
+IfMsgBox, Yes
+{
+    FileDelete, HyperSettings.ini
+    FileDelete, HyperSwitchSettings.ini
+    ScriptReload()
+}
+return
+
+IconGetStatus()
+{
+    stat := GetStatus()
+    content := "Capslock++  Status`n"
+    for key, val in stat
+    {
+        content .= Format("{:-20}: {}`n", key, val)
+    }
+    content := SubStr(content, 1, -1)
+    menu, Tray, Tip, %content%
+}
+GetStatus()
+{
+    stat := {}
+    if (HyperSettings.RunTime.DoubleClickTrans = 1)
+        stat["DoubleClickTrans"] := "enable"
+    else
+        stat["DoubleClickTrans"] := "disable"
+    stat["MessageLevel"] := HyperSettings.Notify.MsgLevel
+    return stat
+}
 
 ;-----------CapsLock key setting----------
 !Esc::
@@ -25,12 +79,12 @@ if %A_IsSuspended%
 {
     Suspend
     InfoMsg("Enable the script")
-    menu, TRAY, Icon, hyper.ico, , 1
+    menu, Tray, Icon, hyper.ico, , 1
 }
 else
 {
     InfoMsg("Suspend the script")
-    menu, TRAY, Icon, hyper-suspend.ico, , 1
+    menu, Tray, Icon, hyper-suspend.ico, , 1
     Suspend
 }
 

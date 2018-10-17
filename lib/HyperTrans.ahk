@@ -171,24 +171,23 @@ GoogleTransToolTip(content)
 }
 GoogleTransDoubleClick(toggle := 0)
 {
-    static en := 0
     if toggle=1
     {
         ;msgbox toggle
-        if en=1
+        if HyperSettings.RunTime.DoubleClickTrans = 1
         {
             InfoMsg("Disable DoubleClick Translation")
-            en := 0
+            HyperSettings.RunTime.DoubleClickTrans := 0
         }
         else
         {
             InfoMsg("Enable DoubleClick Translation")
-            en := 1
+            HyperSettings.RunTime.DoubleClickTrans := 1
         }
         return
     }
 
-    if en=1
+    if HyperSettings.RunTime.DoubleClickTrans = 1
     {
         GoogleTransSel()
     }
