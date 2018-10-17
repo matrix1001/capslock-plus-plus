@@ -46,7 +46,7 @@ IfMsgBox, Yes
 {
     FileDelete, HyperSettings.ini
     FileDelete, HyperSwitchSettings.ini
-    ScriptReload()
+    HyperReload()
 }
 return
 
@@ -56,14 +56,14 @@ IconGetStatus()
     content := "Capslock++  Status`n"
     for key, val in stat
     {
-        content .= Format("{:-20}: {}`n", key, val)
+        content .= Format("{:-20}: {:-}`n", key, val)
     }
     content := SubStr(content, 1, -1)
     menu, Tray, Tip, %content%
 }
 GetStatus()
 {
-    stat := {}
+    stat := {"StartTime":HyperSettings.RunTime.StartTime}
     if (HyperSettings.RunTime.DoubleClickTrans = 1)
         stat["DoubleClickTrans"] := "enable"
     else

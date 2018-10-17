@@ -61,8 +61,7 @@ In the following part, I will ignore `capslock` in keyset.
 | tab | hyper tab |
 | s | hyper search |
 | t | google translate |
-| alt+s | reload settings |
-| alt+r | reload script |
+| alt+r | reload script or settings |
 | alt+t | enable double click translate |
 
 By the way, you may want to `suspend` | `restart` the script when you play games. Press `Alt + Esc` will help. And its icon will change.
@@ -86,7 +85,7 @@ I have redesigned the default tray UI. Take a look.
 
 ![tray2](img/tray2.png)
 
-Default action of double click the icon is to open the directory of `Capslock++`. New you can easily modify settings by right click the icon. Also, when your mouse is over the icon, there will be a status information.
+Default action of double click the icon is to open the directory of `Capslock++`. Now you can easily modify settings by right click the icon. Also, when your mouse is over the icon, there will be a status information.
 
 More menu options will be joined later.
 

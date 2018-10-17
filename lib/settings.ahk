@@ -8,7 +8,11 @@ global HyperSettings := {"Keymap":{}
     , "ScriptDir":["lib", "script"]
     , "Includer":"lib\Includer.ahk"
     , "SettingIni":["HyperSettings.ini", "HyperSwitchSettings.ini"]
-    , "RunTime":{"Notifications":[], "DoubleClickTrans":0}}
+    , "RunTime":{"Notifications":[]
+        , "DoubleClickTrans":0
+        , "SettingChange":0
+        , "ScriptChange":0
+        , "StartTime":A_MM . "/" . A_DD . " " . A_Hour . ":" . A_Min}}
 
 #Include lib/BasicFunc.ahk
 #Include lib/Gui.ahk
@@ -18,7 +22,7 @@ InitSettings()
 
 if not FileExist(HyperSettings.Includer)
 {
-    ScriptReload()
+    HyperReload()
 }
 SuccessMsg("Start Capslock++")
 
@@ -166,6 +170,7 @@ ScriptMonitor()
         if not IsStrInArray(filename, lst)
         {
             InfoMsg(filename . " has been deleted`nPress Capslock + Alt + r to reload")
+            HyperSettings.Runtime.ScriptChange := 1
             timestamps.delete(filename)
         }
     }
@@ -177,6 +182,7 @@ ScriptMonitor()
         if not timestamps.haskey(filename)
         {
             InfoMsg("New file " . filename . " detected`n Press Capslock + Alt + r to reload")
+            HyperSettings.Runtime.ScriptChange := 1
             timestamps[filename] := temp
         }
         else if timestamps[filename] != temp
@@ -184,6 +190,7 @@ ScriptMonitor()
             ;old := timestamps[filename]
             ;msgbox %old% -> %temp%
             InfoMsg(filename . " changed`n Press Capslock + Alt + r to reload")
+            HyperSettings.Runtime.ScriptChange := 1
             timestamps[filename] := temp
         }
     }
@@ -241,7 +248,8 @@ SettingMonitor()
         {
             ;last := timestamps[filename]
             ;MsgBox %last%->%temp%
-            InfoMsg(filename . " changed`nPress Capslock + Alt + s to read settings")
+            InfoMsg(filename . " changed`nPress Capslock + Alt + r to read settings")
+            HyperSettings.Runtime.SettingChange := 1
             timestamps[filename] := temp
         }
     }
@@ -420,8 +428,7 @@ DefaultSettings()
     HyperSettings.Keymap.hyper_alt_2 := "switchDesktopByNumber(2)"
     HyperSettings.Keymap.hyper_alt_3 := "switchDesktopByNumber(3)"
 
-    HyperSettings.Keymap.hyper_alt_s := "SettingReload"
-    HyperSettings.Keymap.hyper_alt_r := "ScriptReload"
+    HyperSettings.Keymap.hyper_alt_r := "HyperReload"
 
     HyperSettings.Keymap.hyper_double_click := "GoogleTransDoubleClick"
     HyperSettings.Keymap.hyper_alt_t := "GoogleTransDoubleClick(1)"
@@ -450,16 +457,20 @@ DefaultSettings()
 }
 
 ; reload function
-ScriptReload()
+HyperReload()
 {
-    SetTimer ScriptMonitor, off
-    GenIncluder(HyperSettings.ScriptDir, HyperSettings.Includer)
-    Reload
-}
-SettingReload()
-{
-    InfoMsg("Reload Settings")
-    ReadSettings()
-    ReadSwitchSettings()
-    LoadSettings()
+    if (HyperSettings.RunTime.SettingChange = 1 && HyperSettings.RunTime.ScriptChange = 0)
+    {
+        InfoMsg("Reload Settings")
+        ReadSettings()
+        ReadSwitchSettings()
+        LoadSettings()
+        HyperSettings.RunTime.SettingChange := 0
+    }
+    else
+    {
+        SetTimer ScriptMonitor, off
+        GenIncluder(HyperSettings.ScriptDir, HyperSettings.Includer)
+        Reload
+    }
 }
