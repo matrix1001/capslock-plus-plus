@@ -4,7 +4,7 @@
 
 HyperSearch()
 {
-    sel := GetSelText()
+    sel := GetLine()
     typ := CheckStrType(sel)
     if (StrEq(typ, "file") || StrEq(typ, "folder"))
     {
@@ -28,12 +28,20 @@ HyperSearch()
     {
         OnMouseToolTip(Format("hex -> number`n{} {:d}", sel, sel))
     }
+    if (StrEq(typ, "function"))
+    {
+        run https://www.google.com/search?q=%sel%
+    }
+    if (StrEq(typ, "errormsg"))
+    {
+        run https://stackoverflow.com/search?q=%sel%
+    }
         
 }
 
 CheckStrType(str)
 {
-
+    ;https://regex101.com/ check this
     if (RegExMatch(str,"iS)^[a-z]:\\.+\..+$"))
         return "file"
     if (RegExMatch(str,"iS)^[a-z]:\\[^.]*$"))
@@ -48,10 +56,18 @@ CheckStrType(str)
         return "number"
     if (RegExMatch(str, "i)^0x\d+"))
         return "hex"
+    
+
+    if (RegExMatch(str, "i)^[\w\.]+\([\w\.=+\-,\ >]*\)\s*$"))
+        return "function"
+    
+    if (InStr(str, "error") || InStr(str, "exception"))
+        return "errormsg"
+
+
     if (RegExMatch(str, "i)^\w+$"))
         return "word"
     else if (RegExMatch(str, "i)^[\w\.,?!'\$:\s]*$"))
         return "sentence"
-    
     return "unknown"
 }
