@@ -8,7 +8,7 @@ global HyperSettings := {"Keymap":{}
     , "ScriptDir":["lib", "script"]
     , "Includer":"lib\Includer.ahk"
     , "SettingIni":["HyperSettings.ini", "HyperSwitchSettings.ini"]
-    , "RunTime":{"AutoComplete": 0, "Notifications":[]}}
+    , "RunTime":{"Notifications":[]}}
 
 #Include lib/BasicFunc.ahk
 #Include lib/Gui.ahk

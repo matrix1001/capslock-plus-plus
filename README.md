@@ -11,22 +11,22 @@ Original core concept is to make your `Capslock` key as a new `fn`. You have to 
 __New Features__
 
 - Intelligent Search! 
-- AutoComplete && autosuggest (experimental, no access for common user)
+- HyperTab enhancement! (merge autosuggest function into HyperTab)
 
-__Notice__:
+__Notice__
 
 This project is updating very quickly. If you pulled the latest version, **remember** to delete the old `ini` files in order to load new ones to gain new features.
 
 # Feature
 
 - Plug in and play & Function based script & Easy to read
-- HyperTrans (translation)
-- HyperSwitch (switch windows quickly)
-- HyperTab (intelligent replace text)
-- HyperSearch (intelligent search)
-- HyperNotify (amazing UI for notification)
+- **HyperTrans** (translation)
+- **HyperSwitch** (switch windows quickly)
+- **HyperTab** (intelligent replace & search text)
+- **HyperSearch** (intelligent search)
+- **HyperNotify** (amazing UI for notification)
   
-This project is in progress. Other fantastic funtions will be joined.
+This project is in progress. Other fantastic functions will be joined.
 
 # Usage
 
@@ -36,11 +36,11 @@ Basic usage is according to the default settings. If you are not starter of `AHK
 
 In the following part, I will ignore `capslock` in keyset.
 
-| key | function |
-| ------ | ------ |
+| key | function | description |
+| ------ | ------ | ------ |
 | ` | toggle capslock|
-| alt+1 | switch to virtual desktop 1 |
-| alt+2 | switch to virtual desktop 2 |
+| alt+1 | switch to virtual desktop 1 | win10 only
+| alt+2 | switch to virtual desktop 2 | create desktop before you use it
 | alt+3 | switch to virtual desktop 3 |
 | h | move left |
 | j | move down |
@@ -52,7 +52,7 @@ In the following part, I will ignore `capslock` in keyset.
 | o | move to end |
 | c | copy |
 | v | paste |
-| ↑ | volume up |
+| ↑ | volume up | invisible in win7, but visible in win10
 | ↓ | volume down |
 | ← | prev virtual desktop |
 | → | next virtual desktop |
@@ -90,7 +90,7 @@ Olá
  مرحبا 
 ```
 
-Here's some picture for demo.
+Here's some pictures for demo.
 ![demo1](img/trans1.png)
 ![demo2](img/trans2.png)
 ![demo3](img/trans3.png)
@@ -215,10 +215,23 @@ Also multiple functions call is supported.
 
 If you want to add your HotString into it, just change HyperSettings.ini. If you need other function, check `UserScript` in `Usage`.
 
+__Surprising New Feature__
+
+Autocomplete & suggestion has been added to HyperTab. Currently it will give you suggestions of the last word you input, with the backend of `BaiduSuggest`. However I have implemented `GoogleSuggest`, which is blocked from mainland. Check this.
+
+![tabsample1](img/tab1.png)
+
+Use `tab` or `enter` to autocomplete the word. Use `up`, `down` or `Capslock + k`, `Capslock + j` to choose item. You can also use your mouse to click.
 
 ## HyperNotify
 
-HyperNotify is a notification UI. Configuration is simple.
+HyperNotify is a notification UI. Here follows some example.
+
+![noti1](img/notify1.png)
+![noti2](img/notify2.png)
+![noti3](img/notify3.png)
+
+Configuration is simple.
 
 ```ini
 [Notify]
@@ -256,24 +269,35 @@ Further features are incoming.
 
 Now if want to put your script into `capslock++.ahk`, your have to follow these:
 
-- All scripts should not use `global`. If your global variable is important, put them into `HyperSettings` (check `settings.ahk`). However, if you insist to use `global`, there is little chance to get you into trouble.
-- All scripts are function based. Prevent the use of `label`.
-- If some function can be reused by other script, put it into `basicfunc.ahk`. Also you can `#include lib/basicfunc.ahk` only.
-- Leave one function as a entry for keymap.
+- All scripts should not use `global`. If your global variable is important, put them into `HyperSettings.RunTime` (check `settings.ahk`). However, if you insist to use `global`, there is little chance to get you into trouble. I suggest you use `static` more.
+- All scripts are function based. Prevent the use of `label` outside the  function.
+- If some functions can be reused by other script, put it into `basicfunc.ahk`. Also you can `#include lib/basicfunc.ahk`, `#include lib/Gui.ahk`.
+- Leave one function as a entry for keymap if you want to map a key to it.
 
 Then:
 
-- Just move your script into `lib` or `script`, it will be auto loaded.
-- If your want to map a key to it, just change `HyperSettings.ini`, it will be auto loaded.
-
-## Modification
-
-Any modification of `ahk` script (scripts in `lib` and `script`, and `capslock++.ahk`) will trigger `Reload`. However there will be a message box to confirm.
+- Just move your script into `lib` or `script`.
+- If your want to map a key to it, just change `HyperSettings.ini`.
+- Press `Capslock + Alt + r` to reload the script.
 
 # Documention
 TODO
 
 # Devlog
+
+## 2018/10/17 version 0.2.1
+
+next version will be a release version
+
+- merge autocomplete & suggestion into HyperTab
+- code refine
+- readme refine
+
+TODO
+
+- bug hunt & fix
+- chinese version readme
+- documention
 
 ## 2018/10/16 version 0.2.0
 

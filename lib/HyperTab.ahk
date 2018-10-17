@@ -1,57 +1,24 @@
 #Include lib/BasicFunc.ahk
+#Include lib/Json.ahk
+#Include lib/Gui.ahk
 HyperTab()
 {
-    TabHotString := HyperSettings.Tab
-    static regexHotString := ""
-    if not regexHotString
+    last := GetLastWord()
+    len := StrLen(last)
+    ; tabstring
+    for key, val in HyperSettings.Tab
     {
-        regexHotString:="iS)("
-        for key,value in TabHotString
+        pos := InStr(last, key)
+        if (pos != 0 && pos + StrLen(key) = len+1)
         {
-            regexHotString.="\Q" . key . "\E" . "|"
-        }
-        regexHotString.=")$"
+            match := SubStr(last, pos)
+            temp := EvalString(val)
+            SendWordReplace(match, temp)
+            return
+        }   
     }
-
-    ClipboardOld:=ClipboardAll
-    selText:=GetSelText()
-    
-    if (selText)
-    {
-        Clipboard := selText
-    }
-    else
-    {
-        Clipboard := ""
-        SendInput, +{Home}
-        sleep, 10 ;make sure text is selecting
-        Send, ^{Insert}
-        ClipWait, 0.1
-
-        ;msgbox % Clipboard
-    }
-
-    matchKey:=""
-    RegExMatch(Clipboard, regexHotString, matchKey)
-    if (matchKey)
-    {
-        if (TabHotString[matchKey])
-        {
-            temp:=RegExReplace(Clipboard, "\Q" . matchKey . "\E$", TabHotString[matchKey])
-            StringReplace, temp, temp, \n, `n, All ;\n to `n
-            StringReplace, temp, temp, \`n, \n, All ;\`n to \n
-            temp := EvalString(temp)
-            Clipboard:=temp
-            Send, +{Insert}
-            Sleep, 200
-        }
-    }
-    else
-    {
-        SendInput, {End}
-    }
-    Clipboard:=ClipboardOld
-    return calResult
+    ; tabstring not found, turn to suggest
+    SuggestWord(last)
 }
 
 EvalString(str)
@@ -72,4 +39,83 @@ EvalString(str)
     result := StrReplace(result, ">>", ">")
     return result
     
+}
+
+GoogleSuggest(query)
+{
+    url := Format("http://suggestqueries.google.com/complete/search?output=firefox&q={}", query)
+    ;msgbox %url%
+    header := {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36"}
+    ;response := HttpGet(url, header, "127.0.0.1:1080")
+    response := HttpGet(url, header)
+    try
+    {
+        msgbox %response%
+        json_obj := JSON.Load(response)
+        ;msgbox % json_obj[1]
+
+        return json_obj[2]
+    }
+    catch
+    {
+        return
+    }
+
+}
+BaiduSuggest(query)
+{
+    url := Format("http://suggestion.baidu.com/su?wd={}", query)
+    header := {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36"}
+    response := HttpGet(url, header)
+    try
+    {
+        ;msgbox %response%
+        beg := InStr(response, "s:[")
+        end := InStr(response, "]})", 0)
+
+        if (beg && end)
+        {
+            json_text := SubStr(response, beg+2, end-beg-1)
+            ;msgbox %json_text%
+
+            json_obj := JSON.Load(json_text)
+            return json_obj
+        }
+        
+        return
+    }
+    catch
+    {
+        return
+    }
+
+}
+
+SuggestWord(word, opt := "baidu", style := "suggest")
+{
+    if StrEq(opt, "baidu")
+    {
+        candidate := BaiduSuggest(word)
+        ;msgbox test
+    }
+    else if StrEq(opt, "google")
+    {
+        candidate := GoogleSuggest(word)
+    }
+    
+    if (candidate.count() = 0)
+    {
+        ;msgbox no candi
+        return
+    }
+    SuggestGui("show", candidate, word)
+    ;content := ""
+    ;for index, value in candidate
+    ;{
+    ;    content .= value . "`n"
+    ;}
+    ;content := SubStr(content, 1, -1)
+    ;;msgbox %content%
+    ;OnCaretToolTip(content)
+
 }

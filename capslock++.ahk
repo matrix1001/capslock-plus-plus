@@ -204,9 +204,6 @@ return
 
 ;---------test
 !z::
-SuggestLastWord()
 return
-
-
 
 

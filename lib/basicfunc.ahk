@@ -159,6 +159,31 @@ ReadDigit() ;return a digit at success, return -1 at error
     }
     return i
 }
+SendWordReplace(CurrentWord,NewWord,CorrectCase = False)
+{
+    If CorrectCase
+    {
+        Position := 1
+        CaseSense := A_StringCaseSense
+        StringCaseSense, Locale
+        Loop, Parse, CurrentWord
+        {
+            Position := InStr(NewWord,A_LoopField,False,Position) ;find next character in the current word if only subsequence matched
+            If A_LoopField Is Upper
+            {
+                Char := SubStr(NewWord,Position,1)
+                StringUpper, Char, Char
+                NewWord := SubStr(NewWord,1,Position - 1) . Char . SubStr(NewWord,Position + 1)
+            }
+        }
+        StringCaseSense, %CaseSense%
+    }
+
+    ;send the word
+    Send, % "{BS " . StrLen(CurrentWord) . "}" ;clear the typed word
+    SendRaw, %NewWord%
+}
+
 ;--------String/Array function
 StringUpper(str)
 {
@@ -167,6 +192,22 @@ StringUpper(str)
 StringLower(str)
 {
     return Format("{:L}", str)
+}
+TextWidth(String)
+{
+    static Typeface := "Courier New"
+    static Size := 10
+    static hDC, hFont := 0, Extent
+    If !hFont
+    {
+        hDC := DllCall("GetDC","UPtr",0,"UPtr")
+        Height := -DllCall("MulDiv","Int",Size,"Int",DllCall("GetDeviceCaps","UPtr",hDC,"Int",90),"Int",72)
+        hFont := DllCall("CreateFont","Int",Height,"Int",0,"Int",0,"Int",0,"Int",400,"UInt",False,"UInt",False,"UInt",False,"UInt",0,"UInt",0,"UInt",0,"UInt",0,"UInt",0,"Str",Typeface)
+        hOriginalFont := DllCall("SelectObject","UPtr",hDC,"UPtr",hFont,"UPtr")
+        VarSetCapacity(Extent,8)
+    }
+    DllCall("GetTextExtentPoint32","UPtr",hDC,"Str",String,"Int",StrLen(String),"UPtr",&Extent)
+    Return, NumGet(Extent,0,"UInt")
 }
 GetDateTime(fmt := "yyyy/M/d")
 {
@@ -262,12 +303,37 @@ HttpGet(url, headers := "", proxy := "", timeout := 500) ;proxy 127.0.0.1:1080
         return ""
     }
 }
-;----mouse
+;----mouse/coor
 MouseIsOver(WinTitle) {
     MouseGetPos,,, Win
     return WinExist(WinTitle . " ahk_id " . Win)
 }
-
+CheckIfCaretNotDetectable()
+{
+   ;Grab the number of non-dummy monitors
+   SysGet, NumMonitors, 80
+   
+   IfLess, NumMonitors, 1
+      NumMonitors = 1
+   
+   if !(A_CaretX)
+   {
+      Return, 1
+   }
+   
+   ;if the X caret position is equal to the leftmost border of the monitor +1, we can't detect the caret position.
+   Loop, %NumMonitors%
+   {
+      SysGet, Mon, Monitor, %A_Index%
+      if ( A_CaretX = ( MonLeft ) )
+      {
+         Return, 1
+      }
+      
+   }
+   
+   Return, 0
+}
 ;----hotkey util
 HotKeyCounter(timeout := 500)
 {
@@ -334,3 +400,10 @@ AddNotification(msg, title:="", delay:=3000)
         HyperSettings.RunTime.Notifications.insertat(1, noti)
     }
 }
+
+
+
+
+
+
+
