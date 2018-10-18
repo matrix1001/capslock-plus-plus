@@ -28,13 +28,14 @@ Menu, MsgLevel, add, Normal, SetMsgLevel
 Menu, MsgLevel, add, WarnOnly, SetMsgLevel
 Menu, MsgLevel, add, Disable, SetMsgLevel
 
+Menu, Tray, add
 Menu, Tray, add, Message Level, :MsgLevel
 
-
 Menu, defaultmenu, Standard
+Menu, Tray, add
 Menu, Tray, add, AutoHotkey, :defaultmenu
 
-SetTimer, IconGetStatus, 1000
+SetTimer, TrayMenuRefresh, 1000
 
 #Include lib/Settings.ahk
 
@@ -61,45 +62,55 @@ IfMsgBox, Yes
 }
 return
 SetMsgLevel:
-Menu, MsgLevel, UnCheck, Disable
-Menu, MsgLevel, UnCheck, WarnOnly
-Menu, MsgLevel, UnCheck, Normal
-Menu, MsgLevel, UnCheck, Debug
 if StrEq(A_ThisMenuItem, "Disable")
 {
     HyperSettings.Notify.MsgLevel := 3
-    Menu, MsgLevel, Check, Disable
 }
 if StrEq(A_ThisMenuItem, "WarnOnly")
 {
     HyperSettings.Notify.MsgLevel := 2
-    Menu, MsgLevel, Check, WarnOnly
 }
 if StrEq(A_ThisMenuItem, "Normal")
 {
     HyperSettings.Notify.MsgLevel := 1
-    Menu, MsgLevel, Check, Normal
 }
 if StrEq(A_ThisMenuItem, "Debug")
 {
     HyperSettings.Notify.MsgLevel := 0
-    Menu, MsgLevel, Check, Debug
 }
 return
 
-IconGetStatus()
+TrayMenuRefresh()
 {
+    ; tray tip
     stat := GetStatus()
     if (A_IsSuspended = 1)
-        content := "Capslock++    Suspended`n"
+        content := "Capslock++`nSuspended`n"
+    else if (HyperSettings.RunTime.ScriptChagne + HyperSettings.RunTime.SettingChagne = 0)
+        content := "Capslock++`nRunning`n"
     else
-        content := "Capslock++    Running`n"
+        content := "Capslock++`nRunning  (Reload needed)`n"
+ 
     for key, val in stat
     {
         content .= Format("{:-20}: {:-}`n", key, val)
     }
     content := SubStr(content, 1, -1)
     Menu, Tray, Tip, %content%
+
+    ; message level
+    Menu, MsgLevel, UnCheck, Disable
+    Menu, MsgLevel, UnCheck, WarnOnly
+    Menu, MsgLevel, UnCheck, Normal
+    Menu, MsgLevel, UnCheck, Debug
+    if (HyperSettings.Notify.MsgLevel = 0)
+        Menu, MsgLevel, Check, Debug
+    if (HyperSettings.Notify.MsgLevel = 1)
+        Menu, MsgLevel, Check, Normal
+    if (HyperSettings.Notify.MsgLevel = 2)
+        Menu, MsgLevel, Check, WarnOnly
+    if (HyperSettings.Notify.MsgLevel = 3)
+        Menu, MsgLevel, Check, Disable
 }
 GetStatus()
 {

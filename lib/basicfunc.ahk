@@ -190,6 +190,7 @@ SendWordReplace(CurrentWord,NewWord,CorrectCase = False)
     ;send the word
     ; is here a bug? may stuck the capslock
     Send, % "{BS " . StrLen(CurrentWord) . "}" ;clear the typed word
+    Sleep, 100
     SendRaw, %NewWord%
 }
 
