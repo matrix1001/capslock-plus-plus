@@ -86,10 +86,11 @@ TrayMenuRefresh()
     stat := GetStatus()
     if (A_IsSuspended = 1)
         content := "Capslock++`nSuspended`n"
-    else if (HyperSettings.RunTime.ScriptChagne + HyperSettings.RunTime.SettingChagne = 0)
+    else if (HyperSettings.RunTime.ScriptChange + HyperSettings.RunTime.SettingChange = 0)
         content := "Capslock++`nRunning`n"
     else
         content := "Capslock++`nRunning  (Reload needed)`n"
+        
  
     for key, val in stat
     {
