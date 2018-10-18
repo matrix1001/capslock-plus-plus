@@ -93,21 +93,29 @@ FileList(dir)
 }
 GetSelText() ;does not work with some terminals
 {
-    ClipboardOld:=ClipboardAll
-    Clipboard:=""
+    WinActive("A")                           
+    ControlGetFocus, ctrl
+    ControlGet, selText, Selected, ,%ctrl%
+    if (selText != "")
+    {
+        return selText
+    }
+
+    ClipboardOld := ClipboardAll
+    Clipboard := ""
     SendInput, ^{insert}
     ClipWait, 0.1
     if (!ErrorLevel)
     {
-        selText:=Clipboard
-        Clipboard:=ClipboardOld
+        selText := Clipboard
+        Clipboard := ClipboardOld
         StringRight, lastChar, selText, 1
-        if (Asc(lastChar)!=10) ;last char is `n, it's the IDE selected the whole line
+        if (Asc(lastChar) != 10) ;last char is `n, it's the IDE selected the whole line
         {
             return selText
         }
     }
-    Clipboard:=ClipboardOld
+    Clipboard := ClipboardOld
     return
 }
 GetLine()
