@@ -15,18 +15,28 @@ Menu, Tray, Icon, hyper.ico, , 1
 
 Menu, Tray, NoStandard
 Menu, Tray, add, Capslock++, OpenGithub
+Menu, Tray, add
 Menu, Tray, add, Open Directory, OpenScriptDir
 Menu, Tray, Default, Open Directory
 Menu, Tray, add, Edit Settings, EditSettings
 Menu, Tray, add, Edit SwitchSettings, EditSwitchSettings
 Menu, Tray, add, Reset All Settings, ResetSettings
 
-Menu, defaultment, Standard
-Menu, Tray, add, AutoHotkey, :defaultment
+Menu, MsgLevel, add, Debug, SetMsgLevel
+Menu, MsgLevel, add, Normal, SetMsgLevel
+Menu, MsgLevel, add, WarnOnly, SetMsgLevel
+Menu, MsgLevel, add, Disable, SetMsgLevel
+
+Menu, Tray, add, Message Level, :MsgLevel
+
+
+Menu, defaultmenu, Standard
+Menu, Tray, add, AutoHotkey, :defaultmenu
 
 SetTimer, IconGetStatus, 1000
 
 #Include lib/Settings.ahk
+
 
 OpenGithub:
 run https://github.com/matrix1001/capslock-plus-plus
@@ -49,11 +59,40 @@ IfMsgBox, Yes
     HyperReload()
 }
 return
+SetMsgLevel:
+Menu, MsgLevel, UnCheck, Disable
+Menu, MsgLevel, UnCheck, WarnOnly
+Menu, MsgLevel, UnCheck, Normal
+Menu, MsgLevel, UnCheck, Debug
+if StrEq(A_ThisMenuItem, "Disable")
+{
+    HyperSettings.Notify.MsgLevel := 3
+    Menu, MsgLevel, Check, Disable
+}
+if StrEq(A_ThisMenuItem, "WarnOnly")
+{
+    HyperSettings.Notify.MsgLevel := 2
+    Menu, MsgLevel, Check, WarnOnly
+}
+if StrEq(A_ThisMenuItem, "Normal")
+{
+    HyperSettings.Notify.MsgLevel := 1
+    Menu, MsgLevel, Check, Normal
+}
+if StrEq(A_ThisMenuItem, "Debug")
+{
+    HyperSettings.Notify.MsgLevel := 0
+    Menu, MsgLevel, Check, Debug
+}
+return
 
 IconGetStatus()
 {
     stat := GetStatus()
-    content := "Capslock++  Status`n"
+    if (A_IsSuspended = 1)
+        content := "Capslock++    Suspended`n"
+    else
+        content := "Capslock++    Running`n"
     for key, val in stat
     {
         content .= Format("{:-20}: {:-}`n", key, val)
@@ -253,9 +292,4 @@ if c=2
     DebugMsg(Format("Key:{}`nFunc:{}", keyname, func_name))
     RunThreadedFunc(func_name)
 }
-return
-
-
-;---------test
-!z::
 return

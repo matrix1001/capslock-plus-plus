@@ -257,6 +257,11 @@ SettingMonitor()
 
 NotificationMonitor()
 {
+    if (HyperSettings.Notify.Enable = 0)
+    {
+        SetTimer, NotificationMonitor, off
+        return
+    }
     noti := HyperSettings.RunTime.Notifications.pop()
     if noti
     {
