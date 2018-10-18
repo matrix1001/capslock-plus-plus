@@ -189,16 +189,8 @@ SendWordReplace(CurrentWord,NewWord,CorrectCase = False)
 
     ;send the word
     ; is here a bug? may stuck the capslock
-    ;Send, % "{BS " . StrLen(CurrentWord) . "}" ;clear the typed word
-    ;SendRaw, %NewWord%
-
-    ;in this way, fixed stuck problem
-    clip_old := ClipboardAll
-    Clipboard := NewWord
-    Send, % "+{Left " . StrLen(CurrentWord) . "}"
-    Send, +{Insert}
-    Clipboard := clip_old
-
+    Send, % "{BS " . StrLen(CurrentWord) . "}" ;clear the typed word
+    SendRaw, %NewWord%
 }
 
 ;--------String/Array function

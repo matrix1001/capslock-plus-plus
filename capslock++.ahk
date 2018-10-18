@@ -11,18 +11,18 @@ CoordMode, ToolTip
 CoordMode, Mouse
 
 global Hyper, Flag, HyperAlt，HyperWin
-menu, Tray, Icon, hyper.ico, , 1
+Menu, Tray, Icon, hyper.ico, , 1
 
-menu, Tray, NoStandard
-menu, Tray, add, Capslock++, OpenGithub
-menu, Tray, add, Open Directory, OpenScriptDir
-menu, Tray, Default, Open Directory
-menu, Tray, add, Edit Settings, EditSettings
-menu, Tray, add, Edit SwitchSettings, EditSwitchSettings
-menu, Tray, add, Reset All Settings, ResetSettings
+Menu, Tray, NoStandard
+Menu, Tray, add, Capslock++, OpenGithub
+Menu, Tray, add, Open Directory, OpenScriptDir
+Menu, Tray, Default, Open Directory
+Menu, Tray, add, Edit Settings, EditSettings
+Menu, Tray, add, Edit SwitchSettings, EditSwitchSettings
+Menu, Tray, add, Reset All Settings, ResetSettings
 
-menu, defaultment, Standard
-menu, Tray, add, AutoHotkey, :defaultment
+Menu, defaultment, Standard
+Menu, Tray, add, AutoHotkey, :defaultment
 
 SetTimer, IconGetStatus, 1000
 
@@ -59,7 +59,7 @@ IconGetStatus()
         content .= Format("{:-20}: {:-}`n", key, val)
     }
     content := SubStr(content, 1, -1)
-    menu, Tray, Tip, %content%
+    Menu, Tray, Tip, %content%
 }
 GetStatus()
 {
@@ -79,12 +79,12 @@ if %A_IsSuspended%
 {
     Suspend
     InfoMsg("Enable the script")
-    menu, Tray, Icon, hyper.ico, , 1
+    Menu, Tray, Icon, hyper.ico, , 1
 }
 else
 {
     InfoMsg("Suspend the script")
-    menu, Tray, Icon, hyper-suspend.ico, , 1
+    Menu, Tray, Icon, hyper-suspend.ico, , 1
     Suspend
 }
 
