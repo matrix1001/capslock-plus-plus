@@ -21,6 +21,7 @@ Menu, Tray, Default, Open Directory
 Menu, Tray, add, Edit Settings, EditSettings
 Menu, Tray, add, Edit SwitchSettings, EditSwitchSettings
 Menu, Tray, add, Reset All Settings, ResetSettings
+Menu, Tray, add, Reload, HyperReload
 
 Menu, MsgLevel, add, Debug, SetMsgLevel
 Menu, MsgLevel, add, Normal, SetMsgLevel

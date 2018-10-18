@@ -298,6 +298,13 @@ TODO
 
 # Devlog
 
+## 2018/10/18 version 0.2.2
+
+this is a release version
+
+- chinese readme of the latest version
+- tray menu update
+
 ## 2018/10/17 version 0.2.1
 
 next version will be a release version
