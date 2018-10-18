@@ -8,7 +8,7 @@ HyperTab()
     ; tabstring
     for key, val in HyperSettings.Tab
     {
-        pos := InStr(last, key)
+        pos := InStr(last, key,, 0) ; search from back
         if (pos != 0 && pos + StrLen(key) = len+1)
         {
             match := SubStr(last, pos)

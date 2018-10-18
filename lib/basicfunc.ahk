@@ -76,7 +76,7 @@ RunThreadedFunc(str)
     return
 }
 
-;--------system function
+;--------IO function
 FileList(dir)
 {
     
@@ -91,7 +91,7 @@ FileList(dir)
     }
     return lst
 }
-GetSelText()
+GetSelText() ;does not work with some terminals
 {
     ClipboardOld:=ClipboardAll
     Clipboard:=""
@@ -143,7 +143,7 @@ GetLastWord()
     return word
 }
 
-;--------IO function
+
 ReadDigit() ;return a digit at success, return -1 at error
 {
     ; avoid hyper block
@@ -180,6 +180,7 @@ SendWordReplace(CurrentWord,NewWord,CorrectCase = False)
     }
 
     ;send the word
+    ; is here a bug? may stuck the capslock
     Send, % "{BS " . StrLen(CurrentWord) . "}" ;clear the typed word
     SendRaw, %NewWord%
 }

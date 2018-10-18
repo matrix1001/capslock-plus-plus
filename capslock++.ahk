@@ -1,4 +1,4 @@
-; #InstallKeybdHook
+;#InstallKeybdHook
 
 ;---------
 SetCapsLockState, AlwaysOff 
@@ -232,7 +232,7 @@ func_name := HyperSettings.Keymap[keyname]
 try
 {
     DebugMsg(Format("Key:{}`nFunc:{}", keyname, func_name))
-    RunFunc(func_name)
+    RunThreadedFunc(func_name)
 }
 catch e
 {
@@ -259,5 +259,3 @@ return
 ;---------test
 !z::
 return
-
-
