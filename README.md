@@ -8,6 +8,8 @@ Amazing, extendable, readable `autohotkey` scripts framework utilized by `Capslo
 
 Original core concept is to make your `Capslock` key as a new `fn`. You have to install [AutoHotkey](https://autohotkey.com/) first. 
 
+[Latest Release V0.2.2](https://github.com/matrix1001/capslock-plus-plus/archive/V0.2.2.zip)
+
 __New Features__
 
 - Intelligent Search! 

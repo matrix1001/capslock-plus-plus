@@ -2,6 +2,8 @@
 
 这个文档用于描述一些基本用法，如果你是开发者，请参考英文文档。对应版本0.2.2。
 
+[最新发行版V0.2.2](https://github.com/matrix1001/capslock-plus-plus/archive/V0.2.2.zip)
+
 __最新功能__
 
 - 智能搜索
