@@ -262,6 +262,11 @@ NotificationMonitor()
         SetTimer, NotificationMonitor, off
         return
     }
+    if (HyperSettings.Notify.DisableOnFullScreen = 1)
+    {
+        if IsWindowFullScreen("A")
+            return
+    }
     noti := HyperSettings.RunTime.Notifications.pop()
     if noti
     {
@@ -449,6 +454,7 @@ DefaultSettings()
     HyperSettings.Notify.Style := "slide" ; fade/none/slide
     HyperSettings.Notify.MsgLevel := 1  ;0 for debug, 1 for info, 2 for succ/warning
     HyperSettings.Notify.Max := 5
+    HyperSettings.Notify.DisableOnFullScreen := 1
 
     ;tab
     HyperSettings.Tab["sample"] := "this is a Tab sample"

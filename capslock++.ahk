@@ -27,6 +27,8 @@ Menu, MsgLevel, add, Debug, SetMsgLevel
 Menu, MsgLevel, add, Normal, SetMsgLevel
 Menu, MsgLevel, add, WarnOnly, SetMsgLevel
 Menu, MsgLevel, add, Disable, SetMsgLevel
+Menu, MsgLevel, add
+Menu, MsgLevel, add, Disable On Full Screen, SetMsgLevel
 
 Menu, Tray, add
 Menu, Tray, add, Message Level, :MsgLevel
@@ -78,6 +80,10 @@ if StrEq(A_ThisMenuItem, "Debug")
 {
     HyperSettings.Notify.MsgLevel := 0
 }
+if StrEq(A_ThisMenuItem, "Disable On Full Screen")
+{
+    HyperSettings.Notify.DisableOnFullScreen := (HyperSettings.Notify.DisableOnFullScreen = 0) ? 1:0
+}
 return
 
 TrayMenuRefresh()
@@ -104,6 +110,7 @@ TrayMenuRefresh()
     Menu, MsgLevel, UnCheck, WarnOnly
     Menu, MsgLevel, UnCheck, Normal
     Menu, MsgLevel, UnCheck, Debug
+    Menu, MsgLevel, UnCheck, Disable On Full Screen
     if (HyperSettings.Notify.MsgLevel = 0)
         Menu, MsgLevel, Check, Debug
     if (HyperSettings.Notify.MsgLevel = 1)
@@ -112,6 +119,8 @@ TrayMenuRefresh()
         Menu, MsgLevel, Check, WarnOnly
     if (HyperSettings.Notify.MsgLevel = 3)
         Menu, MsgLevel, Check, Disable
+    if (HyperSettings.Notify.DisableOnFullScreen = 1)
+        Menu, MsgLevel, Check, Disable On Full Screen
 }
 GetStatus()
 {
@@ -306,3 +315,10 @@ if c=2
     RunThreadedFunc(func_name)
 }
 return
+
+
+!z::
+msgbox % IsWindowFullScreen("A")
+return
+
+
