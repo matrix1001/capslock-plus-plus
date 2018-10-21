@@ -327,7 +327,9 @@ return
 
 
 !z::
-msgbox % IsWindowFullScreen("A")
+;WindowMoveRightHalf("A")
+WinGetPos, X, Y, Width, Hight, A
+msgbox %X%, %Y%, %Width%, %Hight%
 return
 
 
