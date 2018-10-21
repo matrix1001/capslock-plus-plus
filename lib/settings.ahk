@@ -448,6 +448,7 @@ DefaultSettings()
     HyperSettings.Basic.Admin := 0
     HyperSettings.Basic.SettingMonitor := 1
     HyperSettings.Basic.ScriptMonitor := 1
+    HyperSettings.Basic.DisableOnFullScreen := 1
 
     ;notify
     HyperSettings.Notify.Enable := 1

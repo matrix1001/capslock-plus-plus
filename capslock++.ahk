@@ -22,6 +22,8 @@ Menu, Tray, add, Edit Settings, EditSettings
 Menu, Tray, add, Edit SwitchSettings, EditSwitchSettings
 Menu, Tray, add, Reset All Settings, ResetSettings
 Menu, Tray, add, Reload, HyperReload
+Menu, Tray, add
+Menu, Tray, add, Disable On Full Screen, ToggleDisableOnFullScreen
 
 Menu, MsgLevel, add, Debug, SetMsgLevel
 Menu, MsgLevel, add, Normal, SetMsgLevel
@@ -62,6 +64,9 @@ IfMsgBox, Yes
     FileDelete, HyperSwitchSettings.ini
     HyperReload()
 }
+return
+ToggleDisableOnFullScreen:
+HyperSettings.Basic.DisableOnFullScreen := (HyperSettings.Basic.DisableOnFullScreen = 0) ? 1:0
 return
 SetMsgLevel:
 if StrEq(A_ThisMenuItem, "Disable")
@@ -121,6 +126,8 @@ TrayMenuRefresh()
         Menu, MsgLevel, Check, Disable
     if (HyperSettings.Notify.DisableOnFullScreen = 1)
         Menu, MsgLevel, Check, Disable On Full Screen
+    if (HyperSettings.Basic.DisableOnFullScreen = 1)
+        Menu, Tray, Check, Disable On Full Screen
 }
 GetStatus()
 {
@@ -152,8 +159,10 @@ else
 return
 
 Capslock::
-
-Hyper := 1
+if (HyperSettings.Basic.DisableOnFullScreen = 1 && IsWindowFullScreen("A"))
+    Hyper := 0
+else
+    Hyper := 1
 Flag := 0
 HyperAlt := 0
 HyperWin := 0

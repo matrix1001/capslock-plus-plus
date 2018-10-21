@@ -300,6 +300,11 @@ TODO
 
 # Devlog
 
+## 2018/10/21 version 0.2.3
+
+- add `disable on full screen` option for `notify`
+- add `disable on full screen` option the whole script
+
 ## 2018/10/18 version 0.2.2
 
 this is a release version
