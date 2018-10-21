@@ -24,6 +24,7 @@ Menu, Tray, add, Reset All Settings, ResetSettings
 Menu, Tray, add, Reload, HyperReload
 Menu, Tray, add
 Menu, Tray, add, Disable On Full Screen, ToggleDisableOnFullScreen
+Menu, Tray, add, Run As Admin, RunAsAdmin
 
 Menu, MsgLevel, add, Debug, SetMsgLevel
 Menu, MsgLevel, add, Normal, SetMsgLevel
@@ -39,7 +40,7 @@ Menu, defaultmenu, Standard
 Menu, Tray, add
 Menu, Tray, add, AutoHotkey, :defaultmenu
 
-SetTimer, TrayMenuRefresh, 1000
+SetTimer, TrayMenuRefresh, 250
 
 #Include lib/Settings.ahk
 
@@ -67,6 +68,13 @@ IfMsgBox, Yes
 return
 ToggleDisableOnFullScreen:
 HyperSettings.Basic.DisableOnFullScreen := (HyperSettings.Basic.DisableOnFullScreen = 0) ? 1:0
+return
+RunAsAdmin:
+if not A_IsAdmin ;running by administrator
+{
+    Run *RunAs "%A_ScriptFullPath%" 
+    ExitApp
+} 
 return
 SetMsgLevel:
 if StrEq(A_ThisMenuItem, "Disable")
@@ -116,6 +124,9 @@ TrayMenuRefresh()
     Menu, MsgLevel, UnCheck, Normal
     Menu, MsgLevel, UnCheck, Debug
     Menu, MsgLevel, UnCheck, Disable On Full Screen
+
+    Menu, Tray, UnCheck, Disable On Full Screen
+    Menu, Tray, UnCheck, Run As Admin
     if (HyperSettings.Notify.MsgLevel = 0)
         Menu, MsgLevel, Check, Debug
     if (HyperSettings.Notify.MsgLevel = 1)
@@ -128,6 +139,9 @@ TrayMenuRefresh()
         Menu, MsgLevel, Check, Disable On Full Screen
     if (HyperSettings.Basic.DisableOnFullScreen = 1)
         Menu, Tray, Check, Disable On Full Screen
+
+    if (A_IsAdmin = 1)
+        Menu, Tray, Check, Run As Admin
 }
 GetStatus()
 {
