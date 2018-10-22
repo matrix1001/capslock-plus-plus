@@ -443,6 +443,11 @@ DefaultSettings()
     HyperSettings.Keymap.hyper_double_click := "GoogleTransDoubleClick"
     HyperSettings.Keymap.hyper_alt_t := "GoogleTransDoubleClick(1)"
 
+    HyperSettings.Keymap.hyper_alt_w := "WindowMoveTopHalf(""A"")"
+    HyperSettings.Keymap.hyper_alt_s := "WindowMoveBottomHalf(""A"")"
+    HyperSettings.Keymap.hyper_alt_a := "WindowMoveLeftHalf(""A"")"
+    HyperSettings.Keymap.hyper_alt_d := "WindowMoveRightHalf(""A"")"
+
     ;basic
     HyperSettings.Basic.StartUp := 1
     HyperSettings.Basic.Admin := 0
@@ -466,6 +471,8 @@ DefaultSettings()
     ;trans
     HyperSettings.Trans.SourceLanguage := "auto"
     HyperSettings.Trans.TargetLanguage := "zh"
+
+    
 }
 
 ; reload function

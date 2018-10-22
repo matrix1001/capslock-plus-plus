@@ -342,8 +342,7 @@ return
 
 !z::
 ;WindowMoveRightHalf("A")
-WinGetPos, X, Y, Width, Hight, A
-msgbox %X%, %Y%, %Width%, %Hight%
+WindowMoveTopHalf("A")
 return
 
 
