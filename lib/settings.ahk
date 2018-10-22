@@ -16,6 +16,7 @@ global HyperSettings := {"Keymap":{}
 
 #Include lib/BasicFunc.ahk
 #Include lib/Gui.ahk
+#Include lib/WindowUtil.ahk
 
 ; main 
 InitSettings()
