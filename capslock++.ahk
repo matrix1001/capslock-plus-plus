@@ -341,8 +341,7 @@ return
 
 
 !z::
-;WindowMoveRightHalf("A")
-WindowMoveTopHalf("A")
+msgbox % GetSelText()
 return
 
 

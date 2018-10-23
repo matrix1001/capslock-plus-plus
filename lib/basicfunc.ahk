@@ -93,13 +93,14 @@ FileList(dir)
 }
 GetSelText() ;does not work with some terminals
 {
-    WinActive("A")                           
-    ControlGetFocus, ctrl
-    ControlGet, selText, Selected, ,%ctrl%
-    if (selText != "")
-    {
-        return selText
-    }
+    ;   expired, unstable
+    ;WinActive("A")                           
+    ;ControlGetFocus, ctrl
+    ;ControlGet, selText, Selected, ,%ctrl%
+    ;if (selText != "")
+    ;{
+    ;    return selText
+    ;}
 
     ClipboardOld := ClipboardAll
     Clipboard := ""
