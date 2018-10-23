@@ -341,7 +341,6 @@ return
 
 
 !z::
-msgbox % GetSelText()
 return
 
 

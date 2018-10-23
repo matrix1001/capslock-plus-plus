@@ -1,3 +1,4 @@
+#Include lib/WinGetPosEx.ahk
 IsWindowFullScreen( winTitle ) 
 {
     ;https://autohotkey.com/board/topic/38882-detect-fullscreen-application/
@@ -15,47 +16,45 @@ IsWindowFullScreen( winTitle )
 	; no border and not minimized
 	Return ((style & 0x20800000) or winH < A_ScreenHeight or winW < A_ScreenWidth) ? false : true
 }
-WindowMoveTopHalf( winTitle )
+WindowMove(winTitle, position)
 {
-    ;msgbox test
     SysGet, Mon, MonitorWorkArea
-    x := MonLeft
-    y := MonTop
-    w := MonRight-MonLeft
-    h := (MonBottom-MonTop)/2
+
+    if (position == "top")
+    {
+        posX := MonLeft
+        posY := MonTop
+        width := MonRight-MonLeft
+        height := (MonBottom-MonTop)/2
+    }
+    else if (position == "bottom")
+    {
+        posX := MonLeft
+        posY := (MonBottom-MonTop)/2
+        width := MonRight-MonLeft
+        height := (MonBottom-MonTop)/2
+    }
+    else if (position == "left")
+    {
+        posX := MonLeft
+        posY := MonTop
+        width := (MonRight-MonLeft)/2
+        height := MonBottom-MonTop
+    }
+    else if (position == "right")
+    {
+        posX :=(MonRight-MonLeft)/2
+        posY := MonTop
+        width := (MonRight-MonLeft)/2
+        height := MonBottom-MonTop
+    }
+    
     ;msgbox %x%, %y%, %w%, %h%
-    WinMove, %winTitle%,, %x%, %y%, %w%, %h% 
-}
-WindowMoveBottomHalf( winTitle )
-{
-    ;msgbox test
-    SysGet, Mon, MonitorWorkArea
-    x := MonLeft
-    y := (MonBottom-MonTop)/2
-    w := MonRight-MonLeft
-    h := (MonBottom-MonTop)/2
-    ;msgbox %x%, %y%, %w%, %h%
-    WinMove, %winTitle%,, %x%, %y%, %w%, %h% 
-}
-WindowMoveLeftHalf( winTitle )
-{
-    ;msgbox test
-    SysGet, Mon, MonitorWorkArea
-    x := MonLeft
-    y := MonTop
-    w := (MonRight-MonLeft)/2
-    h := MonBottom-MonTop
-    ;msgbox %x%, %y%, %w%, %h%
-    WinMove, %winTitle%,, %x%, %y%, %w%, %h% 
-}
-WindowMoveRightHalf( winTitle )
-{
-    ;msgbox test
-    SysGet, Mon, MonitorWorkArea
-    x := (MonRight-MonLeft)/2
-    y := MonTop
-    w := (MonRight-MonLeft)/2
-    h := MonBottom-MonTop
-    ;msgbox %x%, %y%, %w%, %h%
-    WinMove, %winTitle%,, %x%, %y%, %w%, %h% 
+    ;WinMove, %winTitle%,, %x%, %y%, %w%, %h% 
+
+    WinGet activeWin, ID, %winTitle%
+
+    WinGetPosEx(activeWin, X, Y, realWidth, realHeight, offsetX, offsetY)
+    WinMove, A,, (posX + offsetX), (posY + offsetY), (width + offsetX * -2), (height + (offsetY - 2) * -2)
+
 }

@@ -300,6 +300,11 @@ TODO
 
 # Devlog
 
+## 2018/10/23 version 0.2.4
+
+- bug fix for `runfunc`
+- `windowutil.ahk` refine
+
 ## 2018/10/21 version 0.2.3
 
 - add `disable on full screen` option for `notify`

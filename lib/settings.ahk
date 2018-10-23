@@ -444,10 +444,10 @@ DefaultSettings()
     HyperSettings.Keymap.hyper_double_click := "GoogleTransDoubleClick"
     HyperSettings.Keymap.hyper_alt_t := "GoogleTransDoubleClick(1)"
 
-    HyperSettings.Keymap.hyper_alt_w := "WindowMoveTopHalf(""A"")"
-    HyperSettings.Keymap.hyper_alt_s := "WindowMoveBottomHalf(""A"")"
-    HyperSettings.Keymap.hyper_alt_a := "WindowMoveLeftHalf(""A"")"
-    HyperSettings.Keymap.hyper_alt_d := "WindowMoveRightHalf(""A"")"
+    HyperSettings.Keymap.hyper_alt_w := "WindowMove(A, top)"
+    HyperSettings.Keymap.hyper_alt_s := "WindowMove(A, bottom)"
+    HyperSettings.Keymap.hyper_alt_a := "WindowMove(A, left)"
+    HyperSettings.Keymap.hyper_alt_d := "WindowMove(A, right)"
 
     ;basic
     HyperSettings.Basic.StartUp := 1
@@ -466,7 +466,7 @@ DefaultSettings()
     ;tab
     HyperSettings.Tab["sample"] := "this is a Tab sample"
     HyperSettings.Tab["date1"] := "<GetDateTime>"
-    HyperSettings.Tab["date2"] := "<GetDateTime(""yyyy-M-d"")>"
+    HyperSettings.Tab["date2"] := "<GetDateTime(yyyy-M-d)>"
     HyperSettings.Tab["cmain"] := "int main(int *argc, char **argv)"
 
     ;trans

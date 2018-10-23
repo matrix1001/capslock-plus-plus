@@ -20,7 +20,7 @@ RunFunc(str)
             params:={}
             loop, Parse, match2, CSV
             {
-                params.insert(A_LoopField)
+                params.insert(Trim(A_LoopField))
             }
             parmasLen:=params.MaxIndex()
             result := func.(params*)
@@ -53,7 +53,7 @@ RunThreadedFunc(str)
             params:={}
             loop, Parse, match2, CSV
             {
-                params.insert(A_LoopField)
+                params.insert(Trim(A_LoopField))
             }
             parmasLen:=params.MaxIndex()
             SetTimer, witharg, -1
