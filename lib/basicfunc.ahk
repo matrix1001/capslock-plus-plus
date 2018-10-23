@@ -135,9 +135,8 @@ GetLine()
     }
     return selText
 }
-GetLastWord()
+GetLastWord(selText)
 {
-    selText := GetLine()
 
     pos := InStr(selText, " ", , 0) + 1
     if (pos > 0)

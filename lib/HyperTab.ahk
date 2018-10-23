@@ -3,22 +3,40 @@
 #Include lib/Gui.ahk
 HyperTab()
 {
-    last := GetLastWord()
-    len := StrLen(last)
+    clip_old := ClipboardAll
+    Clipboard := ""
+    Send, +{Home}
+    Send, ^{Insert}
+    ClipWait, 0.5
+    line := Clipboard
+    
+    len := StrLen(line)
     ; tabstring
     for key, val in HyperSettings.Tab
     {
-        pos := InStr(last, key,, 0) ; search from back
+        pos := InStr(line, key,, 0) ; search from back
         if (pos != 0 && pos + StrLen(key) = len+1)
         {
-            match := SubStr(last, pos)
+            match := SubStr(line, pos)
             temp := EvalString(val)
-            SendWordReplace(match, temp)
+            ;SendWordReplace(match, temp)
+
+            newline := SubStr(line, 1, pos-1) . temp
+
+            Clipboard := newline
+            Send, +{Insert}
+            Sleep, 50
+            Send, {End}
+            Clipboard := clip_old
             return
         }   
     }
+    Send, {End}
     ; tabstring not found, turn to suggest
-    SuggestWord(last)
+    Clipboard := clip_old
+    last_word := GetLastWord(line)
+
+    SuggestWord(last_word)
 }
 
 EvalString(str)
