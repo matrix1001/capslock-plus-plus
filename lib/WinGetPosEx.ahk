@@ -73,15 +73,8 @@
 ;   Idea and some code from *KaFu* (AutoIt forum)
 ;
 ;------------------------------------------------------------------------------
-WinGetPosEx(
-    hWindow,
-    ByRef X="",
-    ByRef Y="",
-    ByRef Width="",
-    ByRef Height="",
-    ByRef Offset_X="",
-    ByRef Offset_Y="") {
-
+WinGetPosEx(hWindow, ByRef X="", ByRef Y="", ByRef Width="", ByRef Height="", ByRef Offset_X="", ByRef Offset_Y="") 
+{
     Static Dummy5693
         , RECTPlus
         , S_OK := 0x0
