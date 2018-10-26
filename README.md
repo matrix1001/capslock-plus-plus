@@ -12,12 +12,15 @@ Original core concept is to make your `Capslock` key as a new `fn`. You have to 
 
 __New Features__
 
-- Intelligent Search! 
-- HyperTab enhancement! (merge autosuggest function into HyperTab)
+- Screen Split ! (just like `win + left/right` in Win10, but support split horizontally)
 
 __Notice__
 
 This project is updating very quickly. If you pulled the latest version, **remember** to delete the old `ini` files in order to load new ones to gain new features.
+
+However, I made a menu for you to do this quickly.
+
+![tray_reset](img/reset.png)
 
 # Feature
 
@@ -65,6 +68,10 @@ In the following part, I will ignore `capslock` in keyset.
 | t | google translate |
 | alt+r | reload script or settings |
 | alt+t | enable double click translate |
+| alt+w | move the window to the top |
+| alt+s | move the window to the bottom |
+| alt+a | move the window to the left |
+| alt+d | move the window to the right |
 
 By the way, you may want to `suspend` | `restart` the script when you play games. Press `Alt + Esc` will help. And its icon will change.
 
@@ -198,7 +205,7 @@ Take a look at default HyperSetting.ini, you will find this
 [Tab]
 sample=this is a Tab sample
 date1=<GetDateTime>
-date2=<GetDateTime("yyyy-M-d")>
+date2=<GetDateTime(yyyy-M-d)>
 ```
 
 Move your cursor after the word `sample`, press `CapsLock + Tab`, and it will be auto replaced by `this is a TabHotString sample`
@@ -261,6 +268,10 @@ About `MsgLevel`, set `0` to show all notifications including `DEBUG`. However, 
 About `Style`, I have implemented three styles for you. `slide` means the notification will slide in ane slide out. `fade` means fade in and fade out. `none` means no any effect.
 
 About `Max`, `5` is enough for you to use. It is useful when you need to use `DEBUG` mode.
+
+There is a simple tray menu for you to quickly change `MsgLevel`.
+
+![tray_notify](img/tray_notify.png)
 
 ## HyperSearch
 
