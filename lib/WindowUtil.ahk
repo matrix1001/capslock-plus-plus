@@ -16,6 +16,14 @@ IsWindowFullScreen( winTitle )
 	; no border and not minimized
 	Return ((style & 0x20800000) or winH < A_ScreenHeight or winW < A_ScreenWidth) ? false : true
 }
+IsDesktop( winTitle )
+{
+    winID := WinExist( winTitle )
+    WinGetClass, cls, ahk_id %winID%
+    WinGet, name, ProcessName, ahk_id %winID%
+    return (cls == "WorkerW" && name == "Explorer.EXE")
+    
+}
 WindowMove(winTitle, position)
 {
     SysGet, Mon, MonitorWorkArea

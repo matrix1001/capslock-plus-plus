@@ -173,7 +173,7 @@ else
 return
 
 Capslock::
-if (HyperSettings.Basic.DisableOnFullScreen = 1 && IsWindowFullScreen("A"))
+if (HyperSettings.Basic.DisableOnFullScreen = 1 && IsWindowFullScreen("A") && not IsDesktop("A"))
     Hyper := 0
 else
     Hyper := 1
