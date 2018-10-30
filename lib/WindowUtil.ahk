@@ -26,6 +26,7 @@ IsDesktop( winTitle )
 }
 WindowMove(winTitle, position)
 {
+    static records := {}
     SysGet, Mon, MonitorWorkArea
 
     if (position == "top")
@@ -63,6 +64,30 @@ WindowMove(winTitle, position)
     WinGet activeWin, ID, %winTitle%
 
     WinGetPosEx(activeWin, X, Y, realWidth, realHeight, offsetX, offsetY)
-    WinMove, A,, (posX + offsetX), (posY + offsetY), (width + offsetX * -2), (height + (offsetY - 2) * -2)
+
+    if records.haskey(activeWin) 
+    {
+        if (records[activeWin]["action"] == position)
+        {
+            oldx := records[activeWin]["x"]
+            oldy := records[activeWin]["y"]
+            oldw := records[activeWin]["w"]
+            oldh := records[activeWin]["h"]
+            ;msgbox %oldx%, %oldy%
+            WinMove, ahk_id %activeWin%,, %oldx%, %oldy%, %oldw%, %oldh%
+            records.delete(activeWin)
+            return
+        }
+        else
+            records[activeWin]["action"] := position
+    }
+    else
+    {
+        ;msgbox %X%, %Y%
+        record := {"x":X, "y":Y, "w":realWidth, "h":realHeight, "action":position}
+        records[activeWin] := record
+    }
+
+    WinMove, ahk_id %activeWin%,, (posX + offsetX), (posY + offsetY), (width + offsetX * -2), (height + (offsetY - 2) * -2)
 
 }
