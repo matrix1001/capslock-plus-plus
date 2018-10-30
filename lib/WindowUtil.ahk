@@ -62,7 +62,7 @@ WindowMove(winTitle, position)
     ;WinMove, %winTitle%,, %x%, %y%, %w%, %h% 
 
     WinGet activeWin, ID, %winTitle%
-
+    WinRestore, ahk_id %activeWin%
     WinGetPosEx(activeWin, X, Y, realWidth, realHeight, offsetX, offsetY)
 
     if records.haskey(activeWin) 
@@ -87,7 +87,29 @@ WindowMove(winTitle, position)
         record := {"x":X, "y":Y, "w":realWidth, "h":realHeight, "action":position}
         records[activeWin] := record
     }
-
     WinMove, ahk_id %activeWin%,, (posX + offsetX), (posY + offsetY), (width + offsetX * -2), (height + (offsetY - 2) * -2)
 
+}
+WindowMax(winTitle)
+{
+    WinGet activeWin, ID, %winTitle%
+    WinGet, var, MinMax, ahk_id %activeWin%
+    if (var != 1)
+    {
+        WinMaximize, ahk_id %activeWin%
+    }
+    else
+        WinRestore, ahk_id %activeWin%
+}
+
+WindowMin(winTitle)
+{
+    WinGet activeWin, ID, %winTitle%
+    WinGet, var, MinMax, ahk_id %activeWin%
+    if (var != -1)
+    {
+        WinMinimize, ahk_id %activeWin%
+    }
+    else
+        WinRestore, ahk_id %activeWin%
 }

@@ -68,10 +68,12 @@ In the following part, I will ignore `capslock` in keyset.
 | t | google translate |
 | alt+r | reload script or settings |
 | alt+t | enable double click translate |
-| alt+w | move the window to the top |
+| alt+w | move the window to the top | press this key again will move the window back
 | alt+s | move the window to the bottom |
 | alt+a | move the window to the left |
 | alt+d | move the window to the right |
+| alt+q | maximize/restore the window |
+| alt+e | minimize the window |
 
 By the way, you may want to `suspend` | `restart` the script when you play games. Press `Alt + Esc` will help. And its icon will change.
 
@@ -310,6 +312,10 @@ Then:
 TODO
 
 # Devlog
+
+## 2018/10/30 versioin 0.2.5
+
+- better window snap
 
 ## 2018/10/23 version 0.2.4
 

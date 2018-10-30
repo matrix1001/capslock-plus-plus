@@ -448,6 +448,8 @@ DefaultSettings()
     HyperSettings.Keymap.hyper_alt_s := "WindowMove(A, bottom)"
     HyperSettings.Keymap.hyper_alt_a := "WindowMove(A, left)"
     HyperSettings.Keymap.hyper_alt_d := "WindowMove(A, right)"
+    HyperSettings.Keymap.hyper_alt_q := "WindowMax(A)"
+    HyperSettings.Keymap.hyper_alt_e := "WindowMin(A)"
 
     ;basic
     HyperSettings.Basic.StartUp := 1
