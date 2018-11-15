@@ -160,12 +160,14 @@ Suspend, Permit
 if %A_IsSuspended%
 {
     Suspend
+    SetCapsLockState, AlwaysOff
     InfoMsg("Enable the script")
     Menu, Tray, Icon, hyper.ico, , 1
 }
 else
 {
     InfoMsg("Suspend the script")
+    SetCapsLockState, Off
     Menu, Tray, Icon, hyper-suspend.ico, , 1
     Suspend
 }
