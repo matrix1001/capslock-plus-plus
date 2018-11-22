@@ -192,3 +192,35 @@ GoogleTransDoubleClick(toggle := 0)
         GoogleTransSel()
     }
 }
+CgdictTranslate(word)
+{
+    url := Format("http://www.cgdict.com/index.php?app=cigen&ac=word&w={}", word)
+    header := {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36"}
+    response := HttpGet(url, header)
+    pattern := "<p><strong>([^<]*)<\/strong>([^<]*)\s?<\/p>"
+    result := []
+    pos := 1
+    while pos:=RegExMatch(response, pattern, match, pos)
+    {
+        pos := pos + StrLen(match1)
+        result.push(Format("{} {}", match1, match2))
+    }
+    txt := ""
+    for idx, par in result
+        txt .= par
+    return txt
+}
+CgdictTransSel()
+{
+    word := GetSelText()
+    result := CgdictTranslate(word)
+    if result
+    {
+        msg := result
+    }
+    else
+    {
+        msg := "error"
+    }
+    OnMouseToolTip(msg)
+}
