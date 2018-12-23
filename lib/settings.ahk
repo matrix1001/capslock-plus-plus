@@ -433,7 +433,7 @@ DefaultSettings()
     HyperSettings.Keymap.hyper_tab := "HyperTab"
 
     HyperSettings.Keymap.hyper_s := "HyperSearch"
-    HyperSettings.Keymap.hyper_t := "GoogleTransSel"
+    HyperSettings.Keymap.hyper_t := "TransSel"
 
     HyperSettings.Keymap.hyper_alt_1 := "switchDesktopByNumber(1)"
     HyperSettings.Keymap.hyper_alt_2 := "switchDesktopByNumber(2)"
@@ -441,8 +441,8 @@ DefaultSettings()
 
     HyperSettings.Keymap.hyper_alt_r := "HyperReload"
 
-    HyperSettings.Keymap.hyper_double_click := "GoogleTransDoubleClick"
-    HyperSettings.Keymap.hyper_alt_t := "GoogleTransDoubleClick(1)"
+    HyperSettings.Keymap.hyper_double_click := "TransDoubleClick"
+    HyperSettings.Keymap.hyper_alt_t := "TransDoubleClick(1)"
 
     HyperSettings.Keymap.hyper_alt_w := "WindowMove(A, top)"
     HyperSettings.Keymap.hyper_alt_s := "WindowMove(A, bottom)"
@@ -469,11 +469,13 @@ DefaultSettings()
     HyperSettings.Tab["sample"] := "this is a Tab sample"
     HyperSettings.Tab["date1"] := "<GetDateTime>"
     HyperSettings.Tab["date2"] := "<GetDateTime(yyyy-M-d)>"
-    HyperSettings.Tab["cmain"] := "int main(int *argc, char **argv)"
+    HyperSettings.Tab["cmain"] := "int main(int argc, char **argv)"
 
     ;trans
     HyperSettings.Trans.SourceLanguage := "auto"
     HyperSettings.Trans.TargetLanguage := "zh"
+    HyperSettings.Trans.TransSelBackend := "google"
+    HyperSettings.Trans.TransDoubleClickBackend := "cgdict"
 
     
 }

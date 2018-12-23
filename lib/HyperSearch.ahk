@@ -18,7 +18,8 @@ HyperSearch()
         Run %sel%
     if (StrEq(typ, "word") || StrEq(typ, "sentence"))
     {
-        GoogleTransToolTip(sel)
+        msg := Translate(sel)
+        OnMouseToolTip(msg)
     }
     if (StrEq(typ, "number"))
     {

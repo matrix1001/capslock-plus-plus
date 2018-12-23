@@ -1,7 +1,47 @@
 #Include lib/BasicFunc.ahk
 #Include lib/Json.ahk
 
-GoogleTrans(content, src := "auto", dst := "zh")
+
+Translate(content, backend := "google", src := "auto", dst := "zh")
+{
+    if StrEq(backend, "google")
+        return GoogleTranslate(content, src, dst)
+    if StrEq(backend, "cgdict")
+        return CgdictTranslate(content)
+}
+TransSel()
+{
+    content := GetSelText()
+    msg := Translate(content, HyperSettings.Trans.TransSelBackend, HyperSettings.Trans.SourceLanguage, HyperSettings.Trans.TargetLanguage)
+    OnMouseToolTip(msg)
+}
+
+TransDoubleClick(toggle := 0)
+{
+    if toggle=1
+    {
+        ;msgbox toggle
+        if HyperSettings.RunTime.DoubleClickTrans = 1
+        {
+            InfoMsg("Disable DoubleClick Translation")
+            HyperSettings.RunTime.DoubleClickTrans := 0
+        }
+        else
+        {
+            InfoMsg("Enable DoubleClick Translation")
+            HyperSettings.RunTime.DoubleClickTrans := 1
+        }
+        return
+    }
+
+    if HyperSettings.RunTime.DoubleClickTrans = 1
+    {
+        content := GetSelText()
+        msg := Translate(content, HyperSettings.Trans.TransDoubleClickBackend, HyperSettings.Trans.SourceLanguage, HyperSettings.Trans.TargetLanguage)
+        OnMouseToolTip(msg)
+    }
+}
+GoogleTranslate(content, src := "auto", dst := "zh")
 {
     local LANGUAGES = {"af": "afrikaans"
     ,"sq": "albanian"
@@ -140,57 +180,15 @@ GoogleTrans(content, src := "auto", dst := "zh")
         ;orig := json_obj.sentences[1].orig
 
         result := {"src":LANGUAGES[src], "dst":LANGUAGES[dst], "trans":trans, "orig":orig}
-        return result
+        msg := Format("{1}->{2}`n{3}", result.src, result.dst, result.trans)
+        return msg
     }
     catch
     {
         ;SplashText("ERROR: GoogleTrans Failed. `nurl: " . url)
-        return
+        return "error"
     }
 
-}
-GoogleTransSel()
-{
-    content := GetSelText()
-    GoogleTransToolTip(content)
-
-}
-GoogleTransToolTip(content)
-{
-    result := GoogleTrans(content, HyperSettings.Trans.SourceLanguage, HyperSettings.Trans.TargetLanguage)
-    if result
-    {
-        msg := Format("{1}->{2}`n{3}", result.src, result.dst, result.trans)
-    }
-    else
-    {
-        msg := "error"
-    }
-    ;msgbox %content% -> %result%
-    OnMouseToolTip(msg)
-}
-GoogleTransDoubleClick(toggle := 0)
-{
-    if toggle=1
-    {
-        ;msgbox toggle
-        if HyperSettings.RunTime.DoubleClickTrans = 1
-        {
-            InfoMsg("Disable DoubleClick Translation")
-            HyperSettings.RunTime.DoubleClickTrans := 0
-        }
-        else
-        {
-            InfoMsg("Enable DoubleClick Translation")
-            HyperSettings.RunTime.DoubleClickTrans := 1
-        }
-        return
-    }
-
-    if HyperSettings.RunTime.DoubleClickTrans = 1
-    {
-        GoogleTransSel()
-    }
 }
 CgdictTranslate(word)
 {
@@ -209,18 +207,4 @@ CgdictTranslate(word)
     for idx, par in result
         txt .= par
     return txt
-}
-CgdictTransSel()
-{
-    word := GetSelText()
-    result := CgdictTranslate(word)
-    if result
-    {
-        msg := result
-    }
-    else
-    {
-        msg := "error"
-    }
-    OnMouseToolTip(msg)
 }
