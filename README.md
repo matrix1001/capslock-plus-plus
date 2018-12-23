@@ -102,7 +102,7 @@ More menu options will be joined later.
 
 ## HyperTrans
 
-Default translation is triggered by `Capslock + t`. You have to select a word or a sentense at first.
+Default translation is triggered by `Capslock + t`. You have to select a word or a sentence at first.
 
 Here's some examples for you to test.
 
@@ -123,6 +123,8 @@ Also, language support has been added to `HyperSettings.ini`. Remember to use th
 [Trans]
 SourceLanguage=auto
 TargetLanguage=zh ; for example, change this to es (spanish)
+TransDoubleClickBackend=cgdict ; only support english to chinese. change this to google for more translation.
+TransSelBackend=google
 ```
 
 __Surprising New Feature__
@@ -131,6 +133,11 @@ Double Click To Translate
 
 - First press `Capslock + Alt + t` to enable/disable it.
 - Then double click a word, it will be translated!
+- Add `cgdict` translation for single. You can also change this to `google`
+
+![demo4](img/trans4.png)
+
+
 
 ## HyperSwitch
 
@@ -313,7 +320,11 @@ TODO
 
 # Devlog
 
-## 2018/10/30 versioin 0.2.5
+## 2018/12/23 version 0.2.6
+
+- add `cgdict` translation (more features of translation are incoming)
+
+## 2018/10/30 version 0.2.5
 
 - better window snap
 
