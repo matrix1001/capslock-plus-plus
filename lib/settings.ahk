@@ -4,7 +4,8 @@ global HyperSettings := {"Keymap":{}
     , "Basic":{}
     , "Trans":{}
     , "Notify":{}
-    , "SettingSections":["Basic", "Trans", "Notify", "Tab", "Keymap"]
+    , "Ignore":[]
+    , "SettingSections":["Basic", "Trans", "Notify", "Tab", "Ignore", "Keymap"]
     , "ScriptDir":["lib", "script"]
     , "Includer":"lib\Includer.ahk"
     , "SettingIni":["HyperSettings.ini", "HyperSwitchSettings.ini"]
@@ -477,7 +478,9 @@ DefaultSettings()
     HyperSettings.Trans.TransSelBackend := "google"
     HyperSettings.Trans.TransDoubleClickBackend := "cgdict"
 
-    
+    ;ignore
+    HyperSettings.Ignore["Code.exe"] := 0
+
 }
 
 ; reload function

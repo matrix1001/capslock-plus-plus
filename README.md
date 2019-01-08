@@ -315,10 +315,28 @@ Then:
 - If your want to map a key to it, just change `HyperSettings.ini`.
 - Press `Capslock + Alt + r` to reload the script.
 
+## Misc
+
+### Ignore
+
+Ignore `Capslock++` on some applications. Edit this in `HyperSettings.ini`.
+
+```ini
+[Ignore]
+Code.exe=1
+```
+
+Just throw the execute file names into `[ignore]` and set values to `1`. And `0` means nothing.
+
 # Documention
 TODO
 
 # Devlog
+
+## 2019/1/8 version 0.2.7
+
+- fix function `IsDesktop`
+- add `Ignore`
 
 ## 2018/12/23 version 0.2.6
 

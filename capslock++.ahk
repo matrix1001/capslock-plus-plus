@@ -178,7 +178,14 @@ Capslock::
 if (HyperSettings.Basic.DisableOnFullScreen = 1 && IsWindowFullScreen("A") && not IsDesktop("A"))
     Hyper := 0
 else
-    Hyper := 1
+{
+    name := GetWindowName("A")
+    if (name in HyperSettings.Ignore && HyperSettings.Ignore[name])
+        Hyper := 0
+    else
+        Hyper := 1
+}
+    
 Flag := 0
 HyperAlt := 0
 HyperWin := 0
