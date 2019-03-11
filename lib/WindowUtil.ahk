@@ -32,7 +32,7 @@ IsDesktop( winTitle )
 {
     cls := GetWindowClass(winTitle)
     name := GetWindowName(winTitle)
-    return (cls == "WorkerW" || cls = "Progman" ) && name == "Explorer.EXE"
+    return (cls == "WorkerW" || cls = "Progman" ) && (name == "Explorer.EXE" || name == "explorer.exe")
     
 }
 
