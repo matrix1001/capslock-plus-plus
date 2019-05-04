@@ -44,6 +44,7 @@ SetTimer, TrayMenuRefresh, 250
 
 #Include lib/Settings.ahk
 
+return
 
 OpenGithub:
 run https://github.com/matrix1001/capslock-plus-plus
