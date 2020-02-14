@@ -195,8 +195,17 @@ CgdictTranslate(word)
     url := Format("http://www.cgdict.com/index.php?app=cigen&ac=word&w={}", word)
     header := {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36"}
     response := HttpGet(url, header)
+    response := StrReplace(response, "&nbsp;", " ")
+    pron_pattern := "<h3>([^<]*)<\/h3>[^<]*<h3 class=""pron"">([^<]*)<\/h3>"
     pattern := "<p><strong>([^<]*)<\/strong>([^<]*)\s?<\/p>"
-    result := []
+    result := [word . "`n"]
+    pos := 1
+    while pos:=RegExMatch(response, pron_pattern, match, pos)
+    {
+        pos := pos + StrLen(match1)
+        result.push(Format("{} {}`n", match1, match2))
+    }
+    ; add trans
     pos := 1
     while pos:=RegExMatch(response, pattern, match, pos)
     {
