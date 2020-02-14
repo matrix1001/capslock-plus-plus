@@ -1,7 +1,10 @@
 #Include lib/BasicFunc.ahk
 #Include lib/Json.ahk
 
-
+IsWord(str)
+{
+    return RegExMatch(str, "^[a-zA-Z]*$")
+}
 Translate(content, backend := "google", src := "auto", dst := "zh")
 {
     if StrEq(backend, "google")
@@ -12,7 +15,14 @@ Translate(content, backend := "google", src := "auto", dst := "zh")
 TransSel()
 {
     content := GetSelText()
-    msg := Translate(content, HyperSettings.Trans.TransSelBackend, HyperSettings.Trans.SourceLanguage, HyperSettings.Trans.TargetLanguage)
+    if IsWord(content)
+    {
+        msg := Translate(content, HyperSettings.Trans.TransWordBackend, HyperSettings.Trans.SourceLanguage, HyperSettings.Trans.TargetLanguage)
+    }
+    else
+    {
+        msg := Translate(content, HyperSettings.Trans.TransSelBackend, HyperSettings.Trans.SourceLanguage, HyperSettings.Trans.TargetLanguage)
+    }
     OnMouseToolTip(msg)
 }
 
@@ -36,9 +46,7 @@ TransDoubleClick(toggle := 0)
 
     if HyperSettings.RunTime.DoubleClickTrans = 1
     {
-        content := GetSelText()
-        msg := Translate(content, HyperSettings.Trans.TransDoubleClickBackend, HyperSettings.Trans.SourceLanguage, HyperSettings.Trans.TargetLanguage)
-        OnMouseToolTip(msg)
+        TransSel()
     }
 }
 GoogleTranslate(content, src := "auto", dst := "zh")

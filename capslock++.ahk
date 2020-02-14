@@ -351,6 +351,8 @@ return
 
 
 !z::
+foundpos := RegExMatch("abc1", "^[a-zA-Z]*$")
+msgbox %foundpos%
 return
 
 

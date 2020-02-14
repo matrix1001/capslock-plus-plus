@@ -476,7 +476,7 @@ DefaultSettings()
     HyperSettings.Trans.SourceLanguage := "auto"
     HyperSettings.Trans.TargetLanguage := "zh"
     HyperSettings.Trans.TransSelBackend := "google"
-    HyperSettings.Trans.TransDoubleClickBackend := "cgdict"
+    HyperSettings.Trans.TransWordBackend := "cgdict"
 
     ;ignore
     HyperSettings.Ignore["Code.exe"] := 0
