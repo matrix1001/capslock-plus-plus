@@ -333,6 +333,10 @@ TODO
 
 # Devlog
 
+## 2020/2/14 version 0.2.7.1
+
+- refine translate (need to delete your old `HyperSettings.ini`)
+
 ## 2019/1/8 version 0.2.7
 
 - fix function `IsDesktop`
