@@ -350,9 +350,8 @@ if c=2
 return
 
 
-!z::
-foundpos := RegExMatch("abc1", "^[a-zA-Z]*$")
-msgbox %foundpos%
-return
+;!z::
+;TransSel()
+;return
 
 

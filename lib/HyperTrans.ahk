@@ -200,12 +200,12 @@ GoogleTranslate(content, src := "auto", dst := "zh")
 }
 CgdictTranslate(word)
 {
-    url := Format("http://www.cgdict.com/index.php?app=cigen&ac=word&w={}", word)
+    url := Format("http://www.iciba.com/word?w={}", word)
     header := {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36"}
     response := HttpGet(url, header)
     response := StrReplace(response, "&nbsp;", " ")
-    pron_pattern := "<h3>([^<]*)<\/h3>[^<]*<h3 class=""pron"">([^<]*)<\/h3>"
-    pattern := "<p><strong>([^<]*)<\/strong>([^<]*)\s?<\/p>"
+    pron_pattern := "<li>([^<]*)<!-- -->([^<]*)(?:<img|</li>)"
+    pattern := "<li><i>([^<]*)</i><div>([^l]*)</div></li>"
     result := [word . "`n"]
     pos := 1
     while pos:=RegExMatch(response, pron_pattern, match, pos)
@@ -218,7 +218,10 @@ CgdictTranslate(word)
     while pos:=RegExMatch(response, pattern, match, pos)
     {
         pos := pos + StrLen(match1)
-        result.push(Format("{} {}", match1, match2))
+        match2_real := StrReplace(match2, "<span>", "")
+        match2_real := StrReplace(match2_real, "</span>", "")
+        match2_real := StrReplace(match2_real, "<!-- -->", "")
+        result.push(Format("{} {}`n", match1, match2_real))
     }
     txt := ""
     for idx, par in result
