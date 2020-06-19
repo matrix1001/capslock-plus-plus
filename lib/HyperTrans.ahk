@@ -3,7 +3,7 @@
 
 IsWord(str)
 {
-    return RegExMatch(str, "^[a-zA-Z]*$")
+    return RegExMatch(str, "^ *[a-zA-Z]* *$")
 }
 Translate(content, backend := "google", src := "auto", dst := "zh")
 {
