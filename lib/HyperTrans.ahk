@@ -206,6 +206,8 @@ CgdictTranslate(word)
     header := {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36"}
     response := HttpGet(url, header)
     response := StrReplace(response, "&nbsp;", " ")
+    response := StrReplace(response, "&lt;", "<")
+    response := StrReplace(response, "&gt;", ">")
     response := StrReplace(response, "&#x27;", "'")
     pron_pattern := "<li>([^<]*)<!-- -->([^<]*)(?:<img|</li>)"
     pattern := "<li><i>([^<]*)</i><div>((?:(?!div).)*)</div></li>"
