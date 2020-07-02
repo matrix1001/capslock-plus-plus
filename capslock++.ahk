@@ -350,8 +350,12 @@ if c=2
 return
 
 
-;!z::
-;TransSel()
-;return
+!z::
+;    content := GetSelText()
+;    if (content = "")
+;        msgbox empty
+;    else 
+;        msgbox % content
+return
 
 

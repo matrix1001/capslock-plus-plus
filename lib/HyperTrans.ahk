@@ -15,6 +15,8 @@ Translate(content, backend := "google", src := "auto", dst := "zh")
 TransSel()
 {
     content := GetSelText()
+    if (content = "")
+        return
     if IsWord(content)
     {
         msg := Translate(content, HyperSettings.Trans.TransWordBackend, HyperSettings.Trans.SourceLanguage, HyperSettings.Trans.TargetLanguage)
