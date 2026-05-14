@@ -1,6 +1,6 @@
 <span style="display:block;text-align:center">![ico](hyper.ico)</span>
 
-# CapsLock++
+# CapsLock++ (We have [CapsLock2](https://github.com/matrix1001/Capslock2) with ahk2)
 
 [中文说明](https://github.com/matrix1001/capslock-plus-plus/blob/master/README-zh.md)
 
